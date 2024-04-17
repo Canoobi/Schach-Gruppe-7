@@ -149,4 +149,35 @@ public class Board {
   public void printBoard() {
     System.out.println("Printing Board here");
   }
+
+  public static boolean isBlocked(int oldX, int oldY, int newX, int newY) {
+    int deltaX = Math.abs(oldX - newX);
+    int deltaY = Math.abs(oldY - newY);
+
+    int slopeOfFucntion = Math.min(deltaX, deltaY) / Math.max(deltaX, deltaY);
+    int interceptOfFunction = newY - slopeOfFucntion * newX;
+
+    if (oldX != newX) {
+      for (int i = Math.min(oldX, newX) + 1; i < Math.max(oldX, newX); i++) {
+//            if (board[i][func_m * i + func_n] != null){
+//                return true;
+//            }
+        System.out.println("X:" + i + "Y:" + (int) ((slopeOfFucntion * i) + interceptOfFunction) + "\n");
+      }
+    } else {
+      for (int i = Math.min(oldY, newY) + 1; i < Math.max(oldY, newY); i++) {
+        //if (board[oldX][i] != null){
+//                  return true;
+//            }
+        System.out.println("X:" + oldX + "Y:" + i + "\n");
+      }
+    }
+
+    return false;
+  }
 }
+
+
+
+
+
