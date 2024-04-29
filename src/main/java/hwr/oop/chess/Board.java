@@ -141,9 +141,9 @@ public class Board {
   }
 
   public Piece getKing(Piece.Color color) {
-    for (List<Piece> l : playBoard.reversed()) {
+    for (List<Piece> l : playBoard) {
       for (Piece p : l) {
-        if (p != null && p.getColor() == color) {
+        if (p != null && p.getColor() == color && Character.toLowerCase(p.getAbbr()) == 'k') {
           return p;
         }
       }
@@ -156,7 +156,7 @@ public class Board {
     int kingX = king.getActPosition().getFirst();
     int kingY = king.getActPosition().get(1);
 
-    for (List<Piece> l : playBoard.reversed()) {
+    for (List<Piece> l : playBoard) {
       for (Piece p : l) {
         if (p != null
             && p.getColor() != color
