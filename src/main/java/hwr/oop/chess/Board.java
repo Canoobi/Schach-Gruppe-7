@@ -194,8 +194,6 @@ public class Board {
   public boolean isBlocked(Piece piece, int newColumn, int newRow) {
     List<Integer> oldPos = piece.getActPosition();
     List<Integer> vec = Arrays.asList(newColumn - oldPos.getFirst(), newRow - oldPos.get(1));
-    //System.out.println(vec.get(0) + " " + vec.get(1));
-    System.out.println("OldPos" + oldPos.get(0) + " " + oldPos.get(1));
     if (vec.getFirst() < 0) {
       vec.set(0, -1);
     }
@@ -213,7 +211,7 @@ public class Board {
     for (int i = 1;
         i < ((newColumn - oldPos.getFirst()) * vec.getFirst())
             || i < ((newRow - oldPos.get(1)) * vec.get(1));
-        i++) { System.out.println("OldPos+Vec"+(oldPos.getFirst() + i * vec.getFirst())+ " "+ (oldPos.get(1) + i * vec.get(1)));
+        i++) {
       if (this.playBoard
               .get(oldPos.get(1) + i * vec.get(1))
               .get(oldPos.getFirst() + i * vec.getFirst())
