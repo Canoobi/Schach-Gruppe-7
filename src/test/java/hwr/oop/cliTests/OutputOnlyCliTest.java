@@ -34,5 +34,4 @@ class OutputOnlyCliTest {
     final var outputText = outputStream.toString();
     assertThat(outputText).contains("8");
   }
-
 }

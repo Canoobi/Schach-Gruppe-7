@@ -13,10 +13,7 @@ public class OutputOnlyCli {
   }
 
   public void handle(List<String> arguments) {
-    final var result = arguments.stream()
-        .map(Integer::valueOf)
-        .reduce(Integer::sum)
-        .orElseThrow();
+    final var result = arguments.stream().map(Integer::valueOf).reduce(Integer::sum).orElseThrow();
     out.println("result: " + result);
   }
 }

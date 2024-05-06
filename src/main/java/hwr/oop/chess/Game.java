@@ -5,14 +5,14 @@ public class Game {
   private Board board;
   private Piece.Color activePlayer;
 
-  public Game(int id, String fen, Piece.Color activePlayer){
+  public Game(int id, String fen, Piece.Color activePlayer) {
     this.id = id;
     this.board = new Board();
     board.setBoardToFen(fen);
     this.activePlayer = activePlayer;
   }
 
-  public Game(int id){
+  public Game(int id) {
     this.id = id;
     this.board = new Board();
     board.initBoard();
@@ -25,5 +25,9 @@ public class Game {
 
   public Piece.Color getActivePlayer() {
     return activePlayer;
+  }
+
+  public Board getBoard() {
+    return board;
   }
 }
