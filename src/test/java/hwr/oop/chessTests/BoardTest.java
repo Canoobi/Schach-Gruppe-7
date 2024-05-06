@@ -117,8 +117,7 @@ class BoardTest {
     Board board = new Board();
     board.setBoardToFen("8/8/8/8/8/8/8/8");
 
-    assertSoftly(
-        softly -> softly.assertThat(board.getKing(Piece.Color.WHITE)).isNull());
+    assertSoftly(softly -> softly.assertThat(board.getKing(Piece.Color.WHITE)).isNull());
   }
 
   @Test
@@ -328,7 +327,7 @@ class BoardTest {
     Board board = new Board();
     board.initBoard();
     Piece piece = board.getPieceAt(1, 0);
-    board.changePos(1, 0, 0, 2);
+    board.changePos(Piece.Color.WHITE, 1, 0, 0, 2);
 
     assertSoftly(
         softly -> {
@@ -337,5 +336,17 @@ class BoardTest {
           softly.assertThat(piece.getActPosition().getFirst()).isEqualTo(0);
           softly.assertThat(piece.getActPosition().get(1)).isEqualTo(2);
         });
+  }
+
+  @Test
+  void isCorrectColorTest() {
+      Board board = new Board();
+      board.initBoard();
+
+      assertSoftly(
+              softly -> {
+                  softly.assertThat(board.isCorrectColor(Piece.Color.WHITE, 1, 1)).isTrue();
+                  softly.assertThat(board.isCorrectColor(Piece.Color.WHITE, 1, 7)).isFalse();
+              });
   }
 }
