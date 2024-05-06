@@ -118,9 +118,7 @@ class BoardTest {
     board.setBoardToFen("8/8/8/8/8/8/8/8");
 
     assertSoftly(
-        softly -> {
-          softly.assertThat(board.getKing(Piece.Color.WHITE)).isNull();
-        });
+        softly -> softly.assertThat(board.getKing(Piece.Color.WHITE)).isNull());
   }
 
   @Test
