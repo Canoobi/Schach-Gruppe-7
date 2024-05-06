@@ -9,7 +9,7 @@
     </extension>
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="ALTERNATIVE_JRE_PATH" value="openjdk-22" />
-    <option name="PACKAGE_NAME" value="hwr.oop.chessTests" />
+    <option name="PACKAGE_NAME" value="hwr.oop" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="package" />

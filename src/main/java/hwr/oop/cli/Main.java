@@ -9,5 +9,4 @@ public class Main {
     final var cli = new OutputOnlyCli(System.out);
     cli.handle(List.of(args));
   }
-
 }

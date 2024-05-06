@@ -49,4 +49,8 @@ public class Game {
   public void setWinner(String winner) {
     this.winner = winner;
   }
+
+  public Board getBoard() {
+    return board;
+  }
 }

@@ -32,12 +32,15 @@ class BoardTest {
           softly.assertThat(board.isValidMove(bauer2, 0, 4)).isFalse();
           softly.assertThat(board.isValidMove(turm, 7, 4)).isTrue();
           softly.assertThat(board.isValidMove(turm, 7, 7)).isTrue();
+          softly.assertThat(board.isValidMove(turm, 7, 8)).isFalse();
           softly.assertThat(board.isValidMove(turm, 0, 3)).isFalse();
           softly.assertThat(board.isValidMove(turm, 0, 4)).isFalse();
           softly.assertThat(board.isValidMove(koenig, 3, 0)).isTrue();
           softly.assertThat(board.isValidMove(koenig, 3, 1)).isTrue();
           softly.assertThat(board.isValidMove(koenig, 4, 1)).isTrue();
           softly.assertThat(board.isValidMove(koenig, 7, 1)).isFalse();
+          softly.assertThat(board.isValidMove(koenig, 4, 3)).isFalse();
+          softly.assertThat(board.isValidMove(koenig, 7, 3)).isFalse();
           softly.assertThat(board.isValidMove(laeufer, 0, 5)).isTrue();
         });
   }
@@ -109,17 +112,14 @@ class BoardTest {
         });
   }
 
-    @Test
-    void getKingNullTest() {
-        Board board = new Board();
-        board.setBoardToFen("8/8/8/8/8/8/8/8");
+  @Test
+  void getKingNullTest() {
+    Board board = new Board();
+    board.setBoardToFen("8/8/8/8/8/8/8/8");
 
-        assertSoftly(
-                softly -> {
-                    softly
-                            .assertThat(board.getKing(Piece.Color.WHITE)).isNull();
-                });
-    }
+    assertSoftly(
+        softly -> softly.assertThat(board.getKing(Piece.Color.WHITE)).isNull());
+  }
 
   @Test
   void isCheckTest() {
