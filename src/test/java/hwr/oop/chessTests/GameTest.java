@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 class GameTest {
   @Test
   void testNewBoard() {
-    Game game = new Game();
-    Board board = game.newBoard();
-    Assertions.assertThat(board).isNotNull();
+    Game game = new Game(123);
+    Assertions.assertThat(game.getBoard()).isNotNull();
   }
 }
