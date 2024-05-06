@@ -9,19 +9,19 @@
   - [ ] Sieger/Verlierer/Unentschieden
   - [ ] Spiel/Stellung importieren
 - [ ] Spielbrett
-- [ ] Züge
+- [x] Züge
 - [ ] Schach
 - [ ] Schachmatt
 - [ ] Spieler
 - [ ] Partie
   - [ ] laden
   - [ ] speichern
-- [ ] Turnier
-  - [ ] laden
-  - [ ] speichern
-- [ ] isBlocked
+- [x] isBlocked
 
 ## Maybe:
 - [ ] Entwicklung
 - [ ] Rating (Elo)
-- [ ] FEN Notation
+- [x] FEN Notation
+- [ ] Turnier
+  - [ ] laden
+  - [ ] speichern
