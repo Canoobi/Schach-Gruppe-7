@@ -128,7 +128,7 @@ public class Board {
     abbrToFenChar.put('b', 'p');
   }
 
-  public void changePos(int oldCol, int oldRow, int newCol, int newRow) {
+  public void changePos(Piece.Color playerColor, int oldCol, int oldRow, int newCol, int newRow) {
     this.playBoard.get(newRow).set(newCol, playBoard.get(oldRow).get(oldCol));
     if (getPieceAt(oldCol, oldRow) != null) {
       getPieceAt(oldCol, oldRow).setActPosition(List.of(newCol, newRow));
@@ -249,5 +249,10 @@ public class Board {
       }
     }
     return false;
+  }
+
+  private boolean isCorrectColor(Piece.Color color, int Column, int Row)
+  {
+      return this.playBoard.get(Row).get(Column).getColor() == color;
   }
 }

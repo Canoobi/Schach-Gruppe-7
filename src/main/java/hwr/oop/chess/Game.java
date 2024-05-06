@@ -25,5 +25,8 @@ public class Game {
 
   public Piece.Color getActivePlayer() {
     return activePlayer;
+  public void movePiece(int oldCol, int oldRow, int newCol, int newRow)
+  {
+    newBoard.changePos(this.color, oldCol, oldRow, newCol, newRow);
   }
 }
