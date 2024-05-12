@@ -64,7 +64,6 @@ public class PersistanceHandler {
     } catch (IOException e) {
       throw new IllegalStateException();
     }
-
     return result;
   }
 

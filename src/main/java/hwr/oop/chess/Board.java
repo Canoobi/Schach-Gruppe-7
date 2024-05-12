@@ -251,7 +251,7 @@ public class Board {
     return false;
   }
 
-  public boolean isCorrectColor(Piece.Color color, int Column, int Row) {
-    return this.playBoard.get(Row).get(Column).getColor() == color;
+  public boolean isCorrectColor(Piece.Color color, int column, int row) {
+    return this.playBoard.get(row).get(column).getColor() == color;
   }
 }
