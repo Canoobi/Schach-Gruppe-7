@@ -6,7 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import hwr.oop.cli.OutputOnlyCli;
+import hwr.oop.chess.cli.OutputOnlyCli;
 import org.junit.jupiter.api.Test;
 
 class OutputOnlyCliTest {

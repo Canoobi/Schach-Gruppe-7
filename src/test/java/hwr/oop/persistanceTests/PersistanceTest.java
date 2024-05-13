@@ -3,7 +3,7 @@ package hwr.oop.persistanceTests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import hwr.oop.chess.Board;
-import hwr.oop.persistance.PersistanceHandler;
+import hwr.oop.chess.persistance.PersistanceHandler;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
