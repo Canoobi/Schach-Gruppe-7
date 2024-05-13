@@ -1,8 +1,11 @@
 package hwr.oop.persistanceTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hwr.oop.chess.Board;
+import hwr.oop.chess.persistance.IOExceptionBomb;
 import hwr.oop.chess.persistance.PersistanceHandler;
 import java.io.File;
 import java.io.IOException;
@@ -77,5 +80,26 @@ class PersistanceTest {
 
     assertThat(persistanceHandler.getBoardFromID("2").getFenOfBoard())
         .isEqualTo("1k6/8/6r1/8/3q4/8/8/3R4");
+  }
+
+  @Test
+  void exceptionTests() {
+    PersistanceHandler persistanceHandler =
+            new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"), IOExceptionBomb.DO);
+    Board board = new Board();
+    board.initBoard();
+
+    Board board2 = new Board();
+    board2.setBoardToFen("1k6/8/6r1/8/3q4/8/8/3R4");
+
+    IllegalStateException exception1 = assertThrows(IllegalStateException.class, () -> persistanceHandler.saveGame("1", board));
+    assertThat(exception1.getMessage()).isEqualTo("Could not save game");
+
+    IllegalStateException exception2 = assertThrows(IllegalStateException.class, persistanceHandler::getLatestID);
+    assertThat(exception2.getMessage()).isEqualTo("Failed to read CSV file");
+
+    IllegalStateException exception3 = assertThrows(IllegalStateException.class, persistanceHandler::getAllMatchId);
+
+    IllegalStateException exception4 = assertThrows(IllegalStateException.class, () -> persistanceHandler.getBoardFromID("2"));
   }
 }
