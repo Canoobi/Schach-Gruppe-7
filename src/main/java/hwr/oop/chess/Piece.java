@@ -38,18 +38,18 @@ public class Piece {
         false),
     DAME('d', List.of(List.of(0, 1), List.of(1, 0), List.of(1, 1), List.of(-1, 1)), true);
 
-    private final char abbr;
+    private final char abbreviation;
     private final List<List<Integer>> moves;
     private final boolean moveRepeatable;
 
-    PieceType(char abbr, List<List<Integer>> moves, boolean moveRepeatable) {
-      this.abbr = abbr;
+    PieceType(char abbreviation, List<List<Integer>> moves, boolean moveRepeatable) {
+      this.abbreviation = abbreviation;
       this.moves = moves;
       this.moveRepeatable = moveRepeatable;
     }
 
-    public char getAbbr() {
-      return abbr;
+    public char getAbbreviation() {
+      return abbreviation;
     }
 
     public List<List<Integer>> getMoves() {
@@ -70,7 +70,7 @@ public class Piece {
   public Piece(PieceType pieceType, List<Integer> pos, Color color) {
     this.posMoves = pieceType.getMoves();
     this.moveRepeatable = pieceType.isMoveRepeatable();
-    this.abbr = pieceType.getAbbr();
+    this.abbr = pieceType.getAbbreviation();
     this.actPosition = pos;
     this.color = color;
   }

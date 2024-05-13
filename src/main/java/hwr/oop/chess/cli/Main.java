@@ -1,4 +1,4 @@
-package hwr.oop.cli;
+package hwr.oop.chess.cli;
 
 import java.util.List;
 

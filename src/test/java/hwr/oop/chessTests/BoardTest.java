@@ -240,7 +240,7 @@ class BoardTest {
                 softly -> {
                     softly
                             .assertThat(board.getPieceAt(3, 4).getAbbr())
-                            .isEqualTo(Piece.PieceType.LAEUFER.getAbbr());
+                            .isEqualTo(Piece.PieceType.LAEUFER.getAbbreviation());
                     softly.assertThat(board.getPieceAt(3, 4).getColor()).isEqualTo(Piece.Color.BLACK);
                     softly.assertThat(board.getPieceAt(0, 0)).isNull();
                 });

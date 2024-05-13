@@ -1,4 +1,4 @@
-package hwr.oop.persistance;
+package hwr.oop.chess.persistance;
 
 import hwr.oop.chess.Board;
 import java.io.IOException;
