@@ -61,38 +61,38 @@ public class Piece {
     }
   }
 
-  private List<Integer> actPosition;
-  private List<List<Integer>> posMoves;
+  private List<Integer> actualPosition;
+  private List<List<Integer>> possibleMoves;
   private boolean moveRepeatable;
   private Color color;
-  private char abbr;
+  private char abbreviation;
 
   public Piece(PieceType pieceType, List<Integer> pos, Color color) {
-    this.posMoves = pieceType.getMoves();
+    this.possibleMoves = pieceType.getMoves();
     this.moveRepeatable = pieceType.isMoveRepeatable();
-    this.abbr = pieceType.getAbbreviation();
-    this.actPosition = pos;
+    this.abbreviation = pieceType.getAbbreviation();
+    this.actualPosition = pos;
     this.color = color;
   }
 
-  public void setActPosition(List<Integer> actPosition) {
-    this.actPosition = actPosition;
+  public void setActualPosition(List<Integer> actualPosition) {
+    this.actualPosition = actualPosition;
   }
 
   public Color getColor() {
     return this.color;
   }
 
-  public char getAbbr() {
-    return this.abbr;
+  public char getAbbreviation() {
+    return this.abbreviation;
   }
 
-  public List<Integer> getActPosition() {
-    return this.actPosition;
+  public List<Integer> getActualPosition() {
+    return this.actualPosition;
   }
 
-  public List<List<Integer>> getPosMoves() {
-    return this.posMoves;
+  public List<List<Integer>> getPossibleMoves() {
+    return this.possibleMoves;
   }
 
   public boolean isMoveRepeatable() {

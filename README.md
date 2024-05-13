@@ -1,9 +1,7 @@
 # OOP-Projekt Gruppe 7 (Schach)
 
-[TODO]: # (Change README.md Headline to better fit to your project!)
-
-This repository contains a student project created for an ongoing lecture on object-oriented
-programming with Java/Kotlin at HWR Berlin (summer term 2024).
+This repository contains a student chess project created for an ongoing lecture on object-oriented programming with Java
+at HWR Berlin (summer term 2024).
 
 > :warning: This code is for educational purposes only. Do not rely on it!
 
@@ -49,49 +47,45 @@ just build
 
 ## Feature List
 
-[TODO]: # (For each feature implemented, add a row to the table!)
-
-| Number | Feature                | Tests                                                                                                                                                                                                   |
-|--------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1      | setActPosition()       | setActPositionTest()                                                                                                                                                                                    |
-| 2      | getColor()             | getFenOfBoardTest()                                                                                                                                                                                     |
-| 3      | getAbbr()              | getFenOfBoardTest()                                                                                                                                                                                     |
-| 4      | getActPosition()       | getActPositionTest()                                                                                                                                                                                    |
-| 5      | getPosMoves()          | isValidMoveTest()                                                                                                                                                                                       |
-| 6      | isMoveRepeatable()     | isMoveRepeatableTest()                                                                                                                                                                                  |
-| 7      | charToPieceType()      | setBoardToFenTest()                                                                                                                                                                                     |
-| 8      | initBoard()            | initBoardTest()                                                                                                                                                                                         |
-| 9      | changePos()            | changePosTest()                                                                                                                                                                                         |
-| 10     | getPieceAt()           | getPieceAtTest()                                                                                                                                                                                        |
-| 11     | getPlayBoard()         | testBoard()^                                                                                                                                                                                            |
-| 12     | setPieceAt()           | setPieceAtTest()                                                                                                                                                                                        |
-| 13     | setBoardToFen()        | setBoardToFenTest()                                                                                                                                                                                     |
-| 14     | printBoard()           | printBoardTest()                                                                                                                                                                                        |
-| 15     | isValidMove()          | isValidMoveTest()                                                                                                                                                                                       |
-| 16     | isBlocked()            | isBlockedTest()/isBlockedTestFullBoard()/isBlockedTestEmptyBoard()/isBlockedTestPieceOnEdgeOfMovement()/isBlockedTestHalfFilledBoard1()/isBlockedTestHalfFilledBoard2()/isBlockedTestHalfFilledBoard3() |
-| 17     | getFenOfBoard()        | getFenOfBoardTest()                                                                                                                                                                                     |
-| 18     | abbrToFenChar()        | Any test that creates a new board                                                                                                                                                                       |
-| 19     | getKing()              | getKingTest()/getKingNullTest()                                                                                                                                                                         |
-| 20     | isCheck()              | isCheckTest()                                                                                                                                                                                           |
-| 21     | isValidMoveRepeat()    | isValidMoveTest()                                                                                                                                                                                       |
-| 22     | isValidMoveNonRepeat() | isValidMoveTest()                                                                                                                                                                                       |
-| 23     | isValidMovePawn()      | isValidMoveTest()                                                                                                                                                                                       |
-| 24     | isCorrectColor()       | isCorrectColorTest()                                                                                                                                                                                    |
-| 25     | getId()                | newGameTest()/loadGameTest()                                                                                                                                                                            |
-| 26     | getActivePlayer()      | newGameTest()/loadGameTest()                                                                                                                                                                            |
-| 27     | setActivePlayer()      | loadGameTest()                                                                                                                                                                                          |
-| 28     | getBoard()             | newGameTest()/loadGameTest()                                                                                                                                                                            |
-| 29     | movePiece()            | movePieceWhiteTest()/movePieceBlackTest()                                                                                                                                                               |
-| 30     | getWinner()            | getWinnerTest()                                                                                                                                                                                         |
-| 31     | setWinner()            | getWinnerTest()                                                                                                                                                                                         |
-| 31     | saveGame()             | saveGameTest()                                                                                                                                                                                          |
-| 31     | getLatestId()          | getLatestIdTest()                                                                                                                                                                                       |
-| 31     | getAllMatchId()        | saveGameTest()                                                                                                                                                                                          |
-| 31     | getBoardFromId()       | getBoardFromIDTest()                                                                                                                                                                                    |
+| Number | Feature                 | Tests                                                                                                                                                                                                   |
+|--------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1      | setActualPosition()     | setActualPositionTest()                                                                                                                                                                                 |
+| 2      | getColor()              | getFenOfBoardTest()                                                                                                                                                                                     |
+| 3      | getAbbreviation()       | getFenOfBoardTest()                                                                                                                                                                                     |
+| 4      | getActualPosition()     | getActualPositionTest()                                                                                                                                                                                 |
+| 5      | getPossibleMoves()      | isValidMoveTest()                                                                                                                                                                                       |
+| 6      | isMoveRepeatable()      | isMoveRepeatableTest()                                                                                                                                                                                  |
+| 7      | charToPieceType()       | setBoardToFenTest()                                                                                                                                                                                     |
+| 8      | initBoard()             | initBoardTest()                                                                                                                                                                                         |
+| 9      | changePosition()        | changePositionTest()                                                                                                                                                                                    |
+| 10     | getPieceAt()            | getPieceAtTest()                                                                                                                                                                                        |
+| 11     | getPlayBoard()          | testBoard()^                                                                                                                                                                                            |
+| 12     | setPieceAt()            | setPieceAtTest()                                                                                                                                                                                        |
+| 13     | setBoardToFen()         | setBoardToFenTest()                                                                                                                                                                                     |
+| 14     | printBoard()            | printBoardTest()                                                                                                                                                                                        |
+| 15     | isValidMove()           | isValidMoveTest()                                                                                                                                                                                       |
+| 16     | isBlocked()             | isBlockedTest()/isBlockedTestFullBoard()/isBlockedTestEmptyBoard()/isBlockedTestPieceOnEdgeOfMovement()/isBlockedTestHalfFilledBoard1()/isBlockedTestHalfFilledBoard2()/isBlockedTestHalfFilledBoard3() |
+| 17     | getFenOfBoard()         | getFenOfBoardTest()                                                                                                                                                                                     |
+| 18     | abbreviationToFenChar() | Any test that creates a new board                                                                                                                                                                       |
+| 19     | getKing()               | getKingTest()/getKingNullTest()                                                                                                                                                                         |
+| 20     | isCheck()               | isCheckTest()                                                                                                                                                                                           |
+| 21     | isValidMoveRepeat()     | isValidMoveTest()                                                                                                                                                                                       |
+| 22     | isValidMoveNonRepeat()  | isValidMoveTest()                                                                                                                                                                                       |
+| 23     | isValidMovePawn()       | isValidMoveTest()                                                                                                                                                                                       |
+| 24     | isCorrectColor()        | isCorrectColorTest()                                                                                                                                                                                    |
+| 25     | getId()                 | newGameTest()/loadGameTest()                                                                                                                                                                            |
+| 26     | getActivePlayer()       | newGameTest()/loadGameTest()                                                                                                                                                                            |
+| 27     | setActivePlayer()       | loadGameTest()                                                                                                                                                                                          |
+| 28     | getBoard()              | newGameTest()/loadGameTest()                                                                                                                                                                            |
+| 29     | movePiece()             | movePieceWhiteTest()/movePieceBlackTest()                                                                                                                                                               |
+| 30     | getWinner()             | getWinnerTest()                                                                                                                                                                                         |
+| 31     | setWinner()             | getWinnerTest()                                                                                                                                                                                         |
+| 31     | saveGame()              | saveGameTest()                                                                                                                                                                                          |
+| 31     | getLatestId()           | getLatestIdTest()                                                                                                                                                                                       |
+| 31     | getAllMatchId()         | saveGameTest()                                                                                                                                                                                          |
+| 31     | getBoardFromId()        | getBoardFromIDTest()                                                                                                                                                                                    |
 
 ## Additional Dependencies
-
-[TODO]: # (For each additional dependency your project requires- Add an additional row to the table!)
 
 | Number | Dependency Name | Dependency Description | Why is it necessary? |
 |--------|-----------------|------------------------|----------------------|

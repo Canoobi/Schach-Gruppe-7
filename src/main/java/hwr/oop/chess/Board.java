@@ -7,12 +7,12 @@ public class Board {
   private List<List<Piece>> playBoard;
   private Map<Character, Piece.PieceType> charToPieceType;
 
-  private Map<Character, Character> abbrToFenChar;
+  private Map<Character, Character> abbreviationToFenChar;
   private Logger logger = Logger.getLogger(getClass().getName());
 
   public Board() {
     charToPieceType();
-    abbrToFenChar();
+    abbreviationToFenChar();
     playBoard = new ArrayList<>(8);
 
     for (int i = 0; i < 8; i++) {
@@ -37,15 +37,15 @@ public class Board {
   public void setPieceAt(int column, int row, Piece piece) {
     this.playBoard.get(row).set(column, piece);
     if (piece != null) {
-      piece.setActPosition(List.of(column, row));
+      piece.setActualPosition(List.of(column, row));
     }
   }
 
   public char pieceToFenChar(Piece piece) {
     if (piece.getColor() == Piece.Color.WHITE) {
-      return Character.toUpperCase(abbrToFenChar.get(piece.getAbbr()));
+      return Character.toUpperCase(abbreviationToFenChar.get(piece.getAbbreviation()));
     } else {
-      return abbrToFenChar.get(piece.getAbbr());
+      return abbreviationToFenChar.get(piece.getAbbreviation());
     }
   }
 
@@ -118,20 +118,20 @@ public class Board {
     charToPieceType.put('p', Piece.PieceType.BAUER);
   }
 
-  public void abbrToFenChar() {
-    abbrToFenChar = new HashMap<>();
-    abbrToFenChar.put('d', 'q');
-    abbrToFenChar.put('s', 'n');
-    abbrToFenChar.put('l', 'b');
-    abbrToFenChar.put('t', 'r');
-    abbrToFenChar.put('k', 'k');
-    abbrToFenChar.put('b', 'p');
+  public void abbreviationToFenChar() {
+    abbreviationToFenChar = new HashMap<>();
+    abbreviationToFenChar.put('d', 'q');
+    abbreviationToFenChar.put('s', 'n');
+    abbreviationToFenChar.put('l', 'b');
+    abbreviationToFenChar.put('t', 'r');
+    abbreviationToFenChar.put('k', 'k');
+    abbreviationToFenChar.put('b', 'p');
   }
 
-  public void changePos(Piece.Color playerColor, int oldCol, int oldRow, int newCol, int newRow) {
+  public void changePosition(Piece.Color playerColor, int oldCol, int oldRow, int newCol, int newRow) {
     this.playBoard.get(newRow).set(newCol, playBoard.get(oldRow).get(oldCol));
     if (getPieceAt(oldCol, oldRow) != null) {
-      getPieceAt(oldCol, oldRow).setActPosition(List.of(newCol, newRow));
+      getPieceAt(oldCol, oldRow).setActualPosition(List.of(newCol, newRow));
     }
     this.playBoard.get(oldRow).set(oldCol, null);
   }
@@ -143,7 +143,7 @@ public class Board {
   public Piece getKing(Piece.Color color) {
     for (List<Piece> l : playBoard) {
       for (Piece p : l) {
-        if (p != null && p.getColor() == color && Character.toLowerCase(p.getAbbr()) == 'k') {
+        if (p != null && p.getColor() == color && Character.toLowerCase(p.getAbbreviation()) == 'k') {
           return p;
         }
       }
@@ -153,8 +153,8 @@ public class Board {
 
   public boolean isCheck(Piece.Color color) {
     Piece king = getKing(color);
-    int kingX = king.getActPosition().getFirst();
-    int kingY = king.getActPosition().get(1);
+    int kingX = king.getActualPosition().getFirst();
+    int kingY = king.getActualPosition().get(1);
 
     for (List<Piece> l : playBoard) {
       for (Piece p : l) {
@@ -170,12 +170,12 @@ public class Board {
   }
 
   public boolean isValidMove(Piece piece, int column, int row) {
-    int vecX = column - piece.getActPosition().get(0);
-    int vecY = row - piece.getActPosition().get(1);
+    int vecX = column - piece.getActualPosition().get(0);
+    int vecY = row - piece.getActualPosition().get(1);
     if (piece.isMoveRepeatable()) {
       return isValidMoveRepeat(piece, vecX, vecY);
     } else {
-      if (piece.getAbbr() == 'b') {
+      if (piece.getAbbreviation() == 'b') {
         return isValidMovePawn(piece, vecX, vecY);
       } else {
         return isValidMoveNonRepeat(piece, vecX, vecY);
@@ -184,7 +184,7 @@ public class Board {
   }
 
   private boolean isValidMoveRepeat(Piece piece, int vecX, int vecY) {
-    for (List<Integer> move : piece.getPosMoves()) {
+    for (List<Integer> move : piece.getPossibleMoves()) {
       for (int j = -7; j < 8; j++) {
         if (j == 0) {
           continue;
@@ -198,7 +198,7 @@ public class Board {
   }
 
   private boolean isValidMoveNonRepeat(Piece piece, int vecX, int vecY) {
-    for (List<Integer> move : piece.getPosMoves()) {
+    for (List<Integer> move : piece.getPossibleMoves()) {
       if (move.getFirst() == vecX && move.get(1) == vecY) {
         return true;
       }
@@ -208,12 +208,12 @@ public class Board {
 
   private boolean isValidMovePawn(Piece piece, int vecX, int vecY) {
     if (piece.getColor() == Piece.Color.WHITE) {
-      if (piece.getActPosition().get(1) == 1 && 0 == vecX && 2 == vecY) {
+      if (piece.getActualPosition().get(1) == 1 && 0 == vecX && 2 == vecY) {
         return true;
       }
       return 0 == vecX && 1 == vecY;
     } else {
-      if (piece.getActPosition().get(1) == 6 && 0 == vecX && -2 == vecY) {
+      if (piece.getActualPosition().get(1) == 6 && 0 == vecX && -2 == vecY) {
         return true;
       }
       return 0 == vecX && -1 == vecY;
@@ -221,7 +221,7 @@ public class Board {
   }
 
   public boolean isBlocked(Piece piece, int newColumn, int newRow) {
-    List<Integer> oldPos = piece.getActPosition();
+    List<Integer> oldPos = piece.getActualPosition();
     List<Integer> vec = Arrays.asList(newColumn - oldPos.getFirst(), newRow - oldPos.get(1));
     if (vec.getFirst() < 0) {
       vec.set(0, -1);

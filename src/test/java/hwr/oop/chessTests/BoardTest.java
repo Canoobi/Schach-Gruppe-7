@@ -206,7 +206,7 @@ class BoardTest {
                             .assertThat(board.getKing(Piece.Color.WHITE).getColor())
                             .isEqualTo(Piece.Color.WHITE);
                     softly
-                            .assertThat(board.getKing(Piece.Color.WHITE).getActPosition().getFirst())
+                            .assertThat(board.getKing(Piece.Color.WHITE).getActualPosition().getFirst())
                             .isEqualTo(1);
                 });
     }
@@ -239,7 +239,7 @@ class BoardTest {
         assertSoftly(
                 softly -> {
                     softly
-                            .assertThat(board.getPieceAt(3, 4).getAbbr())
+                            .assertThat(board.getPieceAt(3, 4).getAbbreviation())
                             .isEqualTo(Piece.PieceType.LAEUFER.getAbbreviation());
                     softly.assertThat(board.getPieceAt(3, 4).getColor()).isEqualTo(Piece.Color.BLACK);
                     softly.assertThat(board.getPieceAt(0, 0)).isNull();
@@ -270,8 +270,8 @@ class BoardTest {
 
         assertSoftly(
                 softly -> {
-                    softly.assertThat(board.getPieceAt(3, 5).getActPosition().getFirst()).isEqualTo(3);
-                    softly.assertThat(board.getPieceAt(3, 5).getActPosition().get(1)).isEqualTo(5);
+                    softly.assertThat(board.getPieceAt(3, 5).getActualPosition().getFirst()).isEqualTo(3);
+                    softly.assertThat(board.getPieceAt(3, 5).getActualPosition().get(1)).isEqualTo(5);
                 });
     }
 
@@ -282,8 +282,8 @@ class BoardTest {
 
         assertSoftly(
                 softly -> {
-                    softly.assertThat(board.getPieceAt(7, 0).getAbbr()).isEqualTo('t');
-                    softly.assertThat(board.getPieceAt(7, 0).getActPosition().getFirst()).isEqualTo(7);
+                    softly.assertThat(board.getPieceAt(7, 0).getAbbreviation()).isEqualTo('t');
+                    softly.assertThat(board.getPieceAt(7, 0).getActualPosition().getFirst()).isEqualTo(7);
                     softly.assertThat(board.getPieceAt(7, 0).getColor()).isEqualTo(Piece.Color.WHITE);
                 });
     }
@@ -320,7 +320,7 @@ class BoardTest {
             column = 0;
             for (Piece piece : pieces) {
                 try {
-                    assertThat(piece.getActPosition()).isEqualTo(List.of(column, row));
+                    assertThat(piece.getActualPosition()).isEqualTo(List.of(column, row));
                 } catch (NullPointerException e) {
                     assertThat(piece).isNull();
                 }
@@ -331,18 +331,18 @@ class BoardTest {
     }
 
     @Test
-    void changePosTest() {
+    void changePositionTest() {
         Board board = new Board();
         board.initBoard();
         Piece piece = board.getPieceAt(1, 0);
-        board.changePos(Piece.Color.WHITE, 1, 0, 0, 2);
+        board.changePosition(Piece.Color.WHITE, 1, 0, 0, 2);
 
         assertSoftly(
                 softly -> {
                     softly.assertThat(board.getPieceAt(1, 0)).isNull();
                     softly.assertThat(piece).isEqualTo(board.getPieceAt(0, 2));
-                    softly.assertThat(piece.getActPosition().getFirst()).isEqualTo(0);
-                    softly.assertThat(piece.getActPosition().get(1)).isEqualTo(2);
+                    softly.assertThat(piece.getActualPosition().getFirst()).isEqualTo(0);
+                    softly.assertThat(piece.getActualPosition().get(1)).isEqualTo(2);
                 });
     }
 
