@@ -130,7 +130,6 @@ class BoardTest {
                     softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 4, 6)).isTrue();
                     softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 6, 6)).isTrue();
                 });
-
         board.setBoardToFen("4pppp/4pppp/4pppp/4qppp/4pppp/4pppp/4pppp/4pppp");
         assertSoftly(
                 softly -> {
@@ -144,6 +143,7 @@ class BoardTest {
                     softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 6, 4)).isTrue();
                     softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 6, 6)).isTrue();
                 });
+
     }
 
     @Test
@@ -331,7 +331,7 @@ class BoardTest {
     }
 
     @Test
-    void changePositionTest() {
+    void changePosTest() {
         Board board = new Board();
         board.initBoard();
         Piece piece = board.getPieceAt(1, 0);
