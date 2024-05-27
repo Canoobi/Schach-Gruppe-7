@@ -20,7 +20,7 @@ public final class GameQueryCommand implements MutableCommand {
   public void parse(List<String> arguments) {
     this.gameId = arguments.get(2);
     if (Integer.parseInt(this.gameId) <= Integer.parseInt(persistance.getLatestID())) {
-      game = persistance.getGameFromID(gameId);
+      this.game = persistance.getGameFromID(gameId);
     }
   }
 
