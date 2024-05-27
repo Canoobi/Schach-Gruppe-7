@@ -128,7 +128,8 @@ public class Board {
     abbreviationToFenChar.put('b', 'p');
   }
 
-  public void changePosition(Piece.Color playerColor, int oldCol, int oldRow, int newCol, int newRow) {
+  public void changePosition(
+      Piece.Color playerColor, int oldCol, int oldRow, int newCol, int newRow) {
     this.playBoard.get(newRow).set(newCol, playBoard.get(oldRow).get(oldCol));
     if (getPieceAt(oldCol, oldRow) != null) {
       getPieceAt(oldCol, oldRow).setActualPosition(List.of(newCol, newRow));
@@ -143,7 +144,9 @@ public class Board {
   public Piece getKing(Piece.Color color) {
     for (List<Piece> l : playBoard) {
       for (Piece p : l) {
-        if (p != null && p.getColor() == color && Character.toLowerCase(p.getAbbreviation()) == 'k') {
+        if (p != null
+            && p.getColor() == color
+            && Character.toLowerCase(p.getAbbreviation()) == 'k') {
           return p;
         }
       }
@@ -176,6 +179,9 @@ public class Board {
       return isValidMoveRepeat(piece, vecX, vecY);
     } else {
       if (piece.getAbbreviation() == 'b') {
+        if (canCapturePawn(piece, column, row)) {
+          return true;
+        }
         return isValidMovePawn(piece, vecX, vecY);
       } else {
         return isValidMoveNonRepeat(piece, vecX, vecY);
@@ -218,6 +224,21 @@ public class Board {
       }
       return 0 == vecX && -1 == vecY;
     }
+  }
+
+  public boolean canCapture(Piece piece, int vecX, int vecY) {
+
+    if (piece.getAbbreviation() != 'b') {
+      return piece.getColor() != getPieceAt(vecX, vecY).getColor();
+    }
+
+    return canCapturePawn(piece, vecX, vecY);
+  }
+
+  public boolean canCapturePawn(Piece piece, int vecX, int vecY) {
+
+    return Math.abs(piece.getActualPosition().getFirst() - vecX) == 1
+        && piece.getActualPosition().getLast() - vecY == -1;
   }
 
   public boolean isBlocked(Piece piece, int newColumn, int newRow) {
