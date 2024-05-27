@@ -19,7 +19,7 @@ public final class Cli {
   public Cli(OutputStream outputStream, PersistanceHandler persistance) {
     this.out = new PrintStream(outputStream);
     this.persistance = persistance;
-    this.argumentParser = new ArgumentParser();
+    this.argumentParser = new ArgumentParser(persistance);
   }
 
   public void handle(String... arguments) {

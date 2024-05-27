@@ -291,7 +291,6 @@ class BoardTest {
   void printBoardTest() {
     Board board = new Board();
     board.initBoard();
-    board.printBoard();
     assertThat(board.getPieceAt(4, 4)).isNull();
   }
 
@@ -334,7 +333,7 @@ class BoardTest {
     Board board = new Board();
     board.initBoard();
     Piece piece = board.getPieceAt(1, 0);
-    board.changePosition(Piece.Color.WHITE, 1, 0, 0, 2);
+    board.changePosition(1, 0, 0, 2);
 
     assertSoftly(
         softly -> {

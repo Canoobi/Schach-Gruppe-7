@@ -1,14 +1,12 @@
 package hwr.oop.chess;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class Board {
   private List<List<Piece>> playBoard;
   private Map<Character, Piece.PieceType> charToPieceType;
 
   private Map<Character, Character> abbreviationToFenChar;
-  private Logger logger = Logger.getLogger(getClass().getName());
 
   public Board() {
     charToPieceType();
@@ -128,17 +126,12 @@ public class Board {
     abbreviationToFenChar.put('b', 'p');
   }
 
-  public void changePosition(
-      Piece.Color playerColor, int oldCol, int oldRow, int newCol, int newRow) {
+  public void changePosition(int oldCol, int oldRow, int newCol, int newRow) {
     this.playBoard.get(newRow).set(newCol, playBoard.get(oldRow).get(oldCol));
     if (getPieceAt(oldCol, oldRow) != null) {
       getPieceAt(oldCol, oldRow).setActualPosition(List.of(newCol, newRow));
     }
     this.playBoard.get(oldRow).set(oldCol, null);
-  }
-
-  public void printBoard() {
-    logger.info("Printing Board here");
   }
 
   public Piece getKing(Piece.Color color) {

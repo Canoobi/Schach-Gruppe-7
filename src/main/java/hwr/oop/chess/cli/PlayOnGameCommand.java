@@ -1,5 +1,7 @@
 package hwr.oop.chess.cli;
 
+import hwr.oop.chess.persistance.PersistanceHandler;
+
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,7 +13,9 @@ public final class PlayOnGameCommand implements MutableCommand {
   private String playerId;
   private List<String> cards;
 
-  public PlayOnGameCommand() {}
+  public PlayOnGameCommand(PersistanceHandler persistance) {
+
+  }
 
   @Override
   public void parse(List<String> arguments) {

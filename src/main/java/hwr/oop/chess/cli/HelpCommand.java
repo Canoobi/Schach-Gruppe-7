@@ -17,6 +17,6 @@ public final class HelpCommand implements MutableCommand {
 
   @Override
   public void invoke(PrintStream out) {
-    // nothing to do
+    out.println("Use one of the following commands:...");
   }
 }

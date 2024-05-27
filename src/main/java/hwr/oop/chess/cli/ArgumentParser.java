@@ -1,18 +1,19 @@
 package hwr.oop.chess.cli;
 
+import hwr.oop.chess.persistance.PersistanceHandler;
 import java.util.List;
 
 final class ArgumentParser {
 
   private final List<MutableCommand> commands;
 
-  public ArgumentParser() {
+  public ArgumentParser(PersistanceHandler persistance) {
     this.commands =
         List.of(
             new HelpCommand(),
-            new NewGameCommand(),
-            new PlayOnGameCommand(),
-            new GameQueryCommand());
+            new NewGameCommand(persistance),
+            new PlayOnGameCommand(persistance),
+            new GameQueryCommand(persistance));
   }
 
   public Command parse(List<String> arguments) {

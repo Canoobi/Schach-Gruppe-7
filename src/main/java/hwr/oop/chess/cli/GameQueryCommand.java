@@ -1,17 +1,27 @@
 package hwr.oop.chess.cli;
 
+import hwr.oop.chess.Game;
+import hwr.oop.chess.persistance.PersistanceHandler;
+
 import java.io.PrintStream;
 import java.util.List;
 
 public final class GameQueryCommand implements MutableCommand {
 
   private String gameId;
+  private Game game;
+  private final PersistanceHandler persistance;
 
-  public GameQueryCommand() {}
+  public GameQueryCommand(PersistanceHandler persistance) {
+    this.persistance = persistance;
+  }
 
   @Override
   public void parse(List<String> arguments) {
     this.gameId = arguments.get(2);
+    if (Integer.parseInt(this.gameId) <= Integer.parseInt(persistance.getLatestID())) {
+      game = persistance.getGameFromID(gameId);
+    }
   }
 
   @Override
@@ -24,6 +34,12 @@ public final class GameQueryCommand implements MutableCommand {
 
   @Override
   public void invoke(PrintStream out) {
-    // TODO print out game info here
+    if (game == null) {
+      out.println("Game with ID " + gameId + " not found!");
+    } else {
+      out.println("The chess game with the ID " + gameId + " looks like this:");
+      out.println(game.getBoard().getFenOfBoard());
+      //TODO print board
+    }
   }
 }

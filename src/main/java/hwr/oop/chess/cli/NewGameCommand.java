@@ -1,30 +1,34 @@
 package hwr.oop.chess.cli;
 
+import hwr.oop.chess.Game;
+import hwr.oop.chess.persistance.PersistanceHandler;
+
 import java.io.PrintStream;
 import java.util.List;
 
 final class NewGameCommand implements MutableCommand {
 
-  private String board;
+  PersistanceHandler persistance;
 
-  public NewGameCommand() {}
+  public NewGameCommand(PersistanceHandler persistance) {
+    this.persistance = persistance;
+  }
 
   @Override
   public void parse(List<String> arguments) {
-    this.board = arguments.get(4);
-    // TODO ^
+    // nothing to do
   }
 
   @Override
   public boolean isApplicable(List<String> arguments) {
-    return arguments.size() >= 8
-        && arguments.get(1).equals("id")
-        && arguments.get(3).equals("trump")
-        && arguments.get(5).equals("players");
+    return !arguments.isEmpty() && arguments.getFirst().equals("new_game");
   }
 
   @Override
   public void invoke(PrintStream out) {
-    // nothing to do
+    int gameId = Integer.parseInt(persistance.getLatestID()) + 1;
+    Game game = new Game(gameId);
+    persistance.saveGame(game);
+    out.println("Created new game with id: " + gameId);
   }
 }

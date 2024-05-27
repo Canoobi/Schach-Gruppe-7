@@ -37,7 +37,7 @@ public class Game {
   }
 
   public void movePiece(int oldCol, int oldRow, int newCol, int newRow) {
-    board.changePosition(this.getActivePlayer(), oldCol, oldRow, newCol, newRow);
+    board.changePosition(oldCol, oldRow, newCol, newRow);
     if (this.getActivePlayer() == Piece.Color.WHITE) {
       setActivePlayer(Piece.Color.BLACK);
     } else {
