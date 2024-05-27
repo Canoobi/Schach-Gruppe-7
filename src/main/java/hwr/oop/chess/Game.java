@@ -11,6 +11,7 @@ public class Game {
     this.board = new Board();
     board.setBoardToFen(fen);
     this.activePlayer = activePlayer;
+    this.winner = null;
   }
 
   public Game(int id) {
@@ -18,6 +19,7 @@ public class Game {
     this.board = new Board();
     board.initBoard();
     this.activePlayer = Piece.Color.WHITE;
+    this.winner = null;
   }
 
   public int getId() {
@@ -37,6 +39,9 @@ public class Game {
   }
 
   public void movePiece(int oldCol, int oldRow, int newCol, int newRow) {
+    //TODO checken, ob valid move
+    //TODO checken, ob schlagen kann
+    //TODO checken, ob schach/schachmatt usw.
     board.changePosition(oldCol, oldRow, newCol, newRow);
     if (this.getActivePlayer() == Piece.Color.WHITE) {
       setActivePlayer(Piece.Color.BLACK);

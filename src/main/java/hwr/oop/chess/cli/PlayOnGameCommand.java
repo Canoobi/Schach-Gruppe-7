@@ -1,55 +1,83 @@
 package hwr.oop.chess.cli;
 
+import hwr.oop.chess.Game;
+import hwr.oop.chess.Piece;
 import hwr.oop.chess.persistance.PersistanceHandler;
-
 import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class PlayOnGameCommand implements MutableCommand {
   private String gameId;
-  private String playerId;
-  private List<String> cards;
+  private Piece.Color playerColor;
+  private List<Integer> oldPositionInteger;
+  private String oldPositionString;
+  private List<Integer> newPositionInteger;
+  private String newPositionString;
+  private Game game;
+  private final PersistanceHandler persistance;
 
   public PlayOnGameCommand(PersistanceHandler persistance) {
-
+    this.persistance = persistance;
   }
 
   @Override
   public void parse(List<String> arguments) {
     this.gameId = arguments.get(2);
-    this.playerId = arguments.get(4);
-    final String playType = arguments.get(5);
-    if (playType.startsWith("play") || playType.startsWith("lay")) {
-      this.cards = parseCardStrings(arguments);
-    } else {
-      this.cards = Collections.emptyList();
+    if (Integer.parseInt(this.gameId) <= Integer.parseInt(persistance.getLatestID())) {
+      this.game = persistance.getGameFromID(gameId);
     }
+    this.playerColor = Piece.Color.valueOf(arguments.get(4).toUpperCase());
+    oldPositionString = arguments.get(6).toLowerCase();
+    oldPositionInteger = convertToIndices(oldPositionString);
+    newPositionString = arguments.get(8).toLowerCase();
+    newPositionInteger = convertToIndices(newPositionString);
   }
 
-  private static List<String> parseCardStrings(List<String> arguments) {
-    return arguments.subList(6, arguments.size()).stream()
-        .map(c -> Arrays.stream(c.split(",")).toList())
-        .flatMap(Collection::stream)
-        .toList();
+  public static List<Integer> convertToIndices(String chessCoordinate) {
+    if (chessCoordinate.length() != 2) {
+      throw new IllegalArgumentException("Ungültige Schachkoordinate: " + chessCoordinate);
+    }
+
+    char file = chessCoordinate.charAt(0);
+    int column = file - 'a';
+
+    char rank = chessCoordinate.charAt(1);
+    int row = 8 - Character.getNumericValue(rank);
+
+    List<Integer> indices = new ArrayList<>();
+    indices.add(row);
+    indices.add(column);
+
+    return indices;
   }
 
   @Override
   public boolean isApplicable(List<String> arguments) {
-    return arguments.size() >= 7
+    return arguments.size() >= 8
         && arguments.getFirst().equals("on")
         && arguments.get(1).equals("game")
         && arguments.get(3).equals("player")
-        && (arguments.get(5).equals("lays")
-            || arguments.get(5).equals("plays")
-            || arguments.get(5).equals("picks"));
-    // TODO change arguments
+        && arguments.get(5).equals("moves")
+        && arguments.get(7).equals("to");
   }
 
   @Override
   public void invoke(PrintStream out) {
-    // nothing to do
+    if (gameId == null) {
+      out.println("Game with ID " + gameId + " not found!");
+    } else {
+      if(game.getActivePlayer() == playerColor) {
+        game.movePiece(oldPositionInteger.getFirst(), oldPositionInteger.get(1), newPositionInteger.getFirst(), newPositionInteger.get(1));
+        out.println("Piece " + oldPositionString + " moved to " + newPositionString);
+        if(game.getWinner()==null){
+          out.println("Now it's player " + game.getActivePlayer() + "'s turn.");
+        } else {
+          out.println("Congratulations! Player " + game.getWinner() + " won the game!");
+        }
+      } else {
+        out.println("Player " + game.getActivePlayer() + " is playing!");
+      }
+    }
   }
 }

@@ -66,7 +66,7 @@ public class PersistanceHandler {
               .filter(PersistanceHandler::isNumeric)
               .mapToInt(Integer::parseInt)
               .max()
-              .orElseThrow());
+              .orElse(-1));
     } catch (IOException e) {
       throw new IllegalStateException("Failed to read CSV file", e);
     }

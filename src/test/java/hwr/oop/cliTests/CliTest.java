@@ -20,7 +20,6 @@ class CliTest {
   @BeforeEach
   void setUp() {
     this.outputStream = new ByteArrayOutputStream();
-    PersistanceHandler persistance;
     final var file = new File("src/main/resources/savedChessGames.csv");
     Path path = file.toPath();
     persistance = new PersistanceHandler(path);
