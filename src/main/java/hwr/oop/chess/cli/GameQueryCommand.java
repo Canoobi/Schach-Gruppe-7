@@ -1,8 +1,9 @@
 package hwr.oop.chess.cli;
 
+import hwr.oop.chess.Board;
 import hwr.oop.chess.Game;
+import hwr.oop.chess.Piece;
 import hwr.oop.chess.persistance.PersistanceHandler;
-
 import java.io.PrintStream;
 import java.util.List;
 
@@ -38,8 +39,39 @@ public final class GameQueryCommand implements MutableCommand {
       out.println("Game with ID " + gameId + " not found!");
     } else {
       out.println("The chess game with the ID " + gameId + " looks like this:");
-      out.println(game.getBoard().getFenOfBoard());
-      //TODO print board
+      printBoard(game, out);
     }
+  }
+
+  public void printBoard(Game game, PrintStream out) {
+    StringBuilder outString = new StringBuilder();
+    int row = 8;
+
+    Board board = game.getBoard();
+
+    for (List<Piece> l : board.getPlayBoard().reversed()) {
+      outString.append(row).append("  ");
+      row--;
+      for (Piece p : l) {
+        if (p == null) {
+          outString.append("   ");
+        } else {
+          if (p.getColor() == Piece.Color.WHITE) {
+            outString.append(Character.toUpperCase(p.getAbbreviation())).append("  ");
+          } else {
+            outString.append(p.getAbbreviation()).append("  ");
+          }
+        }
+      }
+      outString.append("\n");
+    }
+
+    outString.append("   ");
+
+    for (int i = 65; i < 65 + 8; i++) {
+      outString.append(Character.toString(i)).append("  ");
+    }
+
+    out.println(outString);
   }
 }
