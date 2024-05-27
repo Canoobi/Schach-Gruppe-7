@@ -357,4 +357,11 @@ class BoardTest {
                     softly.assertThat(board.isCorrectColor(Piece.Color.WHITE, 1, 7)).isFalse();
                 });
     }
+
+    @Test
+    void pieceHasLegalMovesTest() {
+        Board board = new Board();
+        board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+        assertThat(board.pieceHasLegalMoves(board.getPieceAt(4, 2))).isTrue();
+    }
 }

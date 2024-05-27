@@ -254,4 +254,118 @@ public class Board {
   public boolean isCorrectColor(Piece.Color color, int column, int row) {
     return this.playBoard.get(row).get(column).getColor() == color;
   }
+
+  public boolean pieceHasLegalMoves(Piece piece)
+  {
+    if(piece == null) { return false; }
+    int positionX = piece.getActualPosition().get(0);
+    int positionY = piece.getActualPosition().get(1);
+    Piece deletedPiece;
+    for (List<Integer> move : piece.getPossibleMoves()) {
+      for (int i = 1; positionX + move.get(0) * i >= 0 && positionX + move.get(0) * i < 8
+              && positionY + move.get(1) * i >= 0 && positionY + move.get(1) * i < 8; i++) {
+        if (isValidMove(piece, positionX + move.get(0) * i, positionY + move.get(1) * i)
+            && !isBlocked(piece, positionX + move.get(0) * i, positionY + move.get(1) * i)) {
+          if(getPieceAt(positionX + move.get(0) * i, positionY + move.get(1) * i) != null)
+          {
+            if((getPieceAt(positionX + move.get(0) * i, positionY + move.get(1) * i).getColor() == piece.getColor()))
+            {
+              continue;
+            }
+          }
+          deletedPiece = playBoard.get(positionX + move.get(0) * i).get(positionY + move.get(1) * i);
+          changePosition(
+              piece.getColor(),
+              positionX,
+              positionY,
+              positionX + move.get(0) * i,
+              positionY + move.get(1) * i);
+          if (!isCheck(piece.getColor())) {
+            changePosition(
+                piece.getColor(),
+                positionX + move.get(0) * i,
+                positionY + move.get(1) * i,
+                positionX,
+                positionY);
+            playBoard.get(positionX + move.get(0) * i).set(positionY + move.get(1) * i, deletedPiece);
+            return true;
+          }
+          changePosition(
+              piece.getColor(),
+              positionX + move.get(0) * i,
+              positionY + move.get(1) * i,
+              positionX,
+              positionY);
+          playBoard.get(positionX + move.get(0) * i).set(positionY + move.get(1) * i, deletedPiece);
+        }
+      }
+
+      for (int i = -1;  positionX + move.get(0) * i >= 0 && positionX + move.get(0) * i < 8
+              && positionY + move.get(1) * i >= 0 && positionY + move.get(1) * i < 8; i--) {
+        if (isValidMove(piece, positionX + move.get(0) * i, positionY + move.get(1) * i)
+            && !isBlocked(piece, positionX + move.get(0) * i, positionY + move.get(1) * i)) {
+          if(getPieceAt(positionX + move.get(0) * i, positionY + move.get(1) * i) != null)
+          {
+            if((getPieceAt(positionX + move.get(0) * i, positionY + move.get(1) * i).getColor() == piece.getColor()))
+            {
+              continue;
+            }
+          }
+          deletedPiece = playBoard.get(positionX + move.get(0) * i).get(positionY + move.get(1) * i);
+          changePosition(
+              piece.getColor(),
+              positionX,
+              positionY,
+              positionX + move.get(0) * i,
+              positionY + move.get(1) * i);
+          if (!isCheck(piece.getColor())) {
+            changePosition(
+                piece.getColor(),
+                positionX + move.get(0) * i,
+                positionY + move.get(1) * i,
+                positionX,
+                positionY);
+            playBoard.get(positionX + move.get(0) * i).set(positionY + move.get(1) * i, deletedPiece);
+            return true;
+          }
+          changePosition(
+              piece.getColor(),
+              positionX + move.get(0) * i,
+              positionY + move.get(1) * i,
+              positionX,
+              positionY);
+          playBoard.get(positionX + move.get(0) * i).set(positionY + move.get(1) * i, deletedPiece);
+        }
+      }
+    }
+    return false;
+  }
+
+  public boolean legalMovesPossible(Piece.Color playerColor) {
+    for(List<Piece> row : playBoard) {
+      for (Piece piece : row) {
+        if (piece == null) {
+          continue;
+        }
+        if (piece.getColor() == playerColor) {
+          if(pieceHasLegalMoves(piece))
+          {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  public String gameEnds(Piece.Color playercolor)
+  {
+    if(legalMovesPossible(playercolor)) {
+      if(isCheck(playercolor)) {
+        return playercolor.toString();
+      }
+      return "Stalemate";
+    }
+    return "No";
+  }
 }
