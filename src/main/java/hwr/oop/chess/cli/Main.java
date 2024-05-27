@@ -1,12 +1,18 @@
 package hwr.oop.chess.cli;
 
-import java.util.List;
+import hwr.oop.chess.persistance.PersistanceHandler;
+
+import java.util.Arrays;
 
 public class Main {
+  private static PersistanceHandler persistance;
 
   @SuppressWarnings("java:S106")
   public static void main(String[] args) {
-    final var cli = new OutputOnlyCli(System.out);
-    cli.handle(List.of(args));
+    final Cli cli = new Cli(
+            System.out,
+            persistance
+    );
+    cli.handle(Arrays.asList(args));
   }
 }
