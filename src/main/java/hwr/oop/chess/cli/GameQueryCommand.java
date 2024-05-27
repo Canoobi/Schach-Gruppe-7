@@ -68,7 +68,7 @@ public final class GameQueryCommand implements MutableCommand {
 
     outString.append("   ");
 
-    for (int i = 65; i < 65 + 8; i++) {
+    for (int i = 'A'; i < 'I'; i++) {
       outString.append(Character.toString(i)).append("  ");
     }
 
