@@ -1,17 +1,21 @@
 package hwr.oop.chess.persistance;
 
-import hwr.oop.chess.Board;
+import hwr.oop.chess.Game;
+import hwr.oop.chess.Piece;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class PersistanceHandler {
 
   private final Path csvFilePath;
   private final IOExceptionBomb ioExceptionBomb;
+  private Map<String, Piece.Color> intToEnum;
 
   private static boolean isNumeric(String str) {
     try {
@@ -22,8 +26,15 @@ public class PersistanceHandler {
     }
   }
 
+  private void createHashMap() {
+    intToEnum = new HashMap<>();
+    intToEnum.put("BLACK", Piece.Color.BLACK);
+    intToEnum.put("WHITE", Piece.Color.WHITE);
+  }
+
   public PersistanceHandler(Path csvFilePath) {
     this(csvFilePath, hwr.oop.chess.persistance.IOExceptionBomb.DONT);
+    createHashMap();
   }
 
   public PersistanceHandler(
@@ -32,9 +43,10 @@ public class PersistanceHandler {
     this.ioExceptionBomb = ioExceptionBomb;
   }
 
-  public void saveGame(String id, Board board) {
+  public void saveGame(Game game) {
 
-    String csvString = id + "," + board.getFenOfBoard() + "\n";
+    String csvString =
+        game.getId() + "," + game.getBoard().getFenOfBoard() + "," + game.getActivePlayer() + "\n";
 
     try (final var writer = Files.newBufferedWriter(csvFilePath, StandardOpenOption.APPEND)) {
       ioExceptionBomb.fire();
@@ -76,8 +88,7 @@ public class PersistanceHandler {
     return result;
   }
 
-  public Board getBoardFromID(String id) {
-    Board board = new Board();
+  public Game getGameFromID(String id) {
 
     List<String> result;
     try (var stuff = Files.newBufferedReader(csvFilePath)) {
@@ -92,8 +103,6 @@ public class PersistanceHandler {
       throw new IllegalStateException();
     }
 
-    board.setBoardToFen(result.get(1));
-
-    return board;
+    return new Game(Integer.parseInt(id), result.get(1), intToEnum.get(result.get(2)));
   }
 }

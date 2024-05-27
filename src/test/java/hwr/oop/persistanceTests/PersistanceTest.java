@@ -1,10 +1,10 @@
 package hwr.oop.persistanceTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import hwr.oop.chess.Board;
+import hwr.oop.chess.Game;
+import hwr.oop.chess.Piece;
 import hwr.oop.chess.persistance.IOExceptionBomb;
 import hwr.oop.chess.persistance.PersistanceHandler;
 import java.io.File;
@@ -39,14 +39,15 @@ class PersistanceTest {
   void saveGameTest() {
     PersistanceHandler persistanceHandler =
         new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"));
-    Board board = new Board();
-    board.initBoard();
+    Game game1 = new Game(1, "", Piece.Color.BLACK);
+    Game game2 = new Game(2, "", Piece.Color.BLACK);
+    Game game3 = new Game(3, "", Piece.Color.BLACK);
 
     List<String> allMatchID = Arrays.asList("1", "2", "3");
 
-    persistanceHandler.saveGame("1", board);
-    persistanceHandler.saveGame("2", board);
-    persistanceHandler.saveGame("3", board);
+    persistanceHandler.saveGame(game1);
+    persistanceHandler.saveGame(game2);
+    persistanceHandler.saveGame(game3);
 
     assertThat(persistanceHandler.getAllMatchId()).isEqualTo(allMatchID);
   }
@@ -55,51 +56,53 @@ class PersistanceTest {
   void getLatestIdTest() {
     PersistanceHandler persistanceHandler =
         new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"));
-    Board board = new Board();
-    board.initBoard();
 
-    persistanceHandler.saveGame("1", board);
-    persistanceHandler.saveGame("3", board);
-    persistanceHandler.saveGame("2", board);
+    Game game1 = new Game(1, "", Piece.Color.BLACK);
+    Game game2 = new Game(2, "", Piece.Color.BLACK);
+    Game game3 = new Game(3, "", Piece.Color.BLACK);
+
+    persistanceHandler.saveGame(game1);
+    persistanceHandler.saveGame(game2);
+    persistanceHandler.saveGame(game3);
 
     assertThat(persistanceHandler.getLatestID()).isEqualTo("3");
   }
 
   @Test
-  void getBoardFromIDTest() {
+  void getGameFromIDTest() {
     PersistanceHandler persistanceHandler =
         new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"));
-    Board board = new Board();
-    board.initBoard();
 
-    Board board2 = new Board();
-    board2.setBoardToFen("1k6/8/6r1/8/3q4/8/8/3R4");
+    Game game1 = new Game(1, "8/8/6r1/8/3q4/8/8/8", Piece.Color.BLACK);
+    Game game2 = new Game(2, "1k6/8/6r1/8/3q4/8/8/3R4", Piece.Color.WHITE);
 
-    persistanceHandler.saveGame("1", board);
-    persistanceHandler.saveGame("2", board2);
+    persistanceHandler.saveGame(game1);
+    persistanceHandler.saveGame(game2);
 
-    assertThat(persistanceHandler.getBoardFromID("2").getFenOfBoard())
+    assertThat(persistanceHandler.getGameFromID("2").getBoard().getFenOfBoard())
         .isEqualTo("1k6/8/6r1/8/3q4/8/8/3R4");
+    assertThat(persistanceHandler.getGameFromID("2").getActivePlayer())
+        .isEqualTo(Piece.Color.WHITE);
   }
 
   @Test
   void exceptionTests() {
     PersistanceHandler persistanceHandler =
-            new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"), IOExceptionBomb.DO);
-    Board board = new Board();
-    board.initBoard();
+        new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"), IOExceptionBomb.DO);
+    Game game = new Game(1, "8/8/6r1/8/3q4/8/8/8", Piece.Color.BLACK);
 
-    Board board2 = new Board();
-    board2.setBoardToFen("1k6/8/6r1/8/3q4/8/8/3R4");
-
-    IllegalStateException exception1 = assertThrows(IllegalStateException.class, () -> persistanceHandler.saveGame("1", board));
+    IllegalStateException exception1 =
+        assertThrows(IllegalStateException.class, () -> persistanceHandler.saveGame(game));
     assertThat(exception1.getMessage()).isEqualTo("Could not save game");
 
-    IllegalStateException exception2 = assertThrows(IllegalStateException.class, persistanceHandler::getLatestID);
+    IllegalStateException exception2 =
+        assertThrows(IllegalStateException.class, persistanceHandler::getLatestID);
     assertThat(exception2.getMessage()).isEqualTo("Failed to read CSV file");
 
-    IllegalStateException exception3 = assertThrows(IllegalStateException.class, persistanceHandler::getAllMatchId);
+    IllegalStateException exception3 =
+        assertThrows(IllegalStateException.class, persistanceHandler::getAllMatchId);
 
-    IllegalStateException exception4 = assertThrows(IllegalStateException.class, () -> persistanceHandler.getBoardFromID("2"));
+    IllegalStateException exception4 =
+        assertThrows(IllegalStateException.class, () -> persistanceHandler.getGameFromID("2"));
   }
 }
