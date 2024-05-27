@@ -236,9 +236,17 @@ public class Board {
   }
 
   public boolean canCapturePawn(Piece piece, int vecX, int vecY) {
+    if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
+      return false;
+    }
 
-    return Math.abs(piece.getActualPosition().getFirst() - vecX) == 1
-        && piece.getActualPosition().getLast() - vecY == -1;
+    if (piece.getColor() == Piece.Color.WHITE) {
+      return piece.getActualPosition().getLast() - vecY == -1
+          && piece.getColor() != getPieceAt(vecX, vecY).getColor();
+    } else {
+      return piece.getActualPosition().getLast() - vecY == 1
+          && piece.getColor() != getPieceAt(vecX, vecY).getColor();
+    }
   }
 
   public boolean isBlocked(Piece piece, int newColumn, int newRow) {
