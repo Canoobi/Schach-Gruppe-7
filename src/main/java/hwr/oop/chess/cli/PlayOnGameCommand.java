@@ -40,11 +40,15 @@ public final class PlayOnGameCommand implements MutableCommand {
     int column = file - 'a';
 
     char rank = chessCoordinate.charAt(1);
-    int row = 8 - Character.getNumericValue(rank);
+    int row = Character.getNumericValue(rank) - 1;
 
     List<Integer> indices = new ArrayList<>();
-    indices.add(row);
     indices.add(column);
+    indices.add(row);
+
+    if (indices.get(0) > 7 || indices.get(0) < 0 || indices.get(1) > 7 || indices.get(1) < 0) {
+      return new ArrayList<>();
+    }
 
     return indices;
   }
@@ -66,6 +70,10 @@ public final class PlayOnGameCommand implements MutableCommand {
       if (Integer.parseInt(this.gameId) <= Integer.parseInt(persistance.getLatestID())) {
         this.game = persistance.getGameFromID(gameId);
       }
+      if (oldPositionInteger.isEmpty() || newPositionInteger.isEmpty()) {
+        out.println("Index is out of range of the board.");
+        return;
+      }
       if (game.getActivePlayer() == playerColor) {
         game.movePiece(
             oldPositionInteger.getFirst(),
@@ -73,12 +81,16 @@ public final class PlayOnGameCommand implements MutableCommand {
             newPositionInteger.getFirst(),
             newPositionInteger.get(1));
         out.println("Piece " + oldPositionString + " moved to " + newPositionString);
-        // TODO checken, ob out of bound
-        if (game.getWinner() == null) {
-          out.println("Now it's player " + game.getActivePlayer() + "'s turn.");
-        } else {
+
+        if (game.getBoard().stalemate(game.getActivePlayer())) {
+          out.println("The game is a stalemate! It's a draw!");
+          // TODO delete game
+        } else if (game.getBoard().checkmate(game.getActivePlayer())) {
+          game.setWinner(playerColor.toString());
           out.println("Congratulations! Player " + game.getWinner() + " won the game!");
           // TODO delete game
+        } else {
+          out.println("Now it's player " + game.getActivePlayer() + "'s turn.");
         }
       } else {
         out.println("Player " + game.getActivePlayer() + " is playing!");

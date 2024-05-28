@@ -14,20 +14,16 @@ import java.io.PrintStream;
 class MainTest {
 
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-  private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
   private final PrintStream originalOut = System.out;
-  private final PrintStream originalErr = System.err;
 
   @BeforeEach
   public void setUpStreams() {
     System.setOut(new PrintStream(outContent));
-    System.setErr(new PrintStream(errContent));
   }
 
   @AfterEach
   public void restoreStreams() {
     System.setOut(originalOut);
-    System.setErr(originalErr);
   }
 
   @Test
@@ -37,6 +33,8 @@ class MainTest {
 
   @Test
   void main_CanBeCalledWithHelpCommand() {
+    Main mainTest = new Main();
+    System.out.println(mainTest.toString());
     Main.main(new String[] {"help"});
     assertSoftly(
         softly -> {

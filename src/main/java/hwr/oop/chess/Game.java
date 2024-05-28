@@ -39,8 +39,6 @@ public class Game {
   }
 
   public boolean movePossible(int oldCol, int oldRow, int newCol, int newRow) {
-    // TODO checken, ob schachmatt
-
     if (!board.isValidMove(board.getPieceAt(oldCol, oldRow), newCol, newRow)) {
       return false;
     }

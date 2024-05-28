@@ -8,6 +8,7 @@ import java.io.*;
 import java.nio.file.Path;
 
 import hwr.oop.chess.Game;
+import hwr.oop.chess.Piece;
 import hwr.oop.chess.cli.Cli;
 import hwr.oop.chess.persistance.PersistanceHandler;
 import org.junit.jupiter.api.AfterEach;
@@ -126,6 +127,57 @@ class CliTest {
     assertSoftly(
         softly -> {
           softly.assertThat(output).contains("Player WHITE is playing!");
+        });
+  }
+
+  @Test
+  void playOnGameCommandStalemateTest() {
+    Game game = new Game(0, "k7/8/8/8/8/r7/8/r5PK", Piece.Color.BLACK);
+    persistance.saveGame(game);
+    cli.handle("on", "game", "0", "player", "black", "moves", "a3", "to", "a2");
+    final var output = outputStream.toString();
+    assertSoftly(
+        softly -> {
+          softly.assertThat(output).contains("The game is a stalemate! It's a draw!");
+        });
+  }
+
+  @Test
+  void playOnGameCommandCheckmateTest() {
+    Game game = new Game(0, "k7/8/8/8/8/r7/8/r6K", Piece.Color.BLACK);
+    persistance.saveGame(game);
+    cli.handle("on", "game", "0", "player", "black", "moves", "a3", "to", "a2");
+    final var output = outputStream.toString();
+    assertSoftly(
+        softly -> {
+          softly.assertThat(output).contains("Congratulations! Player BLACK won the game!");
+        });
+  }
+
+  @Test
+  void playOnGameCommandIndexOutOfBoundTest() {
+    Game game = new Game(0);
+    persistance.saveGame(game);
+    cli.handle("on", "game", "0", "player", "white", "moves", "b9", "to", "b3");
+    final var output = outputStream.toString();
+    assertSoftly(
+        softly -> {
+          softly.assertThat(output).contains("Index is out of range of the board.");
+        });
+    cli.handle("on", "game", "0", "player", "white", "moves", "b9", "to", "b3");
+    assertSoftly(
+        softly -> {
+          softly.assertThat(output).contains("Index is out of range of the board.");
+        });
+    cli.handle("on", "game", "0", "player", "white", "moves", "b9", "to", "b3");
+    assertSoftly(
+        softly -> {
+          softly.assertThat(output).contains("Index is out of range of the board.");
+        });
+    cli.handle("on", "game", "0", "player", "white", "moves", "b9", "to", "b3");
+    assertSoftly(
+        softly -> {
+          softly.assertThat(output).contains("Index is out of range of the board.");
         });
   }
 
