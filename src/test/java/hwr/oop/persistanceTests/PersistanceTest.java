@@ -36,6 +36,23 @@ class PersistanceTest {
   }
 
   @Test
+  void deleteMatch() {
+    PersistanceHandler persistanceHandler =
+        new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"));
+
+    Game game1 = new Game(1, "", Piece.Color.BLACK);
+    Game game2 = new Game(2, "", Piece.Color.BLACK);
+    Game game3 = new Game(3, "", Piece.Color.BLACK);
+    persistanceHandler.saveGame(game1);
+    persistanceHandler.saveGame(game2);
+    persistanceHandler.saveGame(game3);
+
+    persistanceHandler.deleteMatch("2");
+
+    assertThat(persistanceHandler.getAllMatchId()).doesNotContain("2");
+  }
+
+  @Test
   void saveGameTest() {
     PersistanceHandler persistanceHandler =
         new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"));
