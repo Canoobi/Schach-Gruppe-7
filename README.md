@@ -40,62 +40,57 @@ just build
 ## Abstract
 
 # Short description of our project:
+
 Chess game, programmed by 4 students at HWR Berlin in OOP Lecture.
 
 # Most important features:
+
 - chess logic
 - cli
 - persistance
 
 # Most interesting problems we encountered during the project:
+
 - testing exceptions
 - writing into a csv-file
 
 ## Feature List
 
-| Number | Feature                 | Tests                                                                                                                                                                                                   |
-|--------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1      | setActualPosition()     | setActualPositionTest()                                                                                                                                                                                 |
-| 2      | getColor()              | getFenOfBoardTest()                                                                                                                                                                                     |
-| 3      | getAbbreviation()       | getFenOfBoardTest()                                                                                                                                                                                     |
-| 4      | getActualPosition()     | getActualPositionTest()                                                                                                                                                                                 |
-| 5      | getPossibleMoves()      | isValidMoveTest()                                                                                                                                                                                       |
-| 6      | isMoveRepeatable()      | isMoveRepeatableTest()                                                                                                                                                                                  |
-| 7      | charToPieceType()       | setBoardToFenTest()                                                                                                                                                                                     |
-| 8      | initBoard()             | initBoardTest()                                                                                                                                                                                         |
-| 9      | changePosition()        | changePositionTest()                                                                                                                                                                                    |
-| 10     | getPieceAt()            | getPieceAtTest()                                                                                                                                                                                        |
-| 11     | getPlayBoard()          | testBoard()^                                                                                                                                                                                            |
-| 12     | setPieceAt()            | setPieceAtTest()                                                                                                                                                                                        |
-| 13     | setBoardToFen()         | setBoardToFenTest()                                                                                                                                                                                     |
-| 14     | printBoard()            | printBoardTest()                                                                                                                                                                                        |
-| 15     | isValidMove()           | isValidMoveTest()                                                                                                                                                                                       |
-| 16     | isBlocked()             | isBlockedTest()/isBlockedTestFullBoard()/isBlockedTestEmptyBoard()/isBlockedTestPieceOnEdgeOfMovement()/isBlockedTestHalfFilledBoard1()/isBlockedTestHalfFilledBoard2()/isBlockedTestHalfFilledBoard3() |
-| 17     | getFenOfBoard()         | getFenOfBoardTest()                                                                                                                                                                                     |
-| 18     | abbreviationToFenChar() | Any test that creates a new board                                                                                                                                                                       |
-| 19     | getKing()               | getKingTest()/getKingNullTest()                                                                                                                                                                         |
-| 20     | isCheck()               | isCheckTest()                                                                                                                                                                                           |
-| 21     | isValidMoveRepeat()     | isValidMoveTest()                                                                                                                                                                                       |
-| 22     | isValidMoveNonRepeat()  | isValidMoveTest()                                                                                                                                                                                       |
-| 23     | isValidMovePawn()       | isValidMoveTest()                                                                                                                                                                                       |
-| 24     | isCorrectColor()        | isCorrectColorTest()                                                                                                                                                                                    |
-| 25     | getId()                 | newGameTest()/loadGameTest()                                                                                                                                                                            |
-| 26     | getActivePlayer()       | newGameTest()/loadGameTest()                                                                                                                                                                            |
-| 27     | setActivePlayer()       | loadGameTest()                                                                                                                                                                                          |
-| 28     | getBoard()              | newGameTest()/loadGameTest()                                                                                                                                                                            |
-| 29     | movePiece()             | movePieceWhiteTest()/movePieceBlackTest()                                                                                                                                                               |
-| 30     | getWinner()             | getWinnerTest()                                                                                                                                                                                         |
-| 31     | setWinner()             | getWinnerTest()                                                                                                                                                                                         |
-| 32     | saveGame()              | saveGameTest()                                                                                                                                                                                          |
-| 33     | getLatestId()           | getLatestIdTest()                                                                                                                                                                                       |
-| 34     | getAllMatchId()         | saveGameTest()                                                                                                                                                                                          |
-| 35     | getBoardFromId()        | getBoardFromIDTest()                                                                                                                                                                                    |
+### Backend
+
+| Number | Feature      | Implemented             | Tested             |
+|--------|--------------|-------------------------|--------------------|
+| 1      | Chessboard   | :heavy_check_mark:      | :heavy_check_mark: |
+| 2      | Pieces       | :heavy_check_mark:      | :heavy_check_mark: |
+| 3      | Movement     | :heavy_check_mark:      | :heavy_check_mark: |
+| 4      | Check        | :ballot_box_with_check: | :heavy_check_mark: |
+| 5      | Checkmate    | :heavy_check_mark:      | :heavy_check_mark: |
+| 6      | Game         | :heavy_check_mark:      | :heavy_check_mark: |
+| 7      | FEN Notation | :heavy_check_mark:      | :heavy_check_mark: |
+
+### Command Line Interface
+
+| Number | Feature       | Implemented        | Tested             |
+|--------|---------------|--------------------|--------------------|
+| 1      | New Game      | :heavy_check_mark: | :heavy_check_mark: |
+| 2      | Play on Board | :heavy_check_mark: | :heavy_check_mark: |
+| 3      | Game state    | :heavy_check_mark: | :heavy_check_mark: |
+| 4      | Help          | :heavy_check_mark: | :heavy_check_mark: |
+| 5      | Offer Remis   | :heavy_check_mark: | :heavy_check_mark: |
+
+### Persistence
+
+| Number | Feature     | Implemented        | Tested             |
+|--------|-------------|--------------------|--------------------|
+| 1      | Save Game   | :heavy_check_mark: | :heavy_check_mark: |
+| 2      | Load Game   | :heavy_check_mark: | :heavy_check_mark: |
+| 2      | Delete Game | :x:                | :x:                |
 
 ## Additional Dependencies
 
 | Number | Dependency Name | Dependency Description | Why is it necessary? |
 |--------|-----------------|------------------------|----------------------|
-| 1      | /               | /                      | /                    |
+| 1      | :x:             | :x:                    | :x:                  |
 
 ### Multiple remote repositories
 
