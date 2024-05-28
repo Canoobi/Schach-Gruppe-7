@@ -221,17 +221,39 @@ public class Board {
 
   public boolean canCapture(Piece piece, int vecX, int vecY) {
 
-    if (piece.getAbbreviation() != 'b') {
-      return piece.getColor() != getPieceAt(vecX, vecY).getColor();
+    if (piece.getAbbreviation() == 'b') {
+      return canCapturePawn(piece, vecX, vecY);
     }
 
-    return canCapturePawn(piece, vecX, vecY);
+    if (getPieceAt(vecX, vecY) == null) {
+      return true;
+    } else {
+      return piece.getColor() != getPieceAt(vecX, vecY).getColor();
+    }
   }
 
   public boolean canCapturePawn(Piece piece, int vecX, int vecY) {
-
-    return Math.abs(piece.getActualPosition().getFirst() - vecX) == 1
-        && piece.getActualPosition().getLast() - vecY == -1;
+    if (piece.getColor() == Piece.Color.WHITE) {
+      if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
+        if (getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == -1) {
+          return true;
+        }
+        return false;
+      } else {
+        return piece.getActualPosition().getLast() - vecY == -1
+            && piece.getColor() != getPieceAt(vecX, vecY).getColor();
+      }
+    } else {
+      if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
+        if (getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == 1) {
+          return true;
+        }
+        return false;
+      } else {
+        return piece.getActualPosition().getLast() - vecY == 1
+            && piece.getColor() != getPieceAt(vecX, vecY).getColor();
+      }
+    }
   }
 
   public boolean isBlocked(Piece piece, int newColumn, int newRow) {
