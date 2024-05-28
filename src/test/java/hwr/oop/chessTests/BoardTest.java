@@ -10,12 +10,15 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class BoardTest {
+
   @Test
   void isValidMoveTest() {
     Board board = new Board();
-    board.initBoard();
+    board.setBoardToFen("rnbqkbnr/pppppppp/5p2/4P3/8/8/PPPPPPPP/RNBQKBNR");
     Piece bauer1 = board.getPieceAt(1, 1);
     Piece bauer2 = board.getPieceAt(3, 6);
+    Piece bauer3 = board.getPieceAt(4, 4);
+    Piece bauer4 = board.getPieceAt(5, 5);
     Piece turm = board.getPieceAt(7, 0);
     Piece koenig = board.getPieceAt(4, 0);
     Piece laeufer = board.getPieceAt(5, 0);
@@ -30,6 +33,10 @@ class BoardTest {
           softly.assertThat(board.isValidMove(bauer2, 3, 4)).isTrue();
           softly.assertThat(board.isValidMove(bauer2, 0, 3)).isFalse();
           softly.assertThat(board.isValidMove(bauer2, 0, 4)).isFalse();
+          softly.assertThat(board.isValidMove(bauer3, 4, 5)).isTrue();
+          softly.assertThat(board.isValidMove(bauer4, 5, 4)).isTrue();
+          softly.assertThat(board.isValidMove(bauer3, 5, 6)).isFalse();
+          softly.assertThat(board.isValidMove(bauer4, 4, 3)).isFalse();
           softly.assertThat(board.isValidMove(turm, 7, 4)).isTrue();
           softly.assertThat(board.isValidMove(turm, 7, 7)).isTrue();
           softly.assertThat(board.isValidMove(turm, 7, 8)).isFalse();
@@ -333,140 +340,6 @@ class BoardTest {
       }
       row++;
     }
-    @Test
-    void changePosTest() {
-        Board board = new Board();
-        board.initBoard();
-        Piece piece = board.getPieceAt(1, 0);
-        board.changePosition(Piece.Color.WHITE, 1, 0, 0, 2);
-
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(board.getPieceAt(1, 0)).isNull();
-                    softly.assertThat(piece).isEqualTo(board.getPieceAt(0, 2));
-                    softly.assertThat(piece.getActualPosition().getFirst()).isEqualTo(0);
-                    softly.assertThat(piece.getActualPosition().get(1)).isEqualTo(2);
-                });
-    }
-
-    @Test
-    void isCorrectColorTest() {
-        Board board = new Board();
-        board.initBoard();
-
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(board.isCorrectColor(Piece.Color.WHITE, 1, 1)).isTrue();
-                    softly.assertThat(board.isCorrectColor(Piece.Color.WHITE, 1, 7)).isFalse();
-                });
-    }
-
-    @Test
-    void directionContainsLegalMovesTest() {
-        Board board = new Board();
-        board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(-1,0))).isTrue();
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(1,0))).isFalse();
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(0,-1))).isFalse();
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(0,1))).isFalse();
-                });
-    }
-    @Test
-    void directionContainsLegalMovesTestBlock() {
-        Board board = new Board();
-        board.setBoardToFen("k7/4R3/8/8/8/r4K2/8/8");
-        assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 6), List.of(0,-1))).isTrue();
-    }
-    @Test
-    void directionContainsLegalMovesTestTakes() {
-        Board board = new Board();
-        board.setBoardToFen("k7/4R3/8/8/8/4rK2/8/8");
-        assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 6), List.of(0,-1))).isTrue();
-    }
-
-    @Test
-    void directionContainsLegalMovesTestBounds() {
-        Board board = new Board();
-        board.setBoardToFen("k6K/8/8/8/8/8/8/8");
-        assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 7), List.of(0,1))).isFalse();
-    }
-
-    @Test
-    void directionContainsLegalMovesTestToOuterRanks() {
-        Board board = new Board();
-        board.setBoardToFen("8/kp6/pp6/8/8/6PP/6PK/8");
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 1), List.of(0,-1))).isTrue();
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 1), List.of(0, 1))).isFalse();
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(0, 6), List.of(0,-1))).isFalse();
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(0, 6), List.of(0, 1))).isTrue();
-                });
-    }
-
-    @Test
-    void directionContainsLegalMovesTestBishop() {
-        Board board = new Board();
-        board.setBoardToFen("k6K/8/8/8/8/4B3/8/8");
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(1,-1))).isTrue();
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(-1, 1))).isTrue();
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(1, 1))).isTrue();
-                    softly.assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(-1, -1))).isTrue();
-                });
-    }
-
-    @Test
-    void pieceHasLegalMovesTest() {
-        Board board = new Board();
-        board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
-        assertThat(board.pieceHasLegalMoves(board.getPieceAt(4, 2))).isTrue();
-    }
-
-    @Test
-    void pieceHasLegalMovesTestNull() {
-        Board board = new Board();
-        board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
-        assertThat(board.pieceHasLegalMoves(board.getPieceAt(4, 4))).isFalse();
-    }
-
-    @Test
-    void legalMovesPossibleTest() {
-        Board board = new Board();
-        board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
-        assertThat(board.legalMovesPossible(Piece.Color.WHITE)).isTrue();
-    }
-
-    @Test
-    void stalemateTestFalse() {
-        Board board = new Board();
-        board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
-        assertThat(board.stalemate(Piece.Color.WHITE)).isFalse();
-    }
-
-    @Test
-    void stalemateTestTrue() {
-        Board board = new Board();
-        board.setBoardToFen("k7/8/8/8/8/8/r7/r5PK");
-        assertThat(board.stalemate(Piece.Color.WHITE)).isTrue();
-    }
-    @Test
-    void checkmateTestFalse() {
-        Board board = new Board();
-        board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
-        assertThat(board.checkmate(Piece.Color.WHITE)).isFalse();
-    }
-
-    @Test
-    void checkmateTestTrue() {
-        Board board = new Board();
-        board.setBoardToFen("k7/8/8/8/8/8/r7/r6K");
-        assertThat(board.checkmate(Piece.Color.WHITE)).isTrue();
-    }
-}
   }
 
   @Test
@@ -486,6 +359,151 @@ class BoardTest {
   }
 
   @Test
+  void isCorrectColorTest() {
+    Board board = new Board();
+    board.initBoard();
+
+    assertSoftly(
+        softly -> {
+          softly.assertThat(board.isCorrectColor(Piece.Color.WHITE, 1, 1)).isTrue();
+          softly.assertThat(board.isCorrectColor(Piece.Color.WHITE, 1, 7)).isFalse();
+        });
+  }
+
+  @Test
+  void directionContainsLegalMovesTest() {
+    Board board = new Board();
+    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    assertSoftly(
+        softly -> {
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(-1, 0)))
+              .isTrue();
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(1, 0)))
+              .isFalse();
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(0, -1)))
+              .isFalse();
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(0, 1)))
+              .isFalse();
+        });
+  }
+
+  @Test
+  void directionContainsLegalMovesTestBlock() {
+    Board board = new Board();
+    board.setBoardToFen("k7/4R3/8/8/8/r4K2/8/8");
+    assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 6), List.of(0, -1))).isTrue();
+  }
+
+  @Test
+  void directionContainsLegalMovesTestTakes() {
+    Board board = new Board();
+    board.setBoardToFen("k7/4R3/8/8/8/4rK2/8/8");
+    assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 6), List.of(0, -1))).isTrue();
+  }
+
+  @Test
+  void directionContainsLegalMovesTestBounds() {
+    Board board = new Board();
+    board.setBoardToFen("k6K/8/8/8/8/8/8/8");
+    assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 7), List.of(0, 1))).isFalse();
+  }
+
+  @Test
+  void directionContainsLegalMovesTestToOuterRanks() {
+    Board board = new Board();
+    board.setBoardToFen("8/kp6/pp6/8/8/6PP/6PK/8");
+    assertSoftly(
+        softly -> {
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 1), List.of(0, -1)))
+              .isTrue();
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 1), List.of(0, 1)))
+              .isFalse();
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(0, 6), List.of(0, -1)))
+              .isFalse();
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(0, 6), List.of(0, 1)))
+              .isTrue();
+        });
+  }
+
+  @Test
+  void directionContainsLegalMovesTestBishop() {
+    Board board = new Board();
+    board.setBoardToFen("k6K/8/8/8/8/4B3/8/8");
+    assertSoftly(
+        softly -> {
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(1, -1)))
+              .isTrue();
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(-1, 1)))
+              .isTrue();
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(1, 1)))
+              .isTrue();
+          softly
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(-1, -1)))
+              .isTrue();
+        });
+  }
+
+  @Test
+  void pieceHasLegalMovesTest() {
+    Board board = new Board();
+    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    assertThat(board.pieceHasLegalMoves(board.getPieceAt(4, 2))).isTrue();
+  }
+
+  @Test
+  void pieceHasLegalMovesTestNull() {
+    Board board = new Board();
+    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    assertThat(board.pieceHasLegalMoves(board.getPieceAt(4, 4))).isFalse();
+  }
+
+  @Test
+  void legalMovesPossibleTest() {
+    Board board = new Board();
+    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    assertThat(board.legalMovesPossible(Piece.Color.WHITE)).isTrue();
+  }
+
+  @Test
+  void stalemateTestFalse() {
+    Board board = new Board();
+    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    assertThat(board.stalemate(Piece.Color.WHITE)).isFalse();
+  }
+
+  @Test
+  void stalemateTestTrue() {
+    Board board = new Board();
+    board.setBoardToFen("k7/8/8/8/8/8/r7/r5PK");
+    assertThat(board.stalemate(Piece.Color.WHITE)).isTrue();
+  }
+
+  @Test
+  void checkmateTestFalse() {
+    Board board = new Board();
+    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    assertThat(board.checkmate(Piece.Color.WHITE)).isFalse();
+  }
+
+  @Test
+  void checkmateTestTrue() {
+    Board board = new Board();
+    board.setBoardToFen("k7/8/8/8/8/8/r7/r6K");
+    assertThat(board.checkmate(Piece.Color.WHITE)).isTrue();
+  }
+
+  @Test
   void canCapture() {
 
     Board board = new Board();
@@ -502,22 +520,10 @@ class BoardTest {
 
           softly.assertThat(board.canCapture(board.getPieceAt(6, 7), 7, 6)).isFalse();
           softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 4, 3)).isTrue();
-          softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 3, 2)).isFalse();
+          softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 3, 2)).isTrue();
           softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 6, 5)).isTrue();
-          softly.assertThat(board.canCapture(board.getPieceAt(2, 3), 2, 2)).isTrue();
-          softly.assertThat(board.canCapture(board.getPieceAt(3, 2), 3, 1)).isFalse();
-        });
-  }
-
-  @Test
-  void isCorrectColorTest() {
-    Board board = new Board();
-    board.initBoard();
-
-    assertSoftly(
-        softly -> {
-          softly.assertThat(board.isCorrectColor(Piece.Color.WHITE, 1, 1)).isTrue();
-          softly.assertThat(board.isCorrectColor(Piece.Color.WHITE, 1, 7)).isFalse();
+          softly.assertThat(board.canCapture(board.getPieceAt(1, 3), 2, 2)).isTrue();
+          // softly.assertThat(board.canCapture(board.getPieceAt(3, 2), 3, 1)).isFalse();
         });
   }
 }

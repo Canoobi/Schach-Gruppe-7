@@ -2,7 +2,7 @@ package hwr.oop.chess;
 
 public class Game {
   private final int id;
-  private Board board;
+  private final Board board;
   private Piece.Color activePlayer;
   private String winner;
 
@@ -58,7 +58,6 @@ public class Game {
     board.setPieceAt(oldCol, oldRow, board.getPieceAt(newCol, newRow));
     board.setPieceAt(newCol, newRow, possibleDeleted);
     return !check;
-
   }
 
   public void movePiece(int oldCol, int oldRow, int newCol, int newRow) {

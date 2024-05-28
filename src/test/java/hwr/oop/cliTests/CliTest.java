@@ -129,12 +129,14 @@ class CliTest {
         });
   }
 
-    @Test
-    void exceptionTests() {
-        IllegalArgumentException exception1 =
-                assertThrows(IllegalArgumentException.class, () -> cli.handle("not a command"));
+  @Test
+  void exceptionTests() {
+    IllegalArgumentException exception1 =
+        assertThrows(IllegalArgumentException.class, () -> cli.handle("not a command"));
 
-        IllegalArgumentException exception2 =
-                assertThrows(IllegalArgumentException.class, () -> cli.handle("on", "game", "0", "player", "black", "moves", "be2", "to", "b3"));
-    }
+    IllegalArgumentException exception2 =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> cli.handle("on", "game", "0", "player", "black", "moves", "be2", "to", "b3"));
+  }
 }

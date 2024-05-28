@@ -3,7 +3,7 @@ package hwr.oop.chess;
 import java.util.*;
 
 public class Board {
-  private List<List<Piece>> playBoard;
+  private final List<List<Piece>> playBoard;
   private Map<Character, Piece.PieceType> charToPieceType;
 
   private Map<Character, Character> abbreviationToFenChar;
@@ -220,7 +220,6 @@ public class Board {
   }
 
   public boolean canCapture(Piece piece, int vecX, int vecY) {
-
     if (piece.getAbbreviation() == 'b') {
       return canCapturePawn(piece, vecX, vecY);
     }
@@ -236,20 +235,14 @@ public class Board {
 
     if (piece.getColor() == Piece.Color.WHITE) {
       if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
-        if (getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == -1) {
-          return true;
-        }
-        return false;
+        return getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == -1;
       } else {
         return piece.getActualPosition().getLast() - vecY == -1
             && piece.getColor() != getPieceAt(vecX, vecY).getColor();
       }
     } else {
       if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
-        if (getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == 1) {
-          return true;
-        }
-        return false;
+        return getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == 1;
       } else {
         return piece.getActualPosition().getLast() - vecY == 1
             && piece.getColor() != getPieceAt(vecX, vecY).getColor();
@@ -292,56 +285,64 @@ public class Board {
     return this.playBoard.get(row).get(column).getColor() == color;
   }
 
-  public boolean directionContainsLegalMove(Piece piece, List<Integer> direction)
-  {
+  public boolean directionContainsLegalMove(Piece piece, List<Integer> direction) {
     int positionX = piece.getActualPosition().get(0);
     int positionY = piece.getActualPosition().get(1);
     Piece deletedPiece;
 
-    for (int i = 1; i * direction.get(0) + positionX >= 0 && i * direction.get(0) + positionX < 8
-            && i * direction.get(1) + positionY >= 0 && i * direction.get(1) + positionY < 8; i++) {
+    for (int i = 1;
+        i * direction.get(0) + positionX >= 0
+            && i * direction.get(0) + positionX < 8
+            && i * direction.get(1) + positionY >= 0
+            && i * direction.get(1) + positionY < 8;
+        i++) {
       if (isValidMove(piece, i * direction.get(0) + positionX, i * direction.get(1) + positionY)
-              && !isBlocked(piece, i * direction.get(0) + positionX, i * direction.get(1) + positionY)) {
-        if((getPieceAt( i * direction.get(0) + positionX, i * direction.get(1) + positionY) != null)
-        && (getPieceAt( i * direction.get(0) + positionX, i * direction.get(1) + positionY).getColor() == piece.getColor()))
-        {
+          && !isBlocked(
+              piece, i * direction.get(0) + positionX, i * direction.get(1) + positionY)) {
+        if ((getPieceAt(i * direction.get(0) + positionX, i * direction.get(1) + positionY) != null)
+            && (getPieceAt(i * direction.get(0) + positionX, i * direction.get(1) + positionY)
+                    .getColor()
+                == piece.getColor())) {
           continue;
         }
-        deletedPiece = playBoard.get(i * direction.get(0) + positionX).get(i * direction.get(1) + positionY);
+        deletedPiece =
+            playBoard.get(i * direction.get(0) + positionX).get(i * direction.get(1) + positionY);
         changePosition(
-                piece.getColor(),
-                positionX,
-                positionY,
-                 i * direction.get(0) + positionX,
-                i * direction.get(1) + positionY);
+            positionX,
+            positionY,
+            i * direction.get(0) + positionX,
+            i * direction.get(1) + positionY);
         if (!isCheck(piece.getColor())) {
           changePosition(
-                  piece.getColor(),
-                   i * direction.get(0) + positionX,
-                  i * direction.get(1) + positionY,
-                  positionX,
-                  positionY);
-          playBoard.get(i * direction.get(0) + positionX).set(i * direction.get(1) + positionY, deletedPiece);
+              i * direction.get(0) + positionX,
+              i * direction.get(1) + positionY,
+              positionX,
+              positionY);
+          playBoard
+              .get(i * direction.get(0) + positionX)
+              .set(i * direction.get(1) + positionY, deletedPiece);
           return true;
         }
         changePosition(
-                piece.getColor(),
-                 i * direction.get(0) + positionX,
-                i * direction.get(1) + positionY,
-                positionX,
-                positionY);
-        playBoard.get(i * direction.get(0) + positionX).set(i * direction.get(1) + positionY, deletedPiece);
+            i * direction.get(0) + positionX,
+            i * direction.get(1) + positionY,
+            positionX,
+            positionY);
+        playBoard
+            .get(i * direction.get(0) + positionX)
+            .set(i * direction.get(1) + positionY, deletedPiece);
       }
     }
     return false;
   }
-  public boolean pieceHasLegalMoves(Piece piece)
-  {
-    if(piece == null) { return false; }
+
+  public boolean pieceHasLegalMoves(Piece piece) {
+    if (piece == null) {
+      return false;
+    }
     for (List<Integer> move : piece.getPossibleMoves()) {
-      if(directionContainsLegalMove(piece, move)
-              || directionContainsLegalMove(piece, List.of(move.get(0)*(-1), move.get(1)*(-1))))
-      {
+      if (directionContainsLegalMove(piece, move)
+          || directionContainsLegalMove(piece, List.of(move.get(0) * (-1), move.get(1) * (-1)))) {
         return true;
       }
     }
@@ -349,7 +350,7 @@ public class Board {
   }
 
   public boolean legalMovesPossible(Piece.Color playerColor) {
-    for(List<Piece> row : playBoard) {
+    for (List<Piece> row : playBoard) {
       for (Piece piece : row) {
         if (piece == null) {
           continue;
@@ -362,8 +363,7 @@ public class Board {
     return false;
   }
 
-  public boolean stalemate(Piece.Color playercolor)
-  {
+  public boolean stalemate(Piece.Color playercolor) {
     return !isCheck(playercolor) && !legalMovesPossible(playercolor);
   }
 

@@ -39,8 +39,10 @@ class MainTest {
   void main_CanBeCalledWithHelpCommand() {
     Main.main(new String[] {"help"});
     assertSoftly(
-            softly -> {
-              softly.assertThat(outContent.toString()).contains("You can use one of the following commands:");
-            });
+        softly -> {
+          softly
+              .assertThat(outContent.toString())
+              .contains("You can use one of the following commands:");
+        });
   }
 }

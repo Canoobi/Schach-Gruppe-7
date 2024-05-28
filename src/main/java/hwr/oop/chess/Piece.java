@@ -62,10 +62,10 @@ public class Piece {
   }
 
   private List<Integer> actualPosition;
-  private List<List<Integer>> possibleMoves;
-  private boolean moveRepeatable;
-  private Color color;
-  private char abbreviation;
+  private final List<List<Integer>> possibleMoves;
+  private final boolean moveRepeatable;
+  private final Color color;
+  private final char abbreviation;
 
   public Piece(PieceType pieceType, List<Integer> pos, Color color) {
     this.possibleMoves = pieceType.getMoves();

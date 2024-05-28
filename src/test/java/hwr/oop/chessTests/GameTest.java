@@ -68,27 +68,28 @@ class GameTest {
         });
   }
 
-    @Test
-    void movePossible() {
-        Game game = new Game(6);
-        game.getBoard().setBoardToFen("7b/8/8/8/3P4/8/8/B7");
+  @Test
+  void movePossible() {
+    Game game = new Game(6);
+    game.getBoard().setBoardToFen("7b/8/8/8/3P4/8/8/B7");
 
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(game.movePossible(0, 0, 7, 7)).isFalse();
-                });
-    }
+    assertSoftly(
+        softly -> {
+          softly.assertThat(game.movePossible(0, 0, 7, 7)).isFalse();
+        });
+  }
 
-    @Test
-    void movePossibleMoveIntoCheck(){
-        Game game = new Game(7);
-        game.getBoard().setBoardToFen("r7/8/8/8/8/8/B7/K7");
+  @Test
+  void movePossibleMoveIntoCheck() {
+    Game game = new Game(7);
+    game.getBoard().setBoardToFen("r7/8/8/8/8/8/B7/K7");
 
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(game.movePossible(0, 1, 1, 2)).isFalse();
-                });
-    }
+    assertSoftly(
+        softly -> {
+          softly.assertThat(game.movePossible(0, 1, 1, 2)).isFalse();
+        });
+  }
+
   @Test
   void movePossibleCheck() {
     Game game = new Game(7);
