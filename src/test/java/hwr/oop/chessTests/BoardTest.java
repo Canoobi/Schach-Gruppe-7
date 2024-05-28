@@ -231,6 +231,13 @@ class BoardTest {
   }
 
   @Test
+  void pawnCaptureValidMove() {
+    Board board = new Board();
+    board.setBoardToFen("8/8/8/8/4p3/3P4/8/8");
+    assertThat(board.isValidMove(board.getPieceAt(3, 2), 4, 3)).isTrue();
+  }
+
+  @Test
   void setBoardToFenTest() {
     Board board = new Board();
 
@@ -348,15 +355,18 @@ class BoardTest {
   void canCapture() {
 
     Board board = new Board();
-    board.setBoardToFen("8/7B/8/8/2ppp3/3P4/8/8");
+    board.setBoardToFen("6p1/7b/8/P1P5/1p6/PpP1p1p1/1p3P2/1P6");
 
     assertSoftly(
         softly -> {
-          softly.assertThat(board.canCapture(board.getPieceAt(3, 2), 3, 3)).isFalse();
-          softly.assertThat(board.canCapture(board.getPieceAt(3, 2), 5, 4)).isFalse();
-          softly.assertThat(board.canCapture(board.getPieceAt(3, 2), 2, 3)).isTrue();
-          softly.assertThat(board.canCapture(board.getPieceAt(3, 2), 4, 3)).isTrue();
+          softly.assertThat(board.canCapture(board.getPieceAt(0, 2), 1, 1)).isFalse();
+          softly.assertThat(board.canCapture(board.getPieceAt(0, 2), 1, 3)).isTrue();
+          softly.assertThat(board.canCapture(board.getPieceAt(1, 3), 0, 2)).isTrue();
+          softly.assertThat(board.canCapture(board.getPieceAt(1, 3), 0, 4)).isFalse();
+          softly.assertThat(board.canCapture(board.getPieceAt(5, 1), 4, 2)).isTrue();
+          softly.assertThat(board.canCapture(board.getPieceAt(1, 0), 1, 1)).isFalse();
 
+          softly.assertThat(board.canCapture(board.getPieceAt(6, 7), 7, 6)).isFalse();
           softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 4, 3)).isTrue();
           softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 3, 2)).isFalse();
           softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 6, 5)).isTrue();

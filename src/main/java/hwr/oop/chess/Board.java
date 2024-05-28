@@ -233,6 +233,7 @@ public class Board {
   }
 
   public boolean canCapturePawn(Piece piece, int vecX, int vecY) {
+
     if (piece.getColor() == Piece.Color.WHITE) {
       if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
         if (getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == -1) {
