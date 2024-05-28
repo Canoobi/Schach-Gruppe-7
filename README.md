@@ -39,11 +39,17 @@ just build
 
 ## Abstract
 
-[TODO]: # (Write a short description of your project.)
+# Short description of our project:
+Chess game, programmed by 4 students at HWR Berlin in OOP Lecture.
 
-[TODO]: # (State most important features.)
+# Most important features:
+- chess logic
+- cli
+- persistance
 
-[TODO]: # (State the most interesting problems you encountered during the project.)
+# Most interesting problems we encountered during the project:
+- testing exceptions
+- writing into a csv-file
 
 ## Feature List
 
@@ -80,10 +86,10 @@ just build
 | 29     | movePiece()             | movePieceWhiteTest()/movePieceBlackTest()                                                                                                                                                               |
 | 30     | getWinner()             | getWinnerTest()                                                                                                                                                                                         |
 | 31     | setWinner()             | getWinnerTest()                                                                                                                                                                                         |
-| 31     | saveGame()              | saveGameTest()                                                                                                                                                                                          |
-| 31     | getLatestId()           | getLatestIdTest()                                                                                                                                                                                       |
-| 31     | getAllMatchId()         | saveGameTest()                                                                                                                                                                                          |
-| 31     | getBoardFromId()        | getBoardFromIDTest()                                                                                                                                                                                    |
+| 32     | saveGame()              | saveGameTest()                                                                                                                                                                                          |
+| 33     | getLatestId()           | getLatestIdTest()                                                                                                                                                                                       |
+| 34     | getAllMatchId()         | saveGameTest()                                                                                                                                                                                          |
+| 35     | getBoardFromId()        | getBoardFromIDTest()                                                                                                                                                                                    |
 
 ## Additional Dependencies
 

@@ -1,14 +1,12 @@
 package hwr.oop.chess;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class Board {
   private List<List<Piece>> playBoard;
   private Map<Character, Piece.PieceType> charToPieceType;
 
   private Map<Character, Character> abbreviationToFenChar;
-  private Logger logger = Logger.getLogger(getClass().getName());
 
   public Board() {
     charToPieceType();
@@ -128,7 +126,7 @@ public class Board {
     abbreviationToFenChar.put('b', 'p');
   }
 
-  public void changePosition(Piece.Color playerColor, int oldCol, int oldRow, int newCol, int newRow) {
+  public void changePosition(int oldCol, int oldRow, int newCol, int newRow) {
     this.playBoard.get(newRow).set(newCol, playBoard.get(oldRow).get(oldCol));
     if (getPieceAt(oldCol, oldRow) != null) {
       getPieceAt(oldCol, oldRow).setActualPosition(List.of(newCol, newRow));
@@ -136,14 +134,12 @@ public class Board {
     this.playBoard.get(oldRow).set(oldCol, null);
   }
 
-  public void printBoard() {
-    logger.info("Printing Board here");
-  }
-
   public Piece getKing(Piece.Color color) {
     for (List<Piece> l : playBoard) {
       for (Piece p : l) {
-        if (p != null && p.getColor() == color && Character.toLowerCase(p.getAbbreviation()) == 'k') {
+        if (p != null
+            && p.getColor() == color
+            && Character.toLowerCase(p.getAbbreviation()) == 'k') {
           return p;
         }
       }
@@ -176,6 +172,9 @@ public class Board {
       return isValidMoveRepeat(piece, vecX, vecY);
     } else {
       if (piece.getAbbreviation() == 'b') {
+        if (canCapturePawn(piece, column, row)) {
+          return true;
+        }
         return isValidMovePawn(piece, vecX, vecY);
       } else {
         return isValidMoveNonRepeat(piece, vecX, vecY);
@@ -217,6 +216,44 @@ public class Board {
         return true;
       }
       return 0 == vecX && -1 == vecY;
+    }
+  }
+
+  public boolean canCapture(Piece piece, int vecX, int vecY) {
+
+    if (piece.getAbbreviation() == 'b') {
+      return canCapturePawn(piece, vecX, vecY);
+    }
+
+    if (getPieceAt(vecX, vecY) == null) {
+      return true;
+    } else {
+      return piece.getColor() != getPieceAt(vecX, vecY).getColor();
+    }
+  }
+
+  public boolean canCapturePawn(Piece piece, int vecX, int vecY) {
+
+    if (piece.getColor() == Piece.Color.WHITE) {
+      if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
+        if (getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == -1) {
+          return true;
+        }
+        return false;
+      } else {
+        return piece.getActualPosition().getLast() - vecY == -1
+            && piece.getColor() != getPieceAt(vecX, vecY).getColor();
+      }
+    } else {
+      if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
+        if (getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == 1) {
+          return true;
+        }
+        return false;
+      } else {
+        return piece.getActualPosition().getLast() - vecY == 1
+            && piece.getColor() != getPieceAt(vecX, vecY).getColor();
+      }
     }
   }
 

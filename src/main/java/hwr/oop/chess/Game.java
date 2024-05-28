@@ -11,6 +11,7 @@ public class Game {
     this.board = new Board();
     board.setBoardToFen(fen);
     this.activePlayer = activePlayer;
+    this.winner = null;
   }
 
   public Game(int id) {
@@ -18,6 +19,7 @@ public class Game {
     this.board = new Board();
     board.initBoard();
     this.activePlayer = Piece.Color.WHITE;
+    this.winner = null;
   }
 
   public int getId() {
@@ -36,8 +38,33 @@ public class Game {
     return board;
   }
 
+  public boolean movePossible(int oldCol, int oldRow, int newCol, int newRow) {
+    // TODO checken, ob schachmatt
+
+    if (!board.isValidMove(board.getPieceAt(oldCol, oldRow), newCol, newRow)) {
+      return false;
+    }
+    if (!board.canCapture(board.getPieceAt(oldCol, oldRow), newCol, newRow)) {
+      return false;
+    }
+    if (board.isBlocked(board.getPieceAt(oldCol, oldRow), newCol, newRow)) {
+      return false;
+    }
+
+    Piece possibleDeleted = board.getPieceAt(newCol, newRow);
+    board.setPieceAt(newCol, newRow, board.getPieceAt(oldCol, oldRow));
+    board.setPieceAt(oldCol, oldRow, null);
+    boolean check = board.isCheck(getActivePlayer());
+    board.setPieceAt(oldCol, oldRow, board.getPieceAt(newCol, newRow));
+    board.setPieceAt(newCol, newRow, possibleDeleted);
+    return !check;
+
+  }
+
   public void movePiece(int oldCol, int oldRow, int newCol, int newRow) {
-    board.changePosition(this.getActivePlayer(), oldCol, oldRow, newCol, newRow);
+
+    board.changePosition(oldCol, oldRow, newCol, newRow);
+
     if (this.getActivePlayer() == Piece.Color.WHITE) {
       setActivePlayer(Piece.Color.BLACK);
     } else {
