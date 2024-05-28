@@ -523,7 +523,9 @@ class BoardTest {
           softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 3, 2)).isTrue();
           softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 6, 5)).isTrue();
           softly.assertThat(board.canCapture(board.getPieceAt(1, 3), 2, 2)).isTrue();
-          // softly.assertThat(board.canCapture(board.getPieceAt(3, 2), 3, 1)).isFalse();
+
+          softly.assertThat(board.canCapture(board.getPieceAt(4, 2), 4, 1)).isTrue();
+          softly.assertThat(board.canCapture(board.getPieceAt(5, 1), 5, 2)).isTrue();
         });
   }
 }
