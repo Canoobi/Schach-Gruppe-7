@@ -291,4 +291,83 @@ public class Board {
   public boolean isCorrectColor(Piece.Color color, int column, int row) {
     return this.playBoard.get(row).get(column).getColor() == color;
   }
+
+  public boolean directionContainsLegalMove(Piece piece, List<Integer> direction)
+  {
+    int positionX = piece.getActualPosition().get(0);
+    int positionY = piece.getActualPosition().get(1);
+    Piece deletedPiece;
+
+    for (int i = 1; i * direction.get(0) + positionX >= 0 && i * direction.get(0) + positionX < 8
+            && i * direction.get(1) + positionY >= 0 && i * direction.get(1) + positionY < 8; i++) {
+      if (isValidMove(piece, i * direction.get(0) + positionX, i * direction.get(1) + positionY)
+              && !isBlocked(piece, i * direction.get(0) + positionX, i * direction.get(1) + positionY)) {
+        if((getPieceAt( i * direction.get(0) + positionX, i * direction.get(1) + positionY) != null)
+        && (getPieceAt( i * direction.get(0) + positionX, i * direction.get(1) + positionY).getColor() == piece.getColor()))
+        {
+          continue;
+        }
+        deletedPiece = playBoard.get(i * direction.get(0) + positionX).get(i * direction.get(1) + positionY);
+        changePosition(
+                piece.getColor(),
+                positionX,
+                positionY,
+                 i * direction.get(0) + positionX,
+                i * direction.get(1) + positionY);
+        if (!isCheck(piece.getColor())) {
+          changePosition(
+                  piece.getColor(),
+                   i * direction.get(0) + positionX,
+                  i * direction.get(1) + positionY,
+                  positionX,
+                  positionY);
+          playBoard.get(i * direction.get(0) + positionX).set(i * direction.get(1) + positionY, deletedPiece);
+          return true;
+        }
+        changePosition(
+                piece.getColor(),
+                 i * direction.get(0) + positionX,
+                i * direction.get(1) + positionY,
+                positionX,
+                positionY);
+        playBoard.get(i * direction.get(0) + positionX).set(i * direction.get(1) + positionY, deletedPiece);
+      }
+    }
+    return false;
+  }
+  public boolean pieceHasLegalMoves(Piece piece)
+  {
+    if(piece == null) { return false; }
+    for (List<Integer> move : piece.getPossibleMoves()) {
+      if(directionContainsLegalMove(piece, move)
+              || directionContainsLegalMove(piece, List.of(move.get(0)*(-1), move.get(1)*(-1))))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean legalMovesPossible(Piece.Color playerColor) {
+    for(List<Piece> row : playBoard) {
+      for (Piece piece : row) {
+        if (piece == null) {
+          continue;
+        }
+        if (piece.getColor() == playerColor && pieceHasLegalMoves(piece)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public boolean stalemate(Piece.Color playercolor)
+  {
+    return !isCheck(playercolor) && !legalMovesPossible(playercolor);
+  }
+
+  public boolean checkmate(Piece.Color playercolor) {
+    return isCheck(playercolor) && !legalMovesPossible(playercolor);
+  }
 }
