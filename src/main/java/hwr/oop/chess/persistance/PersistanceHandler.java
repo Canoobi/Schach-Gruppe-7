@@ -33,12 +33,11 @@ public class PersistanceHandler {
   }
 
   public PersistanceHandler(Path csvFilePath) {
-    this(csvFilePath, hwr.oop.chess.persistance.IOExceptionBomb.DONT);
+    this(csvFilePath, IOExceptionBomb.DONT);
     createHashMap();
   }
 
-  public PersistanceHandler(
-      Path csvFilePath, hwr.oop.chess.persistance.IOExceptionBomb ioExceptionBomb) {
+  public PersistanceHandler(Path csvFilePath, IOExceptionBomb ioExceptionBomb) {
     this.csvFilePath = csvFilePath;
     this.ioExceptionBomb = ioExceptionBomb;
   }
@@ -69,6 +68,29 @@ public class PersistanceHandler {
               .orElse(-1));
     } catch (IOException e) {
       throw new IllegalStateException("Failed to read CSV file", e);
+    }
+  }
+
+  public void deleteMatch(String id) {
+    List<String> result;
+    StringBuilder newSaveFile = new StringBuilder();
+    try (var stuff = Files.newBufferedReader(csvFilePath)) {
+      result = stuff.lines().toList();
+
+    } catch (IOException e) {
+      throw new IllegalStateException();
+    }
+
+    for (String match : result) {
+      if (!match.startsWith(id)) {
+        newSaveFile.append(match).append("\n");
+      }
+    }
+
+    try (final var writer = Files.newBufferedWriter(csvFilePath)) {
+      writer.write(String.valueOf(newSaveFile));
+    } catch (IOException e) {
+      throw new IllegalStateException("Could not save game", e);
     }
   }
 
