@@ -84,7 +84,7 @@ Chess game, programmed by 4 students at HWR Berlin in OOP Lecture.
 |--------|-------------|--------------------|--------------------|
 | 1      | Save Game   | :heavy_check_mark: | :heavy_check_mark: |
 | 2      | Load Game   | :heavy_check_mark: | :heavy_check_mark: |
-| 2      | Delete Game | :x:                | :x:                |
+| 2      | Delete Game | :heavy_check_mark: | :heavy_check_mark: |
 
 ## Additional Dependencies
 

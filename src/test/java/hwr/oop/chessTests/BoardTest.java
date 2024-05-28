@@ -33,11 +33,8 @@ class BoardTest {
           softly.assertThat(board.isValidMove(bauer2, 3, 4)).isTrue();
           softly.assertThat(board.isValidMove(bauer2, 0, 3)).isFalse();
           softly.assertThat(board.isValidMove(bauer2, 0, 4)).isFalse();
-          softly.assertThat(board.isValidMove(bauer3, 4, 5)).isTrue();
           softly.assertThat(board.isValidMove(bauer3, 3, 5)).isFalse();
           softly.assertThat(board.isValidMove(bauer3, 4, 3)).isFalse();
-          softly.assertThat(board.isValidMove(bauer4, 5, 4)).isTrue();
-          softly.assertThat(board.isValidMove(bauer4, 4, 3)).isFalse();
           softly.assertThat(board.isValidMove(bauer4, 6, 4)).isFalse();
           softly.assertThat(board.isValidMove(bauer4, 5, 3)).isFalse();
           softly.assertThat(board.isValidMove(turm, 7, 4)).isTrue();

@@ -43,7 +43,6 @@ public class PersistanceHandler {
   }
 
   public void saveGame(Game game) {
-
     String csvString =
         game.getId() + "," + game.getBoard().getFenOfBoard() + "," + game.getActivePlayer() + "\n";
 
@@ -71,12 +70,14 @@ public class PersistanceHandler {
     }
   }
 
-  public void deleteMatch(String id) {
+  public void deleteMatch(String id, int bombId) {
     List<String> result;
     StringBuilder newSaveFile = new StringBuilder();
     try (var stuff = Files.newBufferedReader(csvFilePath)) {
+      if (bombId == 1) {
+        ioExceptionBomb.fire();
+      }
       result = stuff.lines().toList();
-
     } catch (IOException e) {
       throw new IllegalStateException();
     }
@@ -88,6 +89,9 @@ public class PersistanceHandler {
     }
 
     try (final var writer = Files.newBufferedWriter(csvFilePath)) {
+      if (bombId == 2) {
+        ioExceptionBomb.fire();
+      }
       writer.write(String.valueOf(newSaveFile));
     } catch (IOException e) {
       throw new IllegalStateException("Could not save game", e);
@@ -114,6 +118,9 @@ public class PersistanceHandler {
     List<String> result;
     try (var stuff = Files.newBufferedReader(csvFilePath)) {
       ioExceptionBomb.fire();
+      if (Integer.parseInt(id) > Integer.parseInt(getLatestID())) {
+        return null;
+      }
       result =
           stuff
               .lines()
@@ -121,7 +128,7 @@ public class PersistanceHandler {
               .flatMap(line -> Stream.of(line.split(",")))
               .toList();
     } catch (IOException e) {
-      throw new IllegalStateException();
+      throw new IllegalStateException("Error while reading CSV file");
     }
 
     return new Game(Integer.parseInt(id), result.get(1), intToEnum.get(result.get(2)));

@@ -139,6 +139,7 @@ class CliTest {
     assertSoftly(
         softly -> {
           softly.assertThat(output).contains("The game is a stalemate! It's a draw!");
+          softly.assertThat(persistance.getGameFromID("0")).isNull();
         });
   }
 
@@ -151,6 +152,7 @@ class CliTest {
     assertSoftly(
         softly -> {
           softly.assertThat(output).contains("Congratulations! Player BLACK won the game!");
+          softly.assertThat(persistance.getGameFromID("0")).isNull();
         });
   }
 

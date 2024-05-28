@@ -85,11 +85,11 @@ public final class PlayOnGameCommand implements MutableCommand {
 
         if (game.getBoard().stalemate(game.getActivePlayer())) {
           out.println("The game is a stalemate! It's a draw!");
-          // TODO delete game
+          persistance.deleteMatch(gameId, 0);
         } else if (game.getBoard().checkmate(game.getActivePlayer())) {
           game.setWinner(playerColor.toString());
           out.println("Congratulations! Player " + game.getWinner() + " won the game!");
-          // TODO delete game
+          persistance.deleteMatch(gameId, 0);
         } else {
           out.println("Now it's player " + game.getActivePlayer() + "'s turn.");
         }

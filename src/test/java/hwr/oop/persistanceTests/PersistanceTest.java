@@ -20,11 +20,11 @@ import org.junit.jupiter.api.Test;
 
 class PersistanceTest {
 
-  private final String filePathString = "src/test/resources/testFile.csv";
   private Path path;
 
   @BeforeEach
   void CreateFile() throws IOException {
+    String filePathString = "src/test/resources/testFile.csv";
     final var file = new File(filePathString);
     file.createNewFile();
     this.path = file.toPath();
@@ -47,7 +47,7 @@ class PersistanceTest {
     persistanceHandler.saveGame(game2);
     persistanceHandler.saveGame(game3);
 
-    persistanceHandler.deleteMatch("2");
+    persistanceHandler.deleteMatch("2", 0);
 
     assertThat(persistanceHandler.getAllMatchId()).doesNotContain("2");
   }
@@ -113,13 +113,21 @@ class PersistanceTest {
     assertThat(exception1.getMessage()).isEqualTo("Could not save game");
 
     IllegalStateException exception2 =
-        assertThrows(IllegalStateException.class, persistanceHandler::getLatestID);
-    assertThat(exception2.getMessage()).isEqualTo("Failed to read CSV file");
+        assertThrows(IllegalStateException.class, () -> persistanceHandler.deleteMatch("0", 2));
+    assertThat(exception2.getMessage()).isEqualTo("Could not save game");
 
     IllegalStateException exception3 =
-        assertThrows(IllegalStateException.class, persistanceHandler::getAllMatchId);
+        assertThrows(IllegalStateException.class, persistanceHandler::getLatestID);
+    assertThat(exception3.getMessage()).isEqualTo("Failed to read CSV file");
 
     IllegalStateException exception4 =
-        assertThrows(IllegalStateException.class, () -> persistanceHandler.getGameFromID("2"));
+        assertThrows(IllegalStateException.class, () -> persistanceHandler.getGameFromID("-1"));
+    assertThat(exception4.getMessage()).isEqualTo("Error while reading CSV file");
+
+    assertThrows(IllegalStateException.class, persistanceHandler::getAllMatchId);
+
+    assertThrows(IllegalStateException.class, () -> persistanceHandler.getGameFromID("-5"));
+
+    assertThrows(IllegalStateException.class, () -> persistanceHandler.deleteMatch("1", 1));
   }
 }
