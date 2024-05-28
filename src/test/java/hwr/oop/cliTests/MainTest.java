@@ -34,7 +34,7 @@ class MainTest {
   @Test
   void main_CanBeCalledWithHelpCommand() {
     Main mainTest = new Main();
-    System.out.println(mainTest.toString());
+    System.out.println(mainTest);
     Main.main(new String[] {"help"});
     assertSoftly(
         softly -> {

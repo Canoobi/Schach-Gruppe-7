@@ -5,6 +5,7 @@ import hwr.oop.chess.Piece;
 import hwr.oop.chess.persistance.PersistanceHandler;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class PlayOnGameCommand implements MutableCommand {
@@ -47,7 +48,7 @@ public final class PlayOnGameCommand implements MutableCommand {
     indices.add(row);
 
     if (indices.get(0) > 7 || indices.get(0) < 0 || indices.get(1) > 7 || indices.get(1) < 0) {
-      return new ArrayList<>();
+      return Collections.emptyList();
     }
 
     return indices;

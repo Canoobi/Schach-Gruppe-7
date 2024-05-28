@@ -164,32 +164,36 @@ class CliTest {
         softly -> {
           softly.assertThat(output).contains("Index is out of range of the board.");
         });
-    cli.handle("on", "game", "0", "player", "white", "moves", "b9", "to", "b3");
+  }
+
+  @Test
+  void playOnGameCommandOutOfBoundTest() {
+    Game game = new Game(0, "rnbqkbnr/8/8/8/8/8/8/RNBQKBNR", Piece.Color.WHITE);
+    persistance.saveGame(game);
+    cli.handle("on", "game", "0", "player", "white", "moves", "h8", "to", "h1");
+    var output = outputStream.toString();
+    String finalOutput1 = output;
     assertSoftly(
         softly -> {
-          softly.assertThat(output).contains("Index is out of range of the board.");
+          softly.assertThat(finalOutput1).contains("Piece h8 moved to h1");
+          softly.assertThat(finalOutput1).contains("Now it's player BLACK's turn.");
         });
-    cli.handle("on", "game", "0", "player", "white", "moves", "b9", "to", "b3");
+    cli.handle("on", "game", "0", "player", "white", "moves", "a1", "to", "a8");
+    output = outputStream.toString();
+    String finalOutput = output;
     assertSoftly(
         softly -> {
-          softly.assertThat(output).contains("Index is out of range of the board.");
+          softly.assertThat(finalOutput).contains("Piece a1 moved to a8");
+          softly.assertThat(finalOutput).contains("Now it's player BLACK's turn.");
         });
-    cli.handle("on", "game", "0", "player", "white", "moves", "b9", "to", "b3");
-    assertSoftly(
-        softly -> {
-          softly.assertThat(output).contains("Index is out of range of the board.");
-        });
-    //TODO
   }
 
   @Test
   void exceptionTests() {
-    IllegalArgumentException exception1 =
-        assertThrows(IllegalArgumentException.class, () -> cli.handle("not a command"));
+    assertThrows(IllegalArgumentException.class, () -> cli.handle("not a command"));
 
-    IllegalArgumentException exception2 =
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> cli.handle("on", "game", "0", "player", "black", "moves", "be2", "to", "b3"));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> cli.handle("on", "game", "0", "player", "black", "moves", "be2", "to", "b3"));
   }
 }

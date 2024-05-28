@@ -172,10 +172,11 @@ public class Board {
       return isValidMoveRepeat(piece, vecX, vecY);
     } else {
       if (piece.getAbbreviation() == 'b') {
-        if (canCapturePawn(piece, column, row)) {
-          return true;
+        if (getPieceAt(column, row) != null) {
+          return canCapturePawn(piece, column, row);
+        } else {
+          return isValidMovePawn(piece, vecX, vecY);
         }
-        return isValidMovePawn(piece, vecX, vecY);
       } else {
         return isValidMoveNonRepeat(piece, vecX, vecY);
       }
@@ -232,7 +233,6 @@ public class Board {
   }
 
   public boolean canCapturePawn(Piece piece, int vecX, int vecY) {
-
     if (piece.getColor() == Piece.Color.WHITE) {
       if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
         return getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == -1;
