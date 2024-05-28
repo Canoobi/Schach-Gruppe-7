@@ -1,10 +1,10 @@
 package hwr.oop.chessTests;
 
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
 import hwr.oop.chess.Game;
 import hwr.oop.chess.Piece;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class GameTest {
   @Test
@@ -38,6 +38,67 @@ class GameTest {
     assertSoftly(
         softly -> {
           softly.assertThat(game.getWinner()).isEqualTo("White");
+        });
+  }
+
+  @Test
+  void movePossibleCaptureFriendly() {
+    Game game = new Game(6);
+    game.getBoard().setBoardToFen("3R4/8/8/8/2K1B3/3P4/1N6/8");
+
+    assertSoftly(
+        softly -> {
+          softly.assertThat(game.movePossible(1, 1, 2, 3)).isFalse();
+          softly.assertThat(game.movePossible(3, 2, 2, 3)).isFalse();
+          softly.assertThat(game.movePossible(3, 7, 3, 2)).isFalse();
+          softly.assertThat(game.movePossible(2, 3, 3, 2)).isFalse();
+        });
+  }
+
+  @Test
+  void movePossibleCaptureEnemy() {
+    Game game = new Game(6);
+    game.getBoard().setBoardToFen("7K/8/8/3p4/2N1P3/1q2P3/8/8");
+
+    assertSoftly(
+        softly -> {
+          softly.assertThat(game.movePossible(3, 4, 2, 3)).isTrue();
+          softly.assertThat(game.movePossible(1, 2, 2, 3)).isTrue();
+          softly.assertThat(game.movePossible(1, 2, 4, 2)).isTrue();
+        });
+  }
+
+    @Test
+    void movePossible() {
+        Game game = new Game(6);
+        game.getBoard().setBoardToFen("7b/8/8/8/3P4/8/8/B7");
+
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(game.movePossible(0, 0, 7, 7)).isFalse();
+                });
+    }
+
+    @Test
+    void movePossibleMoveIntoCheck(){
+        Game game = new Game(7);
+        game.getBoard().setBoardToFen("r7/8/8/8/8/8/B7/K7");
+
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(game.movePossible(0, 1, 1, 2)).isFalse();
+                });
+    }
+  @Test
+  void movePossibleCheck() {
+    Game game = new Game(7);
+    game.getBoard().setBoardToFen("8/8/r7/8/8/8/1r6/K7");
+
+    assertSoftly(
+        softly -> {
+          softly.assertThat(game.movePossible(0, 0, 0, 1)).isFalse();
+          softly.assertThat(game.movePossible(0, 0, 1, 0)).isFalse();
+          softly.assertThat(game.movePossible(0, 0, 1, 1)).isTrue();
         });
   }
 

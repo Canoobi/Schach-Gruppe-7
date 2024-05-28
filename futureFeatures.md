@@ -1,6 +1,6 @@
 # Future Features
 
-- [ ] Figuren Klasse
+- [x] Figuren Klasse
   - [ ] Zug Methode
   - [ ] Basis für Bauern, Dame etc. (Polymorphismus)
   - [ ] Bauern schlagen
@@ -8,14 +8,14 @@
   - [ ] Start/neues Spiel
   - [ ] Sieger/Verlierer/Unentschieden
   - [ ] Spiel/Stellung importieren
-- [ ] Spielbrett
+- [x] Spielbrett
 - [x] Züge
 - [ ] Schach
 - [ ] Schachmatt
 - [ ] Spieler
-- [ ] Partie
-  - [ ] laden
-  - [ ] speichern
+- [x] Partie
+  - [x] laden
+  - [x] speichern
 - [x] isBlocked
 
 ## Maybe:

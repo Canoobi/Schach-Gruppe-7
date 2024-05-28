@@ -298,7 +298,6 @@ class BoardTest {
   void printBoardTest() {
     Board board = new Board();
     board.initBoard();
-    board.printBoard();
     assertThat(board.getPieceAt(4, 4)).isNull();
   }
 
@@ -341,7 +340,7 @@ class BoardTest {
     Board board = new Board();
     board.initBoard();
     Piece piece = board.getPieceAt(1, 0);
-    board.changePosition(Piece.Color.WHITE, 1, 0, 0, 2);
+    board.changePosition(1, 0, 0, 2);
 
     assertSoftly(
         softly -> {
@@ -368,9 +367,11 @@ class BoardTest {
           softly.assertThat(board.canCapture(board.getPieceAt(1, 0), 1, 1)).isFalse();
 
           softly.assertThat(board.canCapture(board.getPieceAt(6, 7), 7, 6)).isFalse();
-
-          softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 2, 2)).isTrue();
-          softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 1, 1)).isFalse();
+          softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 4, 3)).isTrue();
+          softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 3, 2)).isFalse();
+          softly.assertThat(board.canCapture(board.getPieceAt(7, 6), 6, 5)).isTrue();
+          softly.assertThat(board.canCapture(board.getPieceAt(2, 3), 2, 2)).isTrue();
+          softly.assertThat(board.canCapture(board.getPieceAt(3, 2), 3, 1)).isFalse();
         });
   }
 
