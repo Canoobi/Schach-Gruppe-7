@@ -179,6 +179,7 @@ class CliTest {
         softly -> {
           softly.assertThat(output).contains("Index is out of range of the board.");
         });
+    //TODO
   }
 
   @Test
