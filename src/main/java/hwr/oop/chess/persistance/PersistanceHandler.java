@@ -89,7 +89,6 @@ public class PersistanceHandler {
   }
 
   public Game getGameFromID(String id) {
-
     List<String> result;
     try (var stuff = Files.newBufferedReader(csvFilePath)) {
       ioExceptionBomb.fire();

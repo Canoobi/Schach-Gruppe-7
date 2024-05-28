@@ -24,9 +24,6 @@ public final class PlayOnGameCommand implements MutableCommand {
   @Override
   public void parse(List<String> arguments) {
     this.gameId = arguments.get(2);
-    if (Integer.parseInt(this.gameId) <= Integer.parseInt(persistance.getLatestID())) {
-      this.game = persistance.getGameFromID(gameId);
-    }
     this.playerColor = Piece.Color.valueOf(arguments.get(4).toUpperCase());
     oldPositionString = arguments.get(6).toLowerCase();
     oldPositionInteger = convertToIndices(oldPositionString);
@@ -36,7 +33,7 @@ public final class PlayOnGameCommand implements MutableCommand {
 
   public static List<Integer> convertToIndices(String chessCoordinate) {
     if (chessCoordinate.length() != 2) {
-      throw new IllegalArgumentException("Ungültige Schachkoordinate: " + chessCoordinate);
+      throw new IllegalArgumentException("Illegal chessCoordinate: " + chessCoordinate);
     }
 
     char file = chessCoordinate.charAt(0);
@@ -54,8 +51,7 @@ public final class PlayOnGameCommand implements MutableCommand {
 
   @Override
   public boolean isApplicable(List<String> arguments) {
-    return arguments.size() >= 8
-        && arguments.getFirst().equals("on")
+    return arguments.get(0).equals("on")
         && arguments.get(1).equals("game")
         && arguments.get(3).equals("player")
         && arguments.get(5).equals("moves")
@@ -64,16 +60,25 @@ public final class PlayOnGameCommand implements MutableCommand {
 
   @Override
   public void invoke(PrintStream out) {
-    if (gameId == null) {
+    if (Integer.parseInt(gameId) < 0) {
       out.println("Game with ID " + gameId + " not found!");
     } else {
-      if(game.getActivePlayer() == playerColor) {
-        game.movePiece(oldPositionInteger.getFirst(), oldPositionInteger.get(1), newPositionInteger.getFirst(), newPositionInteger.get(1));
+      if (Integer.parseInt(this.gameId) <= Integer.parseInt(persistance.getLatestID())) {
+        this.game = persistance.getGameFromID(gameId);
+      }
+      if (game.getActivePlayer() == playerColor) {
+        game.movePiece(
+            oldPositionInteger.getFirst(),
+            oldPositionInteger.get(1),
+            newPositionInteger.getFirst(),
+            newPositionInteger.get(1));
         out.println("Piece " + oldPositionString + " moved to " + newPositionString);
-        if(game.getWinner()==null){
+        // TODO checken, ob out of bound
+        if (game.getWinner() == null) {
           out.println("Now it's player " + game.getActivePlayer() + "'s turn.");
         } else {
           out.println("Congratulations! Player " + game.getWinner() + " won the game!");
+          // TODO delete game
         }
       } else {
         out.println("Player " + game.getActivePlayer() + " is playing!");

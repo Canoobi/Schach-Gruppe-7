@@ -27,8 +27,7 @@ public final class GameQueryCommand implements MutableCommand {
 
   @Override
   public boolean isApplicable(List<String> arguments) {
-    return arguments.size() >= 4
-        && arguments.get(0).equals("on")
+    return arguments.get(0).equals("on")
         && arguments.get(1).equals("game")
         && arguments.get(3).equals("state");
   }
