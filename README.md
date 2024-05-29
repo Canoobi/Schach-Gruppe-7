@@ -58,15 +58,15 @@ Chess game, programmed by 4 students at HWR Berlin in OOP Lecture.
 
 ### Backend
 
-| Number | Feature      | Implemented             | Tested             |
-|--------|--------------|-------------------------|--------------------|
-| 1      | Chessboard   | :heavy_check_mark:      | :heavy_check_mark: |
-| 2      | Pieces       | :heavy_check_mark:      | :heavy_check_mark: |
-| 3      | Movement     | :heavy_check_mark:      | :heavy_check_mark: |
-| 4      | Check        | :ballot_box_with_check: | :heavy_check_mark: |
-| 5      | Checkmate    | :heavy_check_mark:      | :heavy_check_mark: |
-| 6      | Game         | :heavy_check_mark:      | :heavy_check_mark: |
-| 7      | FEN Notation | :heavy_check_mark:      | :heavy_check_mark: |
+| Number | Feature      | Implemented        | Tested             |
+|--------|--------------|--------------------|--------------------|
+| 1      | Chessboard   | :heavy_check_mark: | :heavy_check_mark: |
+| 2      | Pieces       | :heavy_check_mark: | :heavy_check_mark: |
+| 3      | Movement     | :heavy_check_mark: | :heavy_check_mark: |
+| 4      | Check        | :heavy_check_mark: | :heavy_check_mark: |
+| 5      | Checkmate    | :heavy_check_mark: | :heavy_check_mark: |
+| 6      | Game         | :heavy_check_mark: | :heavy_check_mark: |
+| 7      | FEN Notation | :heavy_check_mark: | :heavy_check_mark: |
 
 ### Command Line Interface
 
