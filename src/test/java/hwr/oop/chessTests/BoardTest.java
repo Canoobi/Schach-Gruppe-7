@@ -6,6 +6,8 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import hwr.oop.chess.Board;
 import hwr.oop.chess.Piece;
 import java.util.List;
+
+import hwr.oop.chess.Position;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -212,7 +214,7 @@ class BoardTest {
               .assertThat(board.getKing(Piece.Color.WHITE).getColor())
               .isEqualTo(Piece.Color.WHITE);
           softly
-              .assertThat(board.getKing(Piece.Color.WHITE).getActualPosition().getFirst())
+              .assertThat(board.getKing(Piece.Color.WHITE).getActualPosition().getX())
               .isEqualTo(1);
         });
   }
@@ -283,8 +285,8 @@ class BoardTest {
 
     assertSoftly(
         softly -> {
-          softly.assertThat(board.getPieceAt(3, 5).getActualPosition().getFirst()).isEqualTo(3);
-          softly.assertThat(board.getPieceAt(3, 5).getActualPosition().get(1)).isEqualTo(5);
+          softly.assertThat(board.getPieceAt(3, 5).getActualPosition().getX()).isEqualTo(3);
+          softly.assertThat(board.getPieceAt(3, 5).getActualPosition().getY()).isEqualTo(5);
         });
   }
 
@@ -296,7 +298,7 @@ class BoardTest {
     assertSoftly(
         softly -> {
           softly.assertThat(board.getPieceAt(7, 0).getAbbreviation()).isEqualTo('t');
-          softly.assertThat(board.getPieceAt(7, 0).getActualPosition().getFirst()).isEqualTo(7);
+          softly.assertThat(board.getPieceAt(7, 0).getActualPosition().getX()).isEqualTo(7);
           softly.assertThat(board.getPieceAt(7, 0).getColor()).isEqualTo(Piece.Color.WHITE);
         });
   }
@@ -332,7 +334,7 @@ class BoardTest {
       column = 0;
       for (Piece piece : pieces) {
         try {
-          assertThat(piece.getActualPosition()).isEqualTo(List.of(column, row));
+          assertThat(piece.getActualPosition()).isEqualTo(new Position(column, row));
         } catch (NullPointerException e) {
           assertThat(piece).isNull();
         }
@@ -353,8 +355,8 @@ class BoardTest {
         softly -> {
           softly.assertThat(board.getPieceAt(1, 0)).isNull();
           softly.assertThat(piece).isEqualTo(board.getPieceAt(0, 2));
-          softly.assertThat(piece.getActualPosition().getFirst()).isEqualTo(0);
-          softly.assertThat(piece.getActualPosition().get(1)).isEqualTo(2);
+          softly.assertThat(piece.getActualPosition().getX()).isEqualTo(0);
+          softly.assertThat(piece.getActualPosition().getY()).isEqualTo(2);
         });
   }
 
@@ -377,16 +379,16 @@ class BoardTest {
     assertSoftly(
         softly -> {
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(-1, 0)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), new Position(-1, 0)))
               .isTrue();
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(1, 0)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), new Position(1, 0)))
               .isFalse();
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(0, -1)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), new Position(0, -1)))
               .isFalse();
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(0, 1)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), new Position(0, 1)))
               .isFalse();
         });
   }
@@ -395,21 +397,21 @@ class BoardTest {
   void directionContainsLegalMovesTestBlock() {
     Board board = new Board();
     board.setBoardToFen("k7/4R3/8/8/8/r4K2/8/8");
-    assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 6), List.of(0, -1))).isTrue();
+    assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 6), new Position(0, -1))).isTrue();
   }
 
   @Test
   void directionContainsLegalMovesTestTakes() {
     Board board = new Board();
     board.setBoardToFen("k7/4R3/8/8/8/4rK2/8/8");
-    assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 6), List.of(0, -1))).isTrue();
+    assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 6), new Position(0, -1))).isTrue();
   }
 
   @Test
   void directionContainsLegalMovesTestBounds() {
     Board board = new Board();
     board.setBoardToFen("k6K/8/8/8/8/8/8/8");
-    assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 7), List.of(0, 1))).isFalse();
+    assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 7), new Position(0, 1))).isFalse();
   }
 
   @Test
@@ -419,16 +421,16 @@ class BoardTest {
     assertSoftly(
         softly -> {
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 1), List.of(0, -1)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 1), new Position(0, -1)))
               .isTrue();
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 1), List.of(0, 1)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 1), new Position(0, 1)))
               .isFalse();
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(0, 6), List.of(0, -1)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(0, 6), new Position(0, -1)))
               .isFalse();
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(0, 6), List.of(0, 1)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(0, 6), new Position(0, 1)))
               .isTrue();
         });
   }
@@ -440,16 +442,16 @@ class BoardTest {
     assertSoftly(
         softly -> {
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(1, -1)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), new Position(1, -1)))
               .isTrue();
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(-1, 1)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), new Position(-1, 1)))
               .isTrue();
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(1, 1)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), new Position(1, 1)))
               .isTrue();
           softly
-              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), List.of(-1, -1)))
+              .assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 2), new Position(-1, -1)))
               .isTrue();
         });
   }
