@@ -59,7 +59,7 @@ public class Game {
   }
 
   public boolean movePiece(int oldCol, int oldRow, int newCol, int newRow) {
-    if (movePossible(oldCol, oldRow, newCol, newRow)){
+    if (movePossible(oldCol, oldRow, newCol, newRow)) {
       board.changePosition(oldCol, oldRow, newCol, newRow);
 
       if (this.getActivePlayer() == Piece.Color.WHITE) {

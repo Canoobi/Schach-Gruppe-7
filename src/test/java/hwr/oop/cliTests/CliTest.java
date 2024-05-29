@@ -142,17 +142,17 @@ class CliTest {
         });
   }
 
-    @Test
-    void playOnGameCommandFail3Test() {
-        Game game = new Game(0);
-        persistance.saveGame(game);
-        cli.handle("on", "game", "0", "player", "white", "moves", "d4", "to", "d5");
-        final var output = outputStream.toString();
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(output).contains("No piece at position d4 found. Please try again.");
-                });
-    }
+  @Test
+  void playOnGameCommandFail3Test() {
+    Game game = new Game(0);
+    persistance.saveGame(game);
+    cli.handle("on", "game", "0", "player", "white", "moves", "d4", "to", "d5");
+    final var output = outputStream.toString();
+    assertSoftly(
+        softly -> {
+          softly.assertThat(output).contains("No piece at position d4 found. Please try again.");
+        });
+  }
 
   @Test
   void playOnGameCommandWrongPlayerTest() {
@@ -166,21 +166,19 @@ class CliTest {
         });
   }
 
-    @Test
-    void playOnGameCommandCheckTest() {
-        Game game = new Game(0, new FENString("4k3/p1ppp3/8/5Q2/q7/8/PP3PPP/R3K2R"), Piece.Color.WHITE);
-        persistance.saveGame(game);
-        cli.handle("on", "game", "0", "player", "white", "moves", "f5", "to", "h5");
-        final var output = outputStream.toString();
+  @Test
+  void playOnGameCommandCheckTest() {
+    Game game = new Game(0, new FENString("4k3/p1ppp3/8/5Q2/q7/8/PP3PPP/R3K2R"), Piece.Color.WHITE);
+    persistance.saveGame(game);
+    cli.handle("on", "game", "0", "player", "white", "moves", "f5", "to", "h5");
+    final var output = outputStream.toString();
     assertSoftly(
         softly -> {
           softly.assertThat(output).contains("Piece f5 moved to h5");
-          softly
-              .assertThat(output)
-              .contains("Player BLACK stands in check.");
+          softly.assertThat(output).contains("Player BLACK stands in check.");
           softly.assertThat(output).contains("Now it's player BLACK's turn.");
         });
-    }
+  }
 
   @Test
   void playOnGameCommandStalemateTest() {

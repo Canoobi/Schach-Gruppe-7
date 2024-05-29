@@ -15,7 +15,9 @@ class GameTest {
         softly -> {
           softly.assertThat(game.getId()).isEqualTo(1);
           softly.assertThat(game.getActivePlayer()).isEqualTo(Piece.Color.WHITE);
-          softly.assertThat(game.getBoard().getFenOfBoard()).isEqualTo(new FENString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"));
+          softly
+              .assertThat(game.getBoard().getFenOfBoard())
+              .isEqualTo(new FENString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"));
         });
   }
 
@@ -26,7 +28,9 @@ class GameTest {
         softly -> {
           softly.assertThat(game.getId()).isEqualTo(5);
           softly.assertThat(game.getActivePlayer()).isEqualTo(Piece.Color.BLACK);
-          softly.assertThat(game.getBoard().getFenOfBoard()).isEqualTo(new FENString("8/pppppppp/8/8/8/8/8/8"));
+          softly
+              .assertThat(game.getBoard().getFenOfBoard())
+              .isEqualTo(new FENString("8/pppppppp/8/8/8/8/8/8"));
         });
   }
 
@@ -109,7 +113,9 @@ class GameTest {
     assertSoftly(
         softly -> {
           softly.assertThat(game.getActivePlayer()).isEqualTo(Piece.Color.BLACK);
-          softly.assertThat(game.getBoard().getFenOfBoard()).isEqualTo(new FENString("rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR"));
+          softly
+              .assertThat(game.getBoard().getFenOfBoard())
+              .isEqualTo(new FENString("rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR"));
         });
   }
 
@@ -121,17 +127,19 @@ class GameTest {
     assertSoftly(
         softly -> {
           softly.assertThat(game.getActivePlayer()).isEqualTo(Piece.Color.WHITE);
-          softly.assertThat(game.getBoard().getFenOfBoard()).isEqualTo(new FENString("rnbqkbnr/ppppp1pp/5p2/8/8/8/PPPPPPPP/RNBQKBNR"));
+          softly
+              .assertThat(game.getBoard().getFenOfBoard())
+              .isEqualTo(new FENString("rnbqkbnr/ppppp1pp/5p2/8/8/8/PPPPPPPP/RNBQKBNR"));
         });
   }
 
-    @Test
-    void movePieceFalseTest() {
-        Game game = new Game(6);
-        game.setActivePlayer(Piece.Color.BLACK);
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(game.movePiece(1, 1, 6, 6)).isFalse();
-                });
-    }
+  @Test
+  void movePieceFalseTest() {
+    Game game = new Game(6);
+    game.setActivePlayer(Piece.Color.BLACK);
+    assertSoftly(
+        softly -> {
+          softly.assertThat(game.movePiece(1, 1, 6, 6)).isFalse();
+        });
+  }
 }

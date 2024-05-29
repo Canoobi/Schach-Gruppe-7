@@ -71,7 +71,7 @@ public final class PlayOnGameCommand implements MutableCommand {
         out.println("Index is out of range of the board.");
         return;
       }
-      if(game.getBoard().getPieceAt(oldPosition.getX(), oldPosition.getY()) == null){
+      if (game.getBoard().getPieceAt(oldPosition.getX(), oldPosition.getY()) == null) {
         out.println("No piece at position " + oldPositionString + " found. Please try again.");
         return;
       }
@@ -83,8 +83,9 @@ public final class PlayOnGameCommand implements MutableCommand {
     }
   }
 
-  private void moveLegal(PrintStream out){
-    boolean boo = game.movePiece(
+  private void moveLegal(PrintStream out) {
+    boolean boo =
+        game.movePiece(
             oldPosition.getX(), oldPosition.getY(), newPosition.getX(), newPosition.getY());
 
     if (game.getBoard().stalemate(game.getActivePlayer())) {
@@ -94,9 +95,9 @@ public final class PlayOnGameCommand implements MutableCommand {
       game.setWinner(playerColor.toString());
       out.println("Congratulations! Player " + game.getWinner() + " won the game!");
       persistance.deleteMatch(gameId);
-    } else if (boo){
+    } else if (boo) {
       out.println("Piece " + oldPositionString + " moved to " + newPositionString);
-      if(game.getBoard().isCheck(game.getActivePlayer())){
+      if (game.getBoard().isCheck(game.getActivePlayer())) {
         out.println("Player " + game.getActivePlayer() + " stands in check.");
       }
       out.println("Now it's player " + game.getActivePlayer() + "'s turn.");
