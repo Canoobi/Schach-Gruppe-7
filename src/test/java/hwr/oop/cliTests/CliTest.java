@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.io.*;
 import java.nio.file.Path;
 
+import hwr.oop.chess.FENString;
 import hwr.oop.chess.Game;
 import hwr.oop.chess.Piece;
 import hwr.oop.chess.cli.Cli;
@@ -132,7 +133,7 @@ class CliTest {
 
   @Test
   void playOnGameCommandStalemateTest() {
-    Game game = new Game(0, "k7/8/8/8/8/r7/8/r5PK", Piece.Color.BLACK);
+    Game game = new Game(0, new FENString("k7/8/8/8/8/r7/8/r5PK"), Piece.Color.BLACK);
     persistance.saveGame(game);
     cli.handle("on", "game", "0", "player", "black", "moves", "a3", "to", "a2");
     final var output = outputStream.toString();
@@ -145,7 +146,7 @@ class CliTest {
 
   @Test
   void playOnGameCommandCheckmateTest() {
-    Game game = new Game(0, "k7/8/8/8/8/r7/8/r6K", Piece.Color.BLACK);
+    Game game = new Game(0, new FENString("k7/8/8/8/8/r7/8/r6K"), Piece.Color.BLACK);
     persistance.saveGame(game);
     cli.handle("on", "game", "0", "player", "black", "moves", "a3", "to", "a2");
     final var output = outputStream.toString();
@@ -170,7 +171,7 @@ class CliTest {
 
   @Test
   void playOnGameCommandOutOfBoundTest() {
-    Game game = new Game(0, "rnbqkbnr/8/8/8/8/8/8/RNBQKBNR", Piece.Color.WHITE);
+    Game game = new Game(0, new FENString("rnbqkbnr/8/8/8/8/8/8/RNBQKBNR"), Piece.Color.WHITE);
     persistance.saveGame(game);
     cli.handle("on", "game", "0", "player", "white", "moves", "h8", "to", "h1");
     var output = outputStream.toString();

@@ -1,5 +1,6 @@
 package hwr.oop.chess.persistance;
 
+import hwr.oop.chess.FENString;
 import hwr.oop.chess.Game;
 import hwr.oop.chess.Piece;
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class PersistanceHandler {
 
   public void saveGame(Game game) {
     String csvString =
-        game.getId() + "," + game.getBoard().getFenOfBoard() + "," + game.getActivePlayer() + "\n";
+        game.getId() + "," + game.getBoard().getFenOfBoard().value() + "," + game.getActivePlayer() + "\n";
 
     try (final var writer = Files.newBufferedWriter(csvFilePath, StandardOpenOption.APPEND)) {
       ioExceptionBomb.fire();
@@ -131,6 +132,6 @@ public class PersistanceHandler {
       throw new IllegalStateException("Error while reading CSV file");
     }
 
-    return new Game(Integer.parseInt(id), result.get(1), intToEnum.get(result.get(2)));
+    return new Game(Integer.parseInt(id), new FENString(result.get(1)), intToEnum.get(result.get(2)));
   }
 }

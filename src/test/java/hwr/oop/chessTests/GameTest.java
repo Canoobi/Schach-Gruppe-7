@@ -2,6 +2,7 @@ package hwr.oop.chessTests;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import hwr.oop.chess.FENString;
 import hwr.oop.chess.Game;
 import hwr.oop.chess.Piece;
 import org.junit.jupiter.api.Test;
@@ -14,20 +15,18 @@ class GameTest {
         softly -> {
           softly.assertThat(game.getId()).isEqualTo(1);
           softly.assertThat(game.getActivePlayer()).isEqualTo(Piece.Color.WHITE);
-          softly
-              .assertThat(game.getBoard().getFenOfBoard())
-              .isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+          softly.assertThat(game.getBoard().getFenOfBoard()).isEqualTo(new FENString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"));
         });
   }
 
   @Test
   void loadGameTest() {
-    Game game = new Game(5, "8/pppppppp/8/8/8/8/8/8", Piece.Color.BLACK);
+    Game game = new Game(5, new FENString("8/pppppppp/8/8/8/8/8/8"), Piece.Color.BLACK);
     assertSoftly(
         softly -> {
           softly.assertThat(game.getId()).isEqualTo(5);
           softly.assertThat(game.getActivePlayer()).isEqualTo(Piece.Color.BLACK);
-          softly.assertThat(game.getBoard().getFenOfBoard()).isEqualTo("8/pppppppp/8/8/8/8/8/8");
+          softly.assertThat(game.getBoard().getFenOfBoard()).isEqualTo(new FENString("8/pppppppp/8/8/8/8/8/8"));
         });
   }
 
@@ -44,7 +43,7 @@ class GameTest {
   @Test
   void movePossibleCaptureFriendly() {
     Game game = new Game(6);
-    game.getBoard().setBoardToFen("3R4/8/8/8/2K1B3/3P4/1N6/8");
+    game.getBoard().setBoardToFen(new FENString("3R4/8/8/8/2K1B3/3P4/1N6/8"));
 
     assertSoftly(
         softly -> {
@@ -58,7 +57,7 @@ class GameTest {
   @Test
   void movePossibleCaptureEnemy() {
     Game game = new Game(6);
-    game.getBoard().setBoardToFen("7K/8/8/3p4/2N1P3/1q2P3/8/8");
+    game.getBoard().setBoardToFen(new FENString("7K/8/8/3p4/2N1P3/1q2P3/8/8"));
 
     assertSoftly(
         softly -> {
@@ -71,7 +70,7 @@ class GameTest {
   @Test
   void movePossible() {
     Game game = new Game(6);
-    game.getBoard().setBoardToFen("7b/8/8/8/3P4/8/8/B7");
+    game.getBoard().setBoardToFen(new FENString("7b/8/8/8/3P4/8/8/B7"));
 
     assertSoftly(
         softly -> {
@@ -82,7 +81,7 @@ class GameTest {
   @Test
   void movePossibleMoveIntoCheck() {
     Game game = new Game(7);
-    game.getBoard().setBoardToFen("r7/8/8/8/8/8/B7/K7");
+    game.getBoard().setBoardToFen(new FENString("r7/8/8/8/8/8/B7/K7"));
 
     assertSoftly(
         softly -> {
@@ -93,7 +92,7 @@ class GameTest {
   @Test
   void movePossibleCheck() {
     Game game = new Game(7);
-    game.getBoard().setBoardToFen("8/8/r7/8/8/8/1r6/K7");
+    game.getBoard().setBoardToFen(new FENString("8/8/r7/8/8/8/1r6/K7"));
 
     assertSoftly(
         softly -> {
@@ -110,9 +109,7 @@ class GameTest {
     assertSoftly(
         softly -> {
           softly.assertThat(game.getActivePlayer()).isEqualTo(Piece.Color.BLACK);
-          softly
-              .assertThat(game.getBoard().getFenOfBoard())
-              .isEqualTo("rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR");
+          softly.assertThat(game.getBoard().getFenOfBoard()).isEqualTo(new FENString("rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR"));
         });
   }
 
@@ -124,9 +121,7 @@ class GameTest {
     assertSoftly(
         softly -> {
           softly.assertThat(game.getActivePlayer()).isEqualTo(Piece.Color.WHITE);
-          softly
-              .assertThat(game.getBoard().getFenOfBoard())
-              .isEqualTo("rnbqkbnr/ppppp1pp/5p2/8/8/8/PPPPPPPP/RNBQKBNR");
+          softly.assertThat(game.getBoard().getFenOfBoard()).isEqualTo(new FENString("rnbqkbnr/ppppp1pp/5p2/8/8/8/PPPPPPPP/RNBQKBNR"));
         });
   }
 }
