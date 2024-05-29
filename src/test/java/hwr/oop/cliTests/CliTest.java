@@ -63,7 +63,11 @@ class CliTest {
           softly.assertThat(output).contains("Welcome to Chess!");
           softly.assertThat(output).contains("Arguments were: [help, --debug]");
           softly.assertThat(output).contains("You can use one of the following commands:");
-          softly.assertThat(output).contains("...");
+          softly.assertThat(output).contains("New game: new_game");
+          softly.assertThat(output).contains("Game state: on game XX state");
+          softly
+              .assertThat(output)
+              .contains("Play on a game: on game XX player white/black moves XX to XX");
         });
   }
 
@@ -102,15 +106,22 @@ class CliTest {
     persistance.saveGame(game);
     cli.handle("on", "game", "0", "player", "white", "moves", "b2", "to", "b3");
     final var output = outputStream.toString();
+    Game finalGame = persistance.getGameFromID("0");
     assertSoftly(
         softly -> {
           softly.assertThat(output).contains("Piece b2 moved to b3");
           softly.assertThat(output).contains("Now it's player BLACK's turn.");
+          softly
+              .assertThat(finalGame.getBoard().getFenOfBoard())
+              .isNotEqualTo(new FENString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"));
+          softly
+              .assertThat(finalGame.getBoard().getFenOfBoard())
+              .isEqualTo(new FENString("rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR"));
         });
   }
 
   @Test
-  void playOnGameCommandFailTest() {
+  void playOnGameCommandFail1Test() {
     cli.handle("on", "game", "-3", "player", "white", "moves", "b2", "to", "b3");
     final var output = outputStream.toString();
     assertSoftly(
@@ -118,6 +129,30 @@ class CliTest {
           softly.assertThat(output).contains("Game with ID -3 not found!");
         });
   }
+
+  @Test
+  void playOnGameCommandFail2Test() {
+    Game game = new Game(0);
+    persistance.saveGame(game);
+    cli.handle("on", "game", "0", "player", "white", "moves", "a1", "to", "c7");
+    final var output = outputStream.toString();
+    assertSoftly(
+        softly -> {
+          softly.assertThat(output).contains("Move failed! Please try again.");
+        });
+  }
+
+    @Test
+    void playOnGameCommandFail3Test() {
+        Game game = new Game(0);
+        persistance.saveGame(game);
+        cli.handle("on", "game", "0", "player", "white", "moves", "d4", "to", "d5");
+        final var output = outputStream.toString();
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(output).contains("No piece at position d4 found. Please try again.");
+                });
+    }
 
   @Test
   void playOnGameCommandWrongPlayerTest() {
@@ -130,6 +165,22 @@ class CliTest {
           softly.assertThat(output).contains("Player WHITE is playing!");
         });
   }
+
+    @Test
+    void playOnGameCommandCheckTest() {
+        Game game = new Game(0, new FENString("4k3/p1ppp3/8/5Q2/q7/8/PP3PPP/R3K2R"), Piece.Color.WHITE);
+        persistance.saveGame(game);
+        cli.handle("on", "game", "0", "player", "white", "moves", "f5", "to", "h5");
+        final var output = outputStream.toString();
+    assertSoftly(
+        softly -> {
+          softly.assertThat(output).contains("Piece f5 moved to h5");
+          softly
+              .assertThat(output)
+              .contains("Player BLACK stands in check.");
+          softly.assertThat(output).contains("Now it's player BLACK's turn.");
+        });
+    }
 
   @Test
   void playOnGameCommandStalemateTest() {
@@ -170,24 +221,28 @@ class CliTest {
   }
 
   @Test
-  void playOnGameCommandOutOfBoundTest() {
+  void playOnGameCommandIndexOutOfBound1Test() {
     Game game = new Game(0, new FENString("rnbqkbnr/8/8/8/8/8/8/RNBQKBNR"), Piece.Color.WHITE);
     persistance.saveGame(game);
     cli.handle("on", "game", "0", "player", "white", "moves", "h8", "to", "h1");
     var output = outputStream.toString();
-    String finalOutput1 = output;
     assertSoftly(
         softly -> {
-          softly.assertThat(finalOutput1).contains("Piece h8 moved to h1");
-          softly.assertThat(finalOutput1).contains("Now it's player BLACK's turn.");
+          softly.assertThat(output).contains("Piece h8 moved to h1");
+          softly.assertThat(output).contains("Now it's player BLACK's turn.");
         });
-    cli.handle("on", "game", "0", "player", "white", "moves", "a1", "to", "a8");
-    output = outputStream.toString();
-    String finalOutput = output;
+  }
+
+  @Test
+  void playOnGameCommandIndexOutOfBound2Test() {
+    Game game = new Game(1, new FENString("rnbqkbnr/8/8/8/8/8/8/RNBQKBNR"), Piece.Color.WHITE);
+    persistance.saveGame(game);
+    cli.handle("on", "game", "1", "player", "white", "moves", "a1", "to", "a8");
+    var output = outputStream.toString();
     assertSoftly(
         softly -> {
-          softly.assertThat(finalOutput).contains("Piece a1 moved to a8");
-          softly.assertThat(finalOutput).contains("Now it's player BLACK's turn.");
+          softly.assertThat(output).contains("Piece a1 moved to a8");
+          softly.assertThat(output).contains("Now it's player BLACK's turn.");
         });
   }
 

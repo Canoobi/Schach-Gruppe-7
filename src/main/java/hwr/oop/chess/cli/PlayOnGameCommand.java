@@ -2,18 +2,17 @@ package hwr.oop.chess.cli;
 
 import hwr.oop.chess.Game;
 import hwr.oop.chess.Piece;
+import hwr.oop.chess.Position;
 import hwr.oop.chess.persistance.PersistanceHandler;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public final class PlayOnGameCommand implements MutableCommand {
   private String gameId;
   private Piece.Color playerColor;
-  private List<Integer> oldPositionInteger;
+  private Position oldPosition;
   private String oldPositionString;
-  private List<Integer> newPositionInteger;
+  private Position newPosition;
   private String newPositionString;
   private Game game;
   private final PersistanceHandler persistance;
@@ -27,12 +26,12 @@ public final class PlayOnGameCommand implements MutableCommand {
     this.gameId = arguments.get(2);
     this.playerColor = Piece.Color.valueOf(arguments.get(4).toUpperCase());
     oldPositionString = arguments.get(6).toLowerCase();
-    oldPositionInteger = convertToIndices(oldPositionString);
+    oldPosition = convertToIndices(oldPositionString);
     newPositionString = arguments.get(8).toLowerCase();
-    newPositionInteger = convertToIndices(newPositionString);
+    newPosition = convertToIndices(newPositionString);
   }
 
-  public static List<Integer> convertToIndices(String chessCoordinate) {
+  public static Position convertToIndices(String chessCoordinate) {
     if (chessCoordinate.length() != 2) {
       throw new IllegalArgumentException("Illegal chessCoordinate: " + chessCoordinate);
     }
@@ -43,14 +42,11 @@ public final class PlayOnGameCommand implements MutableCommand {
     char rank = chessCoordinate.charAt(1);
     int row = Character.getNumericValue(rank) - 1;
 
-    List<Integer> indices = new ArrayList<>();
-    indices.add(column);
-    indices.add(row);
+    Position indices = new Position(column, row);
 
-    if (indices.get(0) > 7 || indices.get(0) < 0 || indices.get(1) > 7 || indices.get(1) < 0) {
-      return Collections.emptyList();
+    if (indices.getX() > 7 || indices.getX() < 0 || indices.getY() > 7 || indices.getY() < 0) {
+      return new Position(-1, -1);
     }
-
     return indices;
   }
 
@@ -71,31 +67,43 @@ public final class PlayOnGameCommand implements MutableCommand {
       if (Integer.parseInt(this.gameId) <= Integer.parseInt(persistance.getLatestID())) {
         this.game = persistance.getGameFromID(gameId);
       }
-      if (oldPositionInteger.isEmpty() || newPositionInteger.isEmpty()) {
+      if (oldPosition.getX() == -1 || newPosition.getY() == -1) {
         out.println("Index is out of range of the board.");
         return;
       }
+      if(game.getBoard().getPieceAt(oldPosition.getX(), oldPosition.getY()) == null){
+        out.println("No piece at position " + oldPositionString + " found. Please try again.");
+        return;
+      }
       if (game.getActivePlayer() == playerColor) {
-        game.movePiece(
-            oldPositionInteger.getFirst(),
-            oldPositionInteger.get(1),
-            newPositionInteger.getFirst(),
-            newPositionInteger.get(1));
-        out.println("Piece " + oldPositionString + " moved to " + newPositionString);
-
-        if (game.getBoard().stalemate(game.getActivePlayer())) {
-          out.println("The game is a stalemate! It's a draw!");
-          persistance.deleteMatch(gameId, 0);
-        } else if (game.getBoard().checkmate(game.getActivePlayer())) {
-          game.setWinner(playerColor.toString());
-          out.println("Congratulations! Player " + game.getWinner() + " won the game!");
-          persistance.deleteMatch(gameId, 0);
-        } else {
-          out.println("Now it's player " + game.getActivePlayer() + "'s turn.");
-        }
+        moveLegal(out);
       } else {
         out.println("Player " + game.getActivePlayer() + " is playing!");
       }
+    }
+  }
+
+  private void moveLegal(PrintStream out){
+    boolean boo = game.movePiece(
+            oldPosition.getX(), oldPosition.getY(), newPosition.getX(), newPosition.getY());
+
+    if (game.getBoard().stalemate(game.getActivePlayer())) {
+      out.println("The game is a stalemate! It's a draw!");
+      persistance.deleteMatch(gameId);
+    } else if (game.getBoard().checkmate(game.getActivePlayer())) {
+      game.setWinner(playerColor.toString());
+      out.println("Congratulations! Player " + game.getWinner() + " won the game!");
+      persistance.deleteMatch(gameId);
+    } else if (boo){
+      out.println("Piece " + oldPositionString + " moved to " + newPositionString);
+      if(game.getBoard().isCheck(game.getActivePlayer())){
+        out.println("Player " + game.getActivePlayer() + " stands in check.");
+      }
+      out.println("Now it's player " + game.getActivePlayer() + "'s turn.");
+      persistance.deleteMatch(gameId);
+      persistance.saveGame(game);
+    } else {
+      out.println("Move failed! Please try again.");
     }
   }
 }

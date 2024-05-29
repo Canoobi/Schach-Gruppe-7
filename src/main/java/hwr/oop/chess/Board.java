@@ -237,14 +237,18 @@ public class Board {
   public boolean canCapturePawn(Piece piece, int vecX, int vecY) {
     if (piece.getColor() == Piece.Color.WHITE) {
       if (Math.abs(piece.getActualPosition().getX() - vecX) != 1) {
-        return getPieceAt(vecX, vecY) == null && piece.getActualPosition().getY() - vecY == -1;
+        return getPieceAt(vecX, vecY) == null
+            && (piece.getActualPosition().getY() - vecY == -1
+                || piece.getActualPosition().getY() - vecY == -2);
       } else {
         return piece.getActualPosition().getY() - vecY == -1
             && piece.getColor() != getPieceAt(vecX, vecY).getColor();
       }
     } else {
       if (Math.abs(piece.getActualPosition().getX() - vecX) != 1) {
-        return getPieceAt(vecX, vecY) == null && piece.getActualPosition().getY() - vecY == 1;
+        return getPieceAt(vecX, vecY) == null
+            && (piece.getActualPosition().getY() - vecY == 1
+                || piece.getActualPosition().getY() - vecY == 2);
       } else {
         return piece.getActualPosition().getY() - vecY == 1
             && piece.getColor() != getPieceAt(vecX, vecY).getColor();
@@ -344,7 +348,8 @@ public class Board {
     }
     for (Position move : piece.getPossibleMoves()) {
       if (directionContainsLegalMove(piece, move)
-          || directionContainsLegalMove(piece, new Position(move.getX() * (-1), move.getY() * (-1)))) {
+          || directionContainsLegalMove(
+              piece, new Position(move.getX() * (-1), move.getY() * (-1)))) {
         return true;
       }
     }

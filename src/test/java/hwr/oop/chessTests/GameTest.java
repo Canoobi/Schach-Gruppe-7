@@ -124,4 +124,14 @@ class GameTest {
           softly.assertThat(game.getBoard().getFenOfBoard()).isEqualTo(new FENString("rnbqkbnr/ppppp1pp/5p2/8/8/8/PPPPPPPP/RNBQKBNR"));
         });
   }
+
+    @Test
+    void movePieceFalseTest() {
+        Game game = new Game(6);
+        game.setActivePlayer(Piece.Color.BLACK);
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(game.movePiece(1, 1, 6, 6)).isFalse();
+                });
+    }
 }

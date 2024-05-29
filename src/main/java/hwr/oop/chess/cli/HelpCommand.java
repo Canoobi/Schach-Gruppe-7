@@ -18,6 +18,8 @@ public final class HelpCommand implements MutableCommand {
   @Override
   public void invoke(PrintStream out) {
     out.println("You can use one of the following commands:");
-    out.println("...");
+    out.println("New game: new_game");
+    out.println("Game state: on game XX state");
+    out.println("Play on a game: on game XX player white/black moves XX to XX");
   }
 }

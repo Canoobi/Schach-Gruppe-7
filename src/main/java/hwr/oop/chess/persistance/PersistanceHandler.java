@@ -71,6 +71,10 @@ public class PersistanceHandler {
     }
   }
 
+  public void deleteMatch(String id){
+    deleteMatch(id, 0);
+  }
+
   public void deleteMatch(String id, int bombId) {
     List<String> result;
     StringBuilder newSaveFile = new StringBuilder();

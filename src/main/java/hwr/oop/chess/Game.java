@@ -58,15 +58,18 @@ public class Game {
     return !check;
   }
 
-  public void movePiece(int oldCol, int oldRow, int newCol, int newRow) {
+  public boolean movePiece(int oldCol, int oldRow, int newCol, int newRow) {
+    if (movePossible(oldCol, oldRow, newCol, newRow)){
+      board.changePosition(oldCol, oldRow, newCol, newRow);
 
-    board.changePosition(oldCol, oldRow, newCol, newRow);
-
-    if (this.getActivePlayer() == Piece.Color.WHITE) {
-      setActivePlayer(Piece.Color.BLACK);
-    } else {
-      this.setActivePlayer(Piece.Color.WHITE);
+      if (this.getActivePlayer() == Piece.Color.WHITE) {
+        setActivePlayer(Piece.Color.BLACK);
+      } else {
+        this.setActivePlayer(Piece.Color.WHITE);
+      }
+      return true;
     }
+    return false;
   }
 
   public String getWinner() {
