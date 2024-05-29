@@ -61,7 +61,7 @@ public class Piece {
     }
   }
 
-  private PieceType pieceType;
+  private final PieceType pieceType;
   private List<Integer> actualPosition;
   private final Color color;
 
