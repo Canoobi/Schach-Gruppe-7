@@ -6,7 +6,7 @@ public class Game {
   private Piece.Color activePlayer;
   private String winner;
 
-  public Game(int id, String fen, Piece.Color activePlayer) {
+  public Game(int id, FENString fen, Piece.Color activePlayer) {
     this.id = id;
     this.board = new Board();
     board.setBoardToFen(fen);

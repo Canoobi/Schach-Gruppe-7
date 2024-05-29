@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import hwr.oop.chess.Board;
+import hwr.oop.chess.FENString;
 import hwr.oop.chess.Piece;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -14,7 +15,7 @@ class BoardTest {
   @Test
   void isValidMoveTest() {
     Board board = new Board();
-    board.setBoardToFen("rnbqkbnr/pppppppp/5p2/4P3/8/8/PPPPPPPP/RNBQKBNR");
+    board.setBoardToFen(new FENString("rnbqkbnr/pppppppp/5p2/4P3/8/8/PPPPPPPP/RNBQKBNR"));
     Piece bauer1 = board.getPieceAt(1, 1);
     Piece bauer2 = board.getPieceAt(3, 6);
     Piece bauer3 = board.getPieceAt(4, 4);
@@ -68,7 +69,7 @@ class BoardTest {
   @Test
   void isBlockedTestFullBoard() {
     Board board = new Board();
-    board.setBoardToFen("pppppppp/pppppppp/pppqpppp/ppppqppp/pppppppp/pppppppp/pppppppp/pppppppp");
+    board.setBoardToFen(new FENString("pppppppp/pppppppp/pppqpppp/ppppqppp/pppppppp/pppppppp/pppppppp/pppppppp"));
 
     assertSoftly(
         softly -> {
@@ -87,7 +88,7 @@ class BoardTest {
   @Test
   void isBlockedTestEmptyBoard() {
     Board board = new Board();
-    board.setBoardToFen("8/8/8/4q3/8/8/8/8");
+    board.setBoardToFen(new FENString("8/8/8/4q3/8/8/8/8"));
 
     assertSoftly(
         softly -> {
@@ -106,7 +107,7 @@ class BoardTest {
   @Test
   void isBlockedTestPieceOnEdgeOfMovement() {
     Board board = new Board();
-    board.setBoardToFen("8/2P1P1P1/8/2P1q1P1/8/2P1P1P1/8/8");
+    board.setBoardToFen(new FENString("8/2P1P1P1/8/2P1q1P1/8/2P1P1P1/8/8"));
     assertSoftly(
         softly -> {
           softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 4, 2)).isFalse();
@@ -124,7 +125,7 @@ class BoardTest {
   @Test
   void isBlockedTestHalfFilledBoard1() {
     Board board = new Board();
-    board.setBoardToFen("pppppppp/pppppppp/pppppppp/ppppqppp/8/8/8/8");
+    board.setBoardToFen(new FENString("pppppppp/pppppppp/pppppppp/ppppqppp/8/8/8/8"));
     assertSoftly(
         softly -> {
           softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 2, 2)).isFalse();
@@ -137,7 +138,7 @@ class BoardTest {
           softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 4, 6)).isTrue();
           softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 6, 6)).isTrue();
         });
-    board.setBoardToFen("4pppp/4pppp/4pppp/4qppp/4pppp/4pppp/4pppp/4pppp");
+    board.setBoardToFen(new FENString("4pppp/4pppp/4pppp/4qppp/4pppp/4pppp/4pppp/4pppp"));
     assertSoftly(
         softly -> {
           softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 2, 2)).isFalse();
@@ -155,7 +156,7 @@ class BoardTest {
   @Test
   void isBlockedTestHalfFilledBoard2() {
     Board board = new Board();
-    board.setBoardToFen("pppp4/pppp4/pppp4/ppppq3/pppp4/pppp4/pppp4/pppp4");
+    board.setBoardToFen(new FENString("pppp4/pppp4/pppp4/ppppq3/pppp4/pppp4/pppp4/pppp4"));
     assertSoftly(
         softly -> {
           softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 4, 2)).isFalse();
@@ -168,7 +169,7 @@ class BoardTest {
           softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 2, 4)).isTrue();
           softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 2, 6)).isTrue();
         });
-    board.setBoardToFen("8/8/8/ppppqppp/pppppppp/pppppppp/pppppppp/pppppppp");
+    board.setBoardToFen(new FENString("8/8/8/ppppqppp/pppppppp/pppppppp/pppppppp/pppppppp"));
     assertSoftly(
         softly -> {
           softly.assertThat(board.isBlocked(board.getPieceAt(4, 4), 2, 6)).isFalse();
@@ -186,7 +187,7 @@ class BoardTest {
   @Test
   void isBlockedTestHalfFilledBoard3() {
     Board board = new Board();
-    board.setBoardToFen("pppp4/pppp4/pppp4/pppp4/pppq4/pppp4/pppp4/pppp4");
+    board.setBoardToFen(new FENString("pppp4/pppp4/pppp4/pppp4/pppq4/pppp4/pppp4/pppp4"));
     assertSoftly(
         softly -> {
           softly.assertThat(board.isBlocked(board.getPieceAt(3, 3), 5, 1)).isFalse();
@@ -204,7 +205,7 @@ class BoardTest {
   @Test
   void getKingTest() {
     Board board = new Board();
-    board.setBoardToFen("8/8/8/8/8/8/8/kK6");
+    board.setBoardToFen(new FENString("8/8/8/8/8/8/8/kK6"));
 
     assertSoftly(
         softly -> {
@@ -220,7 +221,7 @@ class BoardTest {
   @Test
   void getKingNullTest() {
     Board board = new Board();
-    board.setBoardToFen("8/8/8/8/8/8/8/8");
+    board.setBoardToFen(new FENString("8/8/8/8/8/8/8/8"));
 
     assertSoftly(softly -> softly.assertThat(board.getKing(Piece.Color.WHITE)).isNull());
   }
@@ -228,7 +229,7 @@ class BoardTest {
   @Test
   void isCheckTest() {
     Board board = new Board();
-    board.setBoardToFen("k7/2Q5/1N5b/Q7/8/8/3r4/2K5");
+    board.setBoardToFen(new FENString("k7/2Q5/1N5b/Q7/8/8/3r4/2K5"));
 
     assertSoftly(
         softly -> {
@@ -240,7 +241,7 @@ class BoardTest {
   @Test
   void pawnCaptureValidMove() {
     Board board = new Board();
-    board.setBoardToFen("8/8/8/8/4p3/3P4/8/8");
+    board.setBoardToFen(new FENString("8/8/8/8/4p3/3P4/8/8"));
     assertThat(board.isValidMove(board.getPieceAt(3, 2), 4, 3)).isTrue();
   }
 
@@ -248,7 +249,7 @@ class BoardTest {
   void setBoardToFenTest() {
     Board board = new Board();
 
-    board.setBoardToFen("r7/8/8/2kb4/4K3/8/8/7r");
+    board.setBoardToFen(new FENString("r7/8/8/2kb4/4K3/8/8/7r"));
     assertSoftly(
         softly -> {
           softly
@@ -258,7 +259,7 @@ class BoardTest {
           softly.assertThat(board.getPieceAt(0, 0)).isNull();
         });
 
-    board.setBoardToFen("1r6/8/8/8/4K3/8/8/8");
+    board.setBoardToFen(new FENString("1r6/8/8/8/4K3/8/8/8"));
     assertSoftly(
         softly -> {
           softly.assertThat(board.getPieceAt(0, 7)).isNull();
@@ -269,9 +270,9 @@ class BoardTest {
   @Test
   void getFenOfBoardTest() {
     Board board = new Board();
-    board.setBoardToFen("1rr5/8/8/8/4K3/8/8/6rr");
+    board.setBoardToFen(new FENString("1rr5/8/8/8/4K3/8/8/6rr"));
 
-    Assertions.assertThat(board.getFenOfBoard()).isEqualTo("1rr5/8/8/8/4K3/8/8/6rr");
+    Assertions.assertThat(board.getFenOfBoard()).isEqualTo(new FENString("1rr5/8/8/8/4K3/8/8/6rr"));
   }
 
   @Test
@@ -373,7 +374,7 @@ class BoardTest {
   @Test
   void directionContainsLegalMovesTest() {
     Board board = new Board();
-    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    board.setBoardToFen(new FENString("k7/8/8/8/8/r3RK2/8/8"));
     assertSoftly(
         softly -> {
           softly
@@ -394,28 +395,28 @@ class BoardTest {
   @Test
   void directionContainsLegalMovesTestBlock() {
     Board board = new Board();
-    board.setBoardToFen("k7/4R3/8/8/8/r4K2/8/8");
+    board.setBoardToFen(new FENString("k7/4R3/8/8/8/r4K2/8/8"));
     assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 6), List.of(0, -1))).isTrue();
   }
 
   @Test
   void directionContainsLegalMovesTestTakes() {
     Board board = new Board();
-    board.setBoardToFen("k7/4R3/8/8/8/4rK2/8/8");
+    board.setBoardToFen(new FENString("k7/4R3/8/8/8/4rK2/8/8"));
     assertThat(board.directionContainsLegalMove(board.getPieceAt(4, 6), List.of(0, -1))).isTrue();
   }
 
   @Test
   void directionContainsLegalMovesTestBounds() {
     Board board = new Board();
-    board.setBoardToFen("k6K/8/8/8/8/8/8/8");
+    board.setBoardToFen(new FENString("k6K/8/8/8/8/8/8/8"));
     assertThat(board.directionContainsLegalMove(board.getPieceAt(7, 7), List.of(0, 1))).isFalse();
   }
 
   @Test
   void directionContainsLegalMovesTestToOuterRanks() {
     Board board = new Board();
-    board.setBoardToFen("8/kp6/pp6/8/8/6PP/6PK/8");
+    board.setBoardToFen(new FENString("8/kp6/pp6/8/8/6PP/6PK/8"));
     assertSoftly(
         softly -> {
           softly
@@ -436,7 +437,7 @@ class BoardTest {
   @Test
   void directionContainsLegalMovesTestBishop() {
     Board board = new Board();
-    board.setBoardToFen("k6K/8/8/8/8/4B3/8/8");
+    board.setBoardToFen(new FENString("k6K/8/8/8/8/4B3/8/8"));
     assertSoftly(
         softly -> {
           softly
@@ -457,49 +458,49 @@ class BoardTest {
   @Test
   void pieceHasLegalMovesTest() {
     Board board = new Board();
-    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    board.setBoardToFen(new FENString("k7/8/8/8/8/r3RK2/8/8"));
     assertThat(board.pieceHasLegalMoves(board.getPieceAt(4, 2))).isTrue();
   }
 
   @Test
   void pieceHasLegalMovesTestNull() {
     Board board = new Board();
-    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    board.setBoardToFen(new FENString("k7/8/8/8/8/r3RK2/8/8"));
     assertThat(board.pieceHasLegalMoves(board.getPieceAt(4, 4))).isFalse();
   }
 
   @Test
   void legalMovesPossibleTest() {
     Board board = new Board();
-    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    board.setBoardToFen(new FENString("k7/8/8/8/8/r3RK2/8/8"));
     assertThat(board.legalMovesPossible(Piece.Color.WHITE)).isTrue();
   }
 
   @Test
   void stalemateTestFalse() {
     Board board = new Board();
-    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    board.setBoardToFen(new FENString("k7/8/8/8/8/r3RK2/8/8"));
     assertThat(board.stalemate(Piece.Color.WHITE)).isFalse();
   }
 
   @Test
   void stalemateTestTrue() {
     Board board = new Board();
-    board.setBoardToFen("k7/8/8/8/8/8/r7/r5PK");
+    board.setBoardToFen(new FENString("k7/8/8/8/8/8/r7/r5PK"));
     assertThat(board.stalemate(Piece.Color.WHITE)).isTrue();
   }
 
   @Test
   void checkmateTestFalse() {
     Board board = new Board();
-    board.setBoardToFen("k7/8/8/8/8/r3RK2/8/8");
+    board.setBoardToFen(new FENString("k7/8/8/8/8/r3RK2/8/8"));
     assertThat(board.checkmate(Piece.Color.WHITE)).isFalse();
   }
 
   @Test
   void checkmateTestTrue() {
     Board board = new Board();
-    board.setBoardToFen("k7/8/8/8/8/8/r7/r6K");
+    board.setBoardToFen(new FENString("k7/8/8/8/8/8/r7/r6K"));
     assertThat(board.checkmate(Piece.Color.WHITE)).isTrue();
   }
 
@@ -507,7 +508,7 @@ class BoardTest {
   void canCapture() {
 
     Board board = new Board();
-    board.setBoardToFen("6p1/7b/8/P1P5/1p6/PpP1p1p1/1p3P2/1P6");
+    board.setBoardToFen(new FENString("6p1/7b/8/P1P5/1p6/PpP1p1p1/1p3P2/1P6"));
 
     assertSoftly(
         softly -> {

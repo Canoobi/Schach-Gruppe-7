@@ -47,7 +47,7 @@ public class Board {
     }
   }
 
-  public String getFenOfBoard() {
+  public FENString getFenOfBoard() {
     int spaces = 0;
 
     StringBuilder fen = new StringBuilder();
@@ -71,10 +71,12 @@ public class Board {
       fen.append("/");
     }
 
-    return fen.substring(0, fen.length() - 1);
+    return new FENString(fen.substring(0, fen.length() - 1));
   }
 
-  public void setBoardToFen(String fen) {
+  public void setBoardToFen(FENString fenString) {
+
+    String fen = fenString.value();
     int column = 0;
     int row = 7;
 
@@ -103,7 +105,7 @@ public class Board {
   }
 
   public void initBoard() {
-    setBoardToFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+    setBoardToFen(new FENString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"));
   }
 
   public void charToPieceType() {

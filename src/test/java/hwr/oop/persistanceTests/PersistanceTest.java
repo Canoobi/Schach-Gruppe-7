@@ -3,6 +3,7 @@ package hwr.oop.persistanceTests;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import hwr.oop.chess.FENString;
 import hwr.oop.chess.Game;
 import hwr.oop.chess.Piece;
 import hwr.oop.chess.persistance.IOExceptionBomb;
@@ -40,9 +41,9 @@ class PersistanceTest {
     PersistanceHandler persistanceHandler =
         new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"));
 
-    Game game1 = new Game(1, "", Piece.Color.BLACK);
-    Game game2 = new Game(2, "", Piece.Color.BLACK);
-    Game game3 = new Game(3, "", Piece.Color.BLACK);
+    Game game1 = new Game(1, new FENString(""), Piece.Color.BLACK);
+    Game game2 = new Game(2, new FENString(""), Piece.Color.BLACK);
+    Game game3 = new Game(3, new FENString(""), Piece.Color.BLACK);
     persistanceHandler.saveGame(game1);
     persistanceHandler.saveGame(game2);
     persistanceHandler.saveGame(game3);
@@ -56,9 +57,9 @@ class PersistanceTest {
   void saveGameTest() {
     PersistanceHandler persistanceHandler =
         new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"));
-    Game game1 = new Game(1, "", Piece.Color.BLACK);
-    Game game2 = new Game(2, "", Piece.Color.BLACK);
-    Game game3 = new Game(3, "", Piece.Color.BLACK);
+    Game game1 = new Game(1, new FENString(""), Piece.Color.BLACK);
+    Game game2 = new Game(2, new FENString(""), Piece.Color.BLACK);
+    Game game3 = new Game(3, new FENString(""), Piece.Color.BLACK);
 
     List<String> allMatchID = Arrays.asList("1", "2", "3");
 
@@ -74,9 +75,9 @@ class PersistanceTest {
     PersistanceHandler persistanceHandler =
         new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"));
 
-    Game game1 = new Game(1, "", Piece.Color.BLACK);
-    Game game2 = new Game(2, "", Piece.Color.BLACK);
-    Game game3 = new Game(3, "", Piece.Color.BLACK);
+    Game game1 = new Game(1, new FENString(""), Piece.Color.BLACK);
+    Game game2 = new Game(2, new FENString(""), Piece.Color.BLACK);
+    Game game3 = new Game(3, new FENString(""), Piece.Color.BLACK);
 
     persistanceHandler.saveGame(game1);
     persistanceHandler.saveGame(game2);
@@ -90,14 +91,14 @@ class PersistanceTest {
     PersistanceHandler persistanceHandler =
         new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"));
 
-    Game game1 = new Game(1, "8/8/6r1/8/3q4/8/8/8", Piece.Color.BLACK);
-    Game game2 = new Game(2, "1k6/8/6r1/8/3q4/8/8/3R4", Piece.Color.WHITE);
+    Game game1 = new Game(1, new FENString("8/8/6r1/8/3q4/8/8/8"), Piece.Color.BLACK);
+    Game game2 = new Game(2, new FENString("1k6/8/6r1/8/3q4/8/8/3R4"), Piece.Color.WHITE);
 
     persistanceHandler.saveGame(game1);
     persistanceHandler.saveGame(game2);
 
     assertThat(persistanceHandler.getGameFromID("2").getBoard().getFenOfBoard())
-        .isEqualTo("1k6/8/6r1/8/3q4/8/8/3R4");
+        .isEqualTo(new FENString("1k6/8/6r1/8/3q4/8/8/3R4"));
     assertThat(persistanceHandler.getGameFromID("2").getActivePlayer())
         .isEqualTo(Piece.Color.WHITE);
   }
@@ -106,7 +107,7 @@ class PersistanceTest {
   void exceptionTests() {
     PersistanceHandler persistanceHandler =
         new PersistanceHandler(Paths.get("src/test/resources/testFile.csv"), IOExceptionBomb.DO);
-    Game game = new Game(1, "8/8/6r1/8/3q4/8/8/8", Piece.Color.BLACK);
+    Game game = new Game(1, new FENString("8/8/6r1/8/3q4/8/8/8"), Piece.Color.BLACK);
 
     IllegalStateException exception1 =
         assertThrows(IllegalStateException.class, () -> persistanceHandler.saveGame(game));
