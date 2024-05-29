@@ -9,40 +9,43 @@ public class Piece {
   }
 
   public enum PieceType {
-    BAUER('b', List.of((List.of(0, 1))), false),
-    TURM('t', List.of(List.of(0, 1), List.of(1, 0)), true),
+    BAUER('b', List.of((new Position(0, 1))), false),
+    TURM('t', List.of(new Position(0, 1), new Position(1, 0)), true),
     SPRINGER(
         's',
         List.of(
-            List.of(2, 1),
-            List.of(2, -1),
-            List.of(1, 2),
-            List.of(-1, 2),
-            List.of(-2, 1),
-            List.of(-2, -1),
-            List.of(1, -2),
-            List.of(-1, -2)),
+            new Position(2, 1),
+            new Position(2, -1),
+            new Position(1, 2),
+            new Position(-1, 2),
+            new Position(-2, 1),
+            new Position(-2, -1),
+            new Position(1, -2),
+            new Position(-1, -2)),
         false),
-    LAEUFER('l', List.of(List.of(1, 1), List.of(-1, 1)), true),
+    LAEUFER('l', List.of(new Position(1, 1), new Position(-1, 1)), true),
     KOENIG(
         'k',
         List.of(
-            List.of(0, 1),
-            List.of(1, 0),
-            List.of(1, 1),
-            List.of(-1, 1),
-            List.of(0, -1),
-            List.of(-1, 0),
-            List.of(-1, -1),
-            List.of(-1, -1)),
+            new Position(0, 1),
+            new Position(1, 0),
+            new Position(1, 1),
+            new Position(-1, 1),
+            new Position(0, -1),
+            new Position(-1, 0),
+            new Position(-1, -1),
+            new Position(-1, -1)),
         false),
-    DAME('d', List.of(List.of(0, 1), List.of(1, 0), List.of(1, 1), List.of(-1, 1)), true);
+    DAME(
+        'd',
+        List.of(new Position(0, 1), new Position(1, 0), new Position(1, 1), new Position(-1, 1)),
+        true);
 
     private final char abbreviation;
-    private final List<List<Integer>> moves;
+    private final List<Position> moves;
     private final boolean moveRepeatable;
 
-    PieceType(char abbreviation, List<List<Integer>> moves, boolean moveRepeatable) {
+    PieceType(char abbreviation, List<Position> moves, boolean moveRepeatable) {
       this.abbreviation = abbreviation;
       this.moves = moves;
       this.moveRepeatable = moveRepeatable;
@@ -52,7 +55,7 @@ public class Piece {
       return abbreviation;
     }
 
-    public List<List<Integer>> getMoves() {
+    public List<Position> getMoves() {
       return moves;
     }
 
@@ -62,16 +65,16 @@ public class Piece {
   }
 
   private final PieceType pieceType;
-  private List<Integer> actualPosition;
+  private Position actualPosition;
   private final Color color;
 
-  public Piece(PieceType pieceType, List<Integer> pos, Color color) {
+  public Piece(PieceType pieceType, Position position, Color color) {
     this.pieceType = pieceType;
-    this.actualPosition = pos;
+    this.actualPosition = position;
     this.color = color;
   }
 
-  public void setActualPosition(List<Integer> actualPosition) {
+  public void setActualPosition(Position actualPosition) {
     this.actualPosition = actualPosition;
   }
 
@@ -83,11 +86,11 @@ public class Piece {
     return this.pieceType.getAbbreviation();
   }
 
-  public List<Integer> getActualPosition() {
+  public Position getActualPosition() {
     return this.actualPosition;
   }
 
-  public List<List<Integer>> getPossibleMoves() {
+  public List<Position> getPossibleMoves() {
     return this.pieceType.getMoves();
   }
 

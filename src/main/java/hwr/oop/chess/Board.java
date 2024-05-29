@@ -35,7 +35,7 @@ public class Board {
   public void setPieceAt(int column, int row, Piece piece) {
     this.playBoard.get(row).set(column, piece);
     if (piece != null) {
-      piece.setActualPosition(List.of(column, row));
+      piece.setActualPosition(new Position(column, row));
     }
   }
 
@@ -96,7 +96,7 @@ public class Board {
             row,
             new Piece(
                 charToPieceType.get(Character.toLowerCase(c)),
-                List.of(column, row),
+                new Position(column, row),
                 Character.isUpperCase(c) ? Piece.Color.WHITE : Piece.Color.BLACK));
 
         column++;
@@ -131,7 +131,7 @@ public class Board {
   public void changePosition(int oldCol, int oldRow, int newCol, int newRow) {
     this.playBoard.get(newRow).set(newCol, playBoard.get(oldRow).get(oldCol));
     if (getPieceAt(oldCol, oldRow) != null) {
-      getPieceAt(oldCol, oldRow).setActualPosition(List.of(newCol, newRow));
+      getPieceAt(oldCol, oldRow).setActualPosition(new Position(newCol, newRow));
     }
     this.playBoard.get(oldRow).set(oldCol, null);
   }
@@ -151,8 +151,8 @@ public class Board {
 
   public boolean isCheck(Piece.Color color) {
     Piece king = getKing(color);
-    int kingX = king.getActualPosition().getFirst();
-    int kingY = king.getActualPosition().get(1);
+    int kingX = king.getActualPosition().getX();
+    int kingY = king.getActualPosition().getY();
 
     for (List<Piece> l : playBoard) {
       for (Piece p : l) {
@@ -168,8 +168,8 @@ public class Board {
   }
 
   public boolean isValidMove(Piece piece, int column, int row) {
-    int vecX = column - piece.getActualPosition().get(0);
-    int vecY = row - piece.getActualPosition().get(1);
+    int vecX = column - piece.getActualPosition().getX();
+    int vecY = row - piece.getActualPosition().getY();
     if (piece.isMoveRepeatable()) {
       return isValidMoveRepeat(piece, vecX, vecY);
     } else {
@@ -186,12 +186,12 @@ public class Board {
   }
 
   private boolean isValidMoveRepeat(Piece piece, int vecX, int vecY) {
-    for (List<Integer> move : piece.getPossibleMoves()) {
+    for (Position move : piece.getPossibleMoves()) {
       for (int j = -7; j < 8; j++) {
         if (j == 0) {
           continue;
         }
-        if (move.getFirst() * j == vecX && move.get(1) * j == vecY) {
+        if (move.getX() * j == vecX && move.getY() * j == vecY) {
           return true;
         }
       }
@@ -200,8 +200,8 @@ public class Board {
   }
 
   private boolean isValidMoveNonRepeat(Piece piece, int vecX, int vecY) {
-    for (List<Integer> move : piece.getPossibleMoves()) {
-      if (move.getFirst() == vecX && move.get(1) == vecY) {
+    for (Position move : piece.getPossibleMoves()) {
+      if (move.getX() == vecX && move.getY() == vecY) {
         return true;
       }
     }
@@ -210,12 +210,12 @@ public class Board {
 
   private boolean isValidMovePawn(Piece piece, int vecX, int vecY) {
     if (piece.getColor() == Piece.Color.WHITE) {
-      if (piece.getActualPosition().get(1) == 1 && 0 == vecX && 2 == vecY) {
+      if (piece.getActualPosition().getY() == 1 && 0 == vecX && 2 == vecY) {
         return true;
       }
       return 0 == vecX && 1 == vecY;
     } else {
-      if (piece.getActualPosition().get(1) == 6 && 0 == vecX && -2 == vecY) {
+      if (piece.getActualPosition().getY() == 6 && 0 == vecX && -2 == vecY) {
         return true;
       }
       return 0 == vecX && -1 == vecY;
@@ -236,46 +236,46 @@ public class Board {
 
   public boolean canCapturePawn(Piece piece, int vecX, int vecY) {
     if (piece.getColor() == Piece.Color.WHITE) {
-      if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
-        return getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == -1;
+      if (Math.abs(piece.getActualPosition().getX() - vecX) != 1) {
+        return getPieceAt(vecX, vecY) == null && piece.getActualPosition().getY() - vecY == -1;
       } else {
-        return piece.getActualPosition().getLast() - vecY == -1
+        return piece.getActualPosition().getY() - vecY == -1
             && piece.getColor() != getPieceAt(vecX, vecY).getColor();
       }
     } else {
-      if (Math.abs(piece.getActualPosition().getFirst() - vecX) != 1) {
-        return getPieceAt(vecX, vecY) == null && piece.getActualPosition().getLast() - vecY == 1;
+      if (Math.abs(piece.getActualPosition().getX() - vecX) != 1) {
+        return getPieceAt(vecX, vecY) == null && piece.getActualPosition().getY() - vecY == 1;
       } else {
-        return piece.getActualPosition().getLast() - vecY == 1
+        return piece.getActualPosition().getY() - vecY == 1
             && piece.getColor() != getPieceAt(vecX, vecY).getColor();
       }
     }
   }
 
   public boolean isBlocked(Piece piece, int newColumn, int newRow) {
-    List<Integer> oldPos = piece.getActualPosition();
-    List<Integer> vec = Arrays.asList(newColumn - oldPos.getFirst(), newRow - oldPos.get(1));
-    if (vec.getFirst() < 0) {
-      vec.set(0, -1);
+    Position oldPos = piece.getActualPosition();
+    List<Integer> vector = Arrays.asList(newColumn - oldPos.getX(), newRow - oldPos.getY());
+    if (vector.getFirst() < 0) {
+      vector.set(0, -1);
     }
-    if (vec.getFirst() > 0) {
-      vec.set(0, 1);
+    if (vector.getFirst() > 0) {
+      vector.set(0, 1);
     }
 
-    if (vec.get(1) < 0) {
-      vec.set(1, -1);
+    if (vector.get(1) < 0) {
+      vector.set(1, -1);
     }
-    if (vec.get(1) > 0) {
-      vec.set(1, 1);
+    if (vector.get(1) > 0) {
+      vector.set(1, 1);
     }
 
     for (int i = 1;
-        i < ((newColumn - oldPos.getFirst()) * vec.getFirst())
-            || i < ((newRow - oldPos.get(1)) * vec.get(1));
+        i < ((newColumn - oldPos.getX()) * vector.getFirst())
+            || i < ((newRow - oldPos.getY()) * vector.get(1));
         i++) {
       if (this.playBoard
-              .get(oldPos.get(1) + i * vec.get(1))
-              .get(oldPos.getFirst() + i * vec.getFirst())
+              .get(oldPos.getY() + i * vector.get(1))
+              .get(oldPos.getX() + i * vector.getFirst())
           != null) {
         return true;
       }
@@ -287,52 +287,52 @@ public class Board {
     return this.playBoard.get(row).get(column).getColor() == color;
   }
 
-  public boolean directionContainsLegalMove(Piece piece, List<Integer> direction) {
-    int positionX = piece.getActualPosition().get(0);
-    int positionY = piece.getActualPosition().get(1);
+  public boolean directionContainsLegalMove(Piece piece, Position direction) {
+    int positionX = piece.getActualPosition().getX();
+    int positionY = piece.getActualPosition().getY();
     Piece deletedPiece;
 
     for (int i = 1;
-        i * direction.get(0) + positionX >= 0
-            && i * direction.get(0) + positionX < 8
-            && i * direction.get(1) + positionY >= 0
-            && i * direction.get(1) + positionY < 8;
+        i * direction.getX() + positionX >= 0
+            && i * direction.getX() + positionX < 8
+            && i * direction.getY() + positionY >= 0
+            && i * direction.getY() + positionY < 8;
         i++) {
-      if (isValidMove(piece, i * direction.get(0) + positionX, i * direction.get(1) + positionY)
+      if (isValidMove(piece, i * direction.getX() + positionX, i * direction.getY() + positionY)
           && !isBlocked(
-              piece, i * direction.get(0) + positionX, i * direction.get(1) + positionY)) {
-        if ((getPieceAt(i * direction.get(0) + positionX, i * direction.get(1) + positionY) != null)
-            && (getPieceAt(i * direction.get(0) + positionX, i * direction.get(1) + positionY)
+              piece, i * direction.getX() + positionX, i * direction.getY() + positionY)) {
+        if ((getPieceAt(i * direction.getX() + positionX, i * direction.getY() + positionY) != null)
+            && (getPieceAt(i * direction.getX() + positionX, i * direction.getY() + positionY)
                     .getColor()
                 == piece.getColor())) {
           continue;
         }
         deletedPiece =
-            playBoard.get(i * direction.get(0) + positionX).get(i * direction.get(1) + positionY);
+            playBoard.get(i * direction.getX() + positionX).get(i * direction.getY() + positionY);
         changePosition(
             positionX,
             positionY,
-            i * direction.get(0) + positionX,
-            i * direction.get(1) + positionY);
+            i * direction.getX() + positionX,
+            i * direction.getY() + positionY);
         if (!isCheck(piece.getColor())) {
           changePosition(
-              i * direction.get(0) + positionX,
-              i * direction.get(1) + positionY,
+              i * direction.getX() + positionX,
+              i * direction.getY() + positionY,
               positionX,
               positionY);
           playBoard
-              .get(i * direction.get(0) + positionX)
-              .set(i * direction.get(1) + positionY, deletedPiece);
+              .get(i * direction.getX() + positionX)
+              .set(i * direction.getY() + positionY, deletedPiece);
           return true;
         }
         changePosition(
-            i * direction.get(0) + positionX,
-            i * direction.get(1) + positionY,
+            i * direction.getX() + positionX,
+            i * direction.getY() + positionY,
             positionX,
             positionY);
         playBoard
-            .get(i * direction.get(0) + positionX)
-            .set(i * direction.get(1) + positionY, deletedPiece);
+            .get(i * direction.getX() + positionX)
+            .set(i * direction.getY() + positionY, deletedPiece);
       }
     }
     return false;
@@ -342,9 +342,9 @@ public class Board {
     if (piece == null) {
       return false;
     }
-    for (List<Integer> move : piece.getPossibleMoves()) {
+    for (Position move : piece.getPossibleMoves()) {
       if (directionContainsLegalMove(piece, move)
-          || directionContainsLegalMove(piece, List.of(move.get(0) * (-1), move.get(1) * (-1)))) {
+          || directionContainsLegalMove(piece, new Position(move.getX() * (-1), move.getY() * (-1)))) {
         return true;
       }
     }
