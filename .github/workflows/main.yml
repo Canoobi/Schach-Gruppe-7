@@ -32,6 +32,8 @@ jobs:
         with:
           name: pitest-report
           path: target/pit-reports/
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
       - name: Deploy to GitHub Pages
         if: success()
         run: |

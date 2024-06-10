@@ -76,7 +76,6 @@ Chess game, programmed by 4 students at HWR Berlin in OOP Lecture.
 | 2      | Play on Board | :heavy_check_mark: | :heavy_check_mark: |
 | 3      | Game state    | :heavy_check_mark: | :heavy_check_mark: |
 | 4      | Help          | :heavy_check_mark: | :heavy_check_mark: |
-| 5      | Offer Remis   | :heavy_check_mark: | :heavy_check_mark: |
 
 ### Persistence
 
