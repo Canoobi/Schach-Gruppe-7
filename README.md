@@ -8,12 +8,6 @@ at HWR Berlin (summer term 2024).
 ## Prerequisites :wrench:
 
 Installed:
-
-1. IDE of your choice (e.g. IntelliJ IDEA)
-2. JDK of choice installed (e.g. through IntelliJ IDEA)
-3. Maven installed (e.g. through IntelliJ IDEA)
-4. Git installed
-
 ## Local Development :computer:
 
 This project uses [Apache Maven][maven] as build tool.
