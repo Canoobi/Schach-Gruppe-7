@@ -18,7 +18,7 @@ jobs:
         with:
           args: "--skip-sorting-imports --replace"
 
-  build:
+  build-pitest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
