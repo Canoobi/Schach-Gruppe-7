@@ -96,7 +96,7 @@ If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
 | 2      | Load Game   | :heavy_check_mark: | :heavy_check_mark: |
 | 2      | Delete Game | :heavy_check_mark: | :heavy_check_mark: |
 
-## Additional Dependencies :dependabot:
+## Additional Dependencies :package:
 
 | Number | Dependency Name | Dependency Description | Why is it necessary? |
 |--------|-----------------|------------------------|----------------------|
