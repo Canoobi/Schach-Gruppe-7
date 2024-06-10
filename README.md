@@ -1,4 +1,4 @@
-# OOP-Projekt Gruppe 7 (Schach)
+# :chess_pawn: Schach-Gruppe-7 [![Static Badge](https://img.shields.io/badge/Mutation%20Coverage-8A2BE2)](https://canoobi.github.io/Schach-Gruppe-7/main/index.html)
 
 This repository contains a student chess project created for an ongoing lecture on object-oriented programming with Java
 at HWR Berlin (summer term 2024).

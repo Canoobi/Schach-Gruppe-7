@@ -13,11 +13,11 @@ import java.util.List;
 public final class Cli {
 
   private final PrintStream out;
-    private final ArgumentParser argumentParser;
+  private final ArgumentParser argumentParser;
 
   public Cli(OutputStream outputStream, PersistanceHandler persistance) {
     this.out = new PrintStream(outputStream);
-      this.argumentParser = new ArgumentParser(persistance);
+    this.argumentParser = new ArgumentParser(persistance);
   }
 
   public void handle(String... arguments) {
