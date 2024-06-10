@@ -246,9 +246,7 @@ class BoardTest {
     Board board = new Board();
     board.setBoardToFen(new FENString("8/8/8/8/4p3/3P4/8/8"));
     assertSoftly(
-        softly -> {
-          softly.assertThat(board.isValidMove(board.getPieceAt(3, 2), 4, 3)).isTrue();
-        });
+        softly -> softly.assertThat(board.isValidMove(board.getPieceAt(3, 2), 4, 3)).isTrue());
     board.setBoardToFen(new FENString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"));
     assertSoftly(
         softly -> {

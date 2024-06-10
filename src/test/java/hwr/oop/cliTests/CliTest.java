@@ -125,9 +125,7 @@ class CliTest {
     cli.handle("on", "game", "-3", "player", "white", "moves", "b2", "to", "b3");
     final var output = outputStream.toString();
     assertSoftly(
-        softly -> {
-          softly.assertThat(output).contains("Game with ID -3 not found!");
-        });
+        softly -> softly.assertThat(output).contains("Game with ID -3 not found!"));
   }
 
   @Test
@@ -137,9 +135,7 @@ class CliTest {
     cli.handle("on", "game", "0", "player", "white", "moves", "a1", "to", "c7");
     final var output = outputStream.toString();
     assertSoftly(
-        softly -> {
-          softly.assertThat(output).contains("Move failed! Please try again.");
-        });
+        softly -> softly.assertThat(output).contains("Move failed! Please try again."));
   }
 
   @Test
@@ -149,9 +145,7 @@ class CliTest {
     cli.handle("on", "game", "0", "player", "white", "moves", "d4", "to", "d5");
     final var output = outputStream.toString();
     assertSoftly(
-        softly -> {
-          softly.assertThat(output).contains("No piece at position d4 found. Please try again.");
-        });
+        softly -> softly.assertThat(output).contains("No piece at position d4 found. Please try again."));
   }
 
   @Test
@@ -161,9 +155,7 @@ class CliTest {
     cli.handle("on", "game", "0", "player", "black", "moves", "b2", "to", "b3");
     final var output = outputStream.toString();
     assertSoftly(
-        softly -> {
-          softly.assertThat(output).contains("Player WHITE is playing!");
-        });
+        softly -> softly.assertThat(output).contains("Player WHITE is playing!"));
   }
 
   @Test
@@ -213,9 +205,7 @@ class CliTest {
     cli.handle("on", "game", "0", "player", "white", "moves", "b9", "to", "b3");
     final var output = outputStream.toString();
     assertSoftly(
-        softly -> {
-          softly.assertThat(output).contains("Index is out of range of the board.");
-        });
+        softly -> softly.assertThat(output).contains("Index is out of range of the board."));
   }
 
   @Test
