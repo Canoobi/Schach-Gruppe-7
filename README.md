@@ -5,7 +5,7 @@ at HWR Berlin (summer term 2024).
 
 > :warning: This code is for educational purposes only. Do not rely on it!
 
-## Prerequisites
+## Prerequisites :wrench:
 
 Installed:
 
@@ -14,7 +14,7 @@ Installed:
 3. Maven installed (e.g. through IntelliJ IDEA)
 4. Git installed
 
-## Local Development
+## Local Development :computer:
 
 This project uses [Apache Maven][maven] as build tool.
 
@@ -37,26 +37,37 @@ all of its tests:
 just build
 ```
 
-## Abstract
+## Abstract :bulb:
 
-# Short description of our project:
+### Short description of our project :bookmark_tabs:
 
 Chess game, programmed by 4 students at HWR Berlin in OOP Lecture.
 
-# Most important features:
+### Most important features :star:
 
 - chess logic
 - cli
 - persistance
 
-# Most interesting problems we encountered during the project:
+### Most interesting problems we encountered during the project :thinking:
 
 - testing exceptions
 - writing into a csv-file
 
-## Feature List
+## Commands overview :pager:
 
-### Backend
+If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
+
+| Command                                                    | Description          | Example                                  |
+|------------------------------------------------------------|----------------------|------------------------------------------|
+| `help`                                                     | shows all commands   | help                                     |
+| `new_game`                                                 | creates a new game   | new_game                                 |
+| `on game <ID> state`                                       | shows the game state | on game 1337 state                       |
+| `on game <ID> player <COLOR> moves <OLD_POS> to <NEW_POS>` | play on a game       | on game 1673 player black moves a1 to a8 |
+
+## Feature List :white_check_mark:
+
+### Backend :gear:
 
 | Number | Feature      | Implemented        | Tested             |
 |--------|--------------|--------------------|--------------------|
@@ -68,7 +79,7 @@ Chess game, programmed by 4 students at HWR Berlin in OOP Lecture.
 | 6      | Game         | :heavy_check_mark: | :heavy_check_mark: |
 | 7      | FEN Notation | :heavy_check_mark: | :heavy_check_mark: |
 
-### Command Line Interface
+### Command Line Interface :keyboard:
 
 | Number | Feature       | Implemented        | Tested             |
 |--------|---------------|--------------------|--------------------|
@@ -77,7 +88,7 @@ Chess game, programmed by 4 students at HWR Berlin in OOP Lecture.
 | 3      | Game state    | :heavy_check_mark: | :heavy_check_mark: |
 | 4      | Help          | :heavy_check_mark: | :heavy_check_mark: |
 
-### Persistence
+### Persistence :floppy_disk:
 
 | Number | Feature     | Implemented        | Tested             |
 |--------|-------------|--------------------|--------------------|
@@ -85,13 +96,13 @@ Chess game, programmed by 4 students at HWR Berlin in OOP Lecture.
 | 2      | Load Game   | :heavy_check_mark: | :heavy_check_mark: |
 | 2      | Delete Game | :heavy_check_mark: | :heavy_check_mark: |
 
-## Additional Dependencies
+## Additional Dependencies :dependabot:
 
 | Number | Dependency Name | Dependency Description | Why is it necessary? |
 |--------|-----------------|------------------------|----------------------|
 | 1      | :x:             | :x:                    | :x:                  |
 
-### Multiple remote repositories
+## Multiple remote repositories :inbox_tray:
 
 Your local repository should have a reference to both the fork (your own remote repository)
 and the original remote repository.
