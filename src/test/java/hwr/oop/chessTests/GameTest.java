@@ -38,8 +38,7 @@ class GameTest {
   void getWinnerTest() {
     Game game = new Game(5);
     game.setWinner("White");
-    assertSoftly(
-        softly -> softly.assertThat(game.getWinner()).isEqualTo("White"));
+    assertSoftly(softly -> softly.assertThat(game.getWinner()).isEqualTo("White"));
   }
 
   @Test
@@ -74,8 +73,7 @@ class GameTest {
     Game game = new Game(6);
     game.getBoard().setBoardToFen(new FENString("7b/8/8/8/3P4/8/8/B7"));
 
-    assertSoftly(
-        softly -> softly.assertThat(game.movePossible(0, 0, 7, 7)).isFalse());
+    assertSoftly(softly -> softly.assertThat(game.movePossible(0, 0, 7, 7)).isFalse());
   }
 
   @Test
@@ -83,8 +81,7 @@ class GameTest {
     Game game = new Game(7);
     game.getBoard().setBoardToFen(new FENString("r7/8/8/8/8/8/B7/K7"));
 
-    assertSoftly(
-        softly -> softly.assertThat(game.movePossible(0, 1, 1, 2)).isFalse());
+    assertSoftly(softly -> softly.assertThat(game.movePossible(0, 1, 1, 2)).isFalse());
   }
 
   @Test
@@ -131,7 +128,6 @@ class GameTest {
   void movePieceFalseTest() {
     Game game = new Game(6);
     game.setActivePlayer(Piece.Color.BLACK);
-    assertSoftly(
-        softly -> softly.assertThat(game.movePiece(1, 1, 6, 6)).isFalse());
+    assertSoftly(softly -> softly.assertThat(game.movePiece(1, 1, 6, 6)).isFalse());
   }
 }
